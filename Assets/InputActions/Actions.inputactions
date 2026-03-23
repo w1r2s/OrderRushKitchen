@@ -7,15 +7,6 @@
             "id": "285c06fd-3308-4881-a1ab-0047245776eb",
             "actions": [
                 {
-                    "name": "Jump",
-                    "type": "Button",
-                    "id": "c3188ca3-8fe0-47a4-ba6d-57debe4143fb",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Movement",
                     "type": "Value",
                     "id": "77a32815-1512-412e-b001-de3fd4c94bef",
@@ -32,20 +23,18 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "InteractAlternate",
+                    "type": "Button",
+                    "id": "19f8cd9f-1863-4963-9c9f-c1c5b6fa2440",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "6c8ca443-1ecf-419b-9d48-54741aef7587",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";KeyBoard",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "WASD",
                     "id": "3fe8218d-8543-4e97-ade6-abcc84ec81d8",
@@ -109,6 +98,17 @@
                     "processors": "",
                     "groups": ";KeyBoard",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "63971cfc-c030-45e7-b191-043b047e8d58",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyBoard",
+                    "action": "InteractAlternate",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
