@@ -88,7 +88,6 @@ public class StoveCounter : BaseCounter, IHasProgress
 
                     break;
             }
-            Debug.Log(state);
         }
     }
 

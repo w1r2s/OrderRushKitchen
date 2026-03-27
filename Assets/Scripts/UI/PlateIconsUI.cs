@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlateIconsUi : MonoBehaviour
+public class PlateIconsUI : MonoBehaviour
 {
     [SerializeField] private PlateKitchenObject plateKitchenObject;
     [SerializeField] private Transform iconTemplate;

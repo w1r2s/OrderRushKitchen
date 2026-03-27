@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ProgressBarUi : MonoBehaviour
+public class ProgressBarUI : MonoBehaviour
 {
     [SerializeField] private Image barImage;
     [SerializeField] private GameObject hasProgressGameObject;
