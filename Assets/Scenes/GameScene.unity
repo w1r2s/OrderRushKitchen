@@ -308,6 +308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cbc74cb8a626544c9eff5f3c781ec13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GamePlayingClockUI
+  timerImage: {fileID: 528940884}
 --- !u!1001 &238264074
 PrefabInstance:
   m_ObjectHideFlags: 0
