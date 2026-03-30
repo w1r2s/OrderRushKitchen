@@ -5,6 +5,7 @@ public class GamePauseUI : MonoBehaviour
 {
     [SerializeField] private Button resumeButton;
     [SerializeField] private Button mainMenuButton;
+    [SerializeField] private Button optionsButton;
     private void Start()
     {
         GameManager.Instance.OnGamePaused += GameManager_OnGamePaused;
@@ -20,6 +21,10 @@ public class GamePauseUI : MonoBehaviour
         mainMenuButton.onClick.AddListener(() =>
         {
             LoadingManager.Load(LoadingManager.Scene.MainMenuScene);
+        });
+        optionsButton.onClick.AddListener(() =>
+        {
+            OptionsUI.Instance.Show();
         });
     }
     private void GameManager_OnGameUnpaused(object sender, System.EventArgs e)
