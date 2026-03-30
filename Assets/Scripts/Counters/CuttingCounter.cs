@@ -6,7 +6,11 @@ public class CuttingCounter : BaseCounter, IHasProgress
     [SerializeField] private CuttingRecipeSo[] cuttingRecipeSoArray;
 
     public static event EventHandler onAnyCut;
-    public event EventHandler <IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
+    new public static void ResetStaticData()
+    {
+        onAnyCut = null;
+    }
+    public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
     public event EventHandler onCut;
 
     private int cuttingProgress;
@@ -26,7 +30,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
                     OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
                     {
                         progressNormalized = (float)cuttingProgress / cuttingRecipeSo.cuttingProgressMax,
-                    }); 
+                    });
                 }
             }
         }
@@ -55,8 +59,8 @@ public class CuttingCounter : BaseCounter, IHasProgress
         {
             cuttingProgress++;
 
-            onCut?.Invoke(this,EventArgs.Empty);
-            onAnyCut?.Invoke(this,EventArgs.Empty);
+            onCut?.Invoke(this, EventArgs.Empty);
+            onAnyCut?.Invoke(this, EventArgs.Empty);
 
             CuttingRecipeSo cuttingRecipeSo = GetCuttingRecipeSoWithInput(GetKitchenObject().GetKitchenObjectSo());
 
