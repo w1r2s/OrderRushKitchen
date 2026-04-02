@@ -28,11 +28,11 @@ public class DeliveryManager : MonoBehaviour
     }
     private void Update()
     {
-        spawnRecipeTimer -= Time.deltaTime;
-        if (spawnRecipeTimer <= 0)
+        spawnRecipeTimer += Time.deltaTime;
+        if (spawnRecipeTimer > spawnRecipeTimerMax)
         {
-            spawnRecipeTimer = spawnRecipeTimerMax;
-            if (waitingRecipeSoLitst.Count < waitingRecipeMax)
+            spawnRecipeTimer = 0;
+            if (GameManager.Instance.IsGamePlaying() && waitingRecipeSoLitst.Count < waitingRecipeMax)
             {
                 RecipeSo waitingRecipeSo = recipeListSo.recipeSoList[UnityEngine.Random.Range(0, recipeListSo.recipeSoList.Count)];
                 waitingRecipeSoLitst.Add(waitingRecipeSo);
@@ -47,7 +47,7 @@ public class DeliveryManager : MonoBehaviour
         for (int i = 0; i < waitingRecipeSoLitst.Count; i++)
         {
             RecipeSo waitingRecipeSo = waitingRecipeSoLitst[i];
-            if(waitingRecipeSo.kitchenObjectSoList.Count == plateKitchenObject.GetKitchenObjectSoList().Count)
+            if (waitingRecipeSo.kitchenObjectSoList.Count == plateKitchenObject.GetKitchenObjectSoList().Count)
             {
                 bool plateMatch = true;
                 foreach (KitchenObjectSo recipeKitchenObjectSo in waitingRecipeSo.kitchenObjectSoList)
@@ -55,18 +55,18 @@ public class DeliveryManager : MonoBehaviour
                     bool found = false;
                     foreach (KitchenObjectSo plateKitchenObjectSo in plateKitchenObject.GetKitchenObjectSoList())
                     {
-                        if(plateKitchenObjectSo == recipeKitchenObjectSo)
+                        if (plateKitchenObjectSo == recipeKitchenObjectSo)
                         {
                             found = true;
                             break;
                         }
                     }
-                    if(!found)
+                    if (!found)
                     {
                         plateMatch = false;
                     }
                 }
-                if(plateMatch)
+                if (plateMatch)
                 {
                     successfulRecipes++;
 

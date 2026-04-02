@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,6 +32,8 @@ public class OptionsUI : MonoBehaviour
 
     [SerializeField] private Transform pressToRebindKeyTransform;
 
+    private Action onCloseButtonAction;
+
 
     private void Awake()
     {
@@ -50,6 +53,7 @@ public class OptionsUI : MonoBehaviour
         closeButton.onClick.AddListener(() =>
         {
             Hide();
+            onCloseButtonAction();
         });
 
         moveUpButton.onClick.AddListener(() =>
@@ -107,9 +111,13 @@ public class OptionsUI : MonoBehaviour
         altInteractText.text = InputManager.Instance.GetKeyBindingText(InputManager.KeyBinding.Alt_Interact);
         pauseText.text = InputManager.Instance.GetKeyBindingText(InputManager.KeyBinding.Pause);
     }
-    public void Show()
+    public void Show(Action onCloseButtonAction)
     {
+        this.onCloseButtonAction = onCloseButtonAction;
+
+
         gameObject.SetActive(true);
+        soundEffectsButton.Select();
     }
     private void Hide()
     {
