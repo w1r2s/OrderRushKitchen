@@ -1,10 +1,12 @@
+using Assets.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class DeliveryResultUI : MonoBehaviour
 {
-
+    private IDeliveryService _deliveryService;
     [SerializeField] private Image backgroundImage;
     [SerializeField] private Image iconImage;
     [SerializeField] private TextMeshProUGUI messageText;
@@ -22,10 +24,16 @@ public class DeliveryResultUI : MonoBehaviour
     {
         animator = GetComponent<Animator>();
     }
+
+    [Inject]
+    private void Construct(IDeliveryService deliveryService)
+    {
+        _deliveryService = deliveryService;
+    }
     private void Start()
     {
-        DeliveryManager.Instance.OnRecipeSuccess += DeliveryManager_OnRecipeSuccess;
-        DeliveryManager.Instance.OnRecipeFailed += DeliveryManager_OnRecipeFailed;
+        _deliveryService.OnRecipeSuccess += DeliveryManager_OnRecipeSuccess;
+        _deliveryService.OnRecipeFailed += DeliveryManager_OnRecipeFailed;
 
         gameObject.SetActive(false);
 

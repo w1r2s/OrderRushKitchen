@@ -1,14 +1,17 @@
+using Assets.Scripts.Managers.Sound;
 using System;
 using UnityEngine;
+using Zenject;
 
 public class CuttingCounter : BaseCounter, IHasProgress
 {
     [SerializeField] private CuttingRecipeSo[] cuttingRecipeSoArray;
+    private IAudioService _audioService;
 
-    public static event EventHandler onAnyCut;
-    new public static void ResetStaticData()
+    [Inject]
+    private void Construct(IAudioService audioService)
     {
-        onAnyCut = null;
+        _audioService = audioService;
     }
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
     public event EventHandler onCut;
@@ -60,9 +63,10 @@ public class CuttingCounter : BaseCounter, IHasProgress
             cuttingProgress++;
 
             onCut?.Invoke(this, EventArgs.Empty);
-            onAnyCut?.Invoke(this, EventArgs.Empty);
+            float volume = 1f;
+            _audioService.PlayCut(transform.position, volume);
 
-            CuttingRecipeSo cuttingRecipeSo = GetCuttingRecipeSoWithInput(GetKitchenObject().GetKitchenObjectSo());
+              CuttingRecipeSo cuttingRecipeSo = GetCuttingRecipeSoWithInput(GetKitchenObject().GetKitchenObjectSo());
 
             OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
             {

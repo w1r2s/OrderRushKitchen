@@ -1,7 +1,10 @@
+using Assets.Scripts;
 using UnityEngine;
+using Zenject;
 
 public class DeliveryManagerUI : MonoBehaviour
 {
+    private IDeliveryService _deliveryService;
     [SerializeField] private Transform container;
     [SerializeField] private Transform recipeTemplate;
 
@@ -10,10 +13,16 @@ public class DeliveryManagerUI : MonoBehaviour
         recipeTemplate.gameObject.SetActive(false);
 
     }
+
+    [Inject]
+    private void Construct(IDeliveryService deliveryService)
+    {
+        _deliveryService = deliveryService;
+    }
     private void Start()
     {
-        DeliveryManager.Instance.OnRecipeSpawned += DeliveryManager_OnRecipeSpawned;
-        DeliveryManager.Instance.OnRecipeCompleted += DeliveryManager_OnRecipeCompleted;
+        _deliveryService.OnRecipeSpawned += DeliveryManager_OnRecipeSpawned;
+        _deliveryService.OnRecipeCompleted += DeliveryManager_OnRecipeCompleted;
 
         UpdateVisual();
     }
@@ -34,7 +43,7 @@ public class DeliveryManagerUI : MonoBehaviour
                 continue;
             Destroy(child.gameObject);
         }
-        foreach (var recipeSo in DeliveryManager.Instance.GetWaitingRecipeSoLits())
+        foreach (var recipeSo in _deliveryService.GetWaitingRecipes())
         {
             Transform recipeTransform = Instantiate(recipeTemplate, container);
             recipeTransform.gameObject.SetActive(true);

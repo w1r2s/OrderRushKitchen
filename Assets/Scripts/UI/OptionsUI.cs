@@ -1,7 +1,11 @@
+using Assets.Scripts.Managers.Game;
+using Assets.Scripts.Managers.Input;
+using Assets.Scripts.Managers.Sound;
 using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class OptionsUI : MonoBehaviour
 {
@@ -33,21 +37,31 @@ public class OptionsUI : MonoBehaviour
     [SerializeField] private Transform pressToRebindKeyTransform;
 
     private Action onCloseButtonAction;
+    private IGameService _gameService;
+    private IInputService _inputService;
+    private IAudioService _audioService;
+    private IMusicService _musicService;
 
-
+    [Inject]
+    private void Construct(IGameService gameService, IInputService inputService, IAudioService audioService,IMusicService musicService)
+    {
+        _gameService = gameService;
+        _inputService = inputService;
+        _audioService = audioService;
+        _musicService = musicService;
+    }
     private void Awake()
     {
-        Instance = this;
 
         soundEffectsButton.onClick.AddListener(() =>
         {
-            SoundManager.Instance.ChangeVolume();
+            _audioService.ChangeVolume();
             UpdateVisual();
         });
 
         musicButton.onClick.AddListener(() =>
         {
-            MusicManager.Instance.ChangeVolume();
+            _musicService.ChangeVolume();
             UpdateVisual();
         });
         closeButton.onClick.AddListener(() =>
@@ -58,36 +72,36 @@ public class OptionsUI : MonoBehaviour
 
         moveUpButton.onClick.AddListener(() =>
         {
-            RebindBinding(InputManager.KeyBinding.Move_Up);
+            RebindBinding(InputKeyBinding.Move_Up);
         });
         moveDownButton.onClick.AddListener(() =>
         {
-            RebindBinding(InputManager.KeyBinding.Move_Down);
+            RebindBinding(InputKeyBinding.Move_Down);
         });
         moveLeftButton.onClick.AddListener(() =>
         {
-            RebindBinding(InputManager.KeyBinding.Move_Left);
+            RebindBinding(InputKeyBinding.Move_Left);
         });
         moveRightButton.onClick.AddListener(() =>
         {
-            RebindBinding(InputManager.KeyBinding.Move_Right);
+            RebindBinding(InputKeyBinding.Move_Right);
         });
         interactButton.onClick.AddListener(() =>
         {
-            RebindBinding(InputManager.KeyBinding.Interact);
+            RebindBinding(InputKeyBinding.Interact);
         });
         altInteractButton.onClick.AddListener(() =>
         {
-            RebindBinding(InputManager.KeyBinding.Alt_Interact);
+            RebindBinding(InputKeyBinding.Alt_Interact);
         });
         pauseButton.onClick.AddListener(() =>
         {
-            RebindBinding(InputManager.KeyBinding.Pause);
+            RebindBinding(InputKeyBinding.Pause);
         });
     }
     private void Start()
     {
-        GameManager.Instance.OnGameUnpaused += GameManager_OnGameUnpaused;
+        _gameService.OnGameUnpaused += GameManager_OnGameUnpaused;
         UpdateVisual();
         Hide();
         HidePressToRebindKey();
@@ -100,16 +114,16 @@ public class OptionsUI : MonoBehaviour
 
     private void UpdateVisual()
     {
-        soundEffectText.text = $"Sound Effects: {Mathf.Round(SoundManager.Instance.GetVolume() * 10f)}";
-        musicText.text = "Music: " + Mathf.Round(MusicManager.Instance.GetVolume() * 10f);
+        soundEffectText.text = $"Sound Effects: {Mathf.Round(_audioService.GetVolume() * 10f)}";
+        musicText.text = "Music: " + Mathf.Round(_musicService.GetVolume() * 10f);
 
-        moveUpText.text = InputManager.Instance.GetKeyBindingText(InputManager.KeyBinding.Move_Up);
-        moveDownText.text = InputManager.Instance.GetKeyBindingText(InputManager.KeyBinding.Move_Down);
-        moveLeftText.text = InputManager.Instance.GetKeyBindingText(InputManager.KeyBinding.Move_Left);
-        moveRightText.text = InputManager.Instance.GetKeyBindingText(InputManager.KeyBinding.Move_Right);
-        interactText.text = InputManager.Instance.GetKeyBindingText(InputManager.KeyBinding.Interact);
-        altInteractText.text = InputManager.Instance.GetKeyBindingText(InputManager.KeyBinding.Alt_Interact);
-        pauseText.text = InputManager.Instance.GetKeyBindingText(InputManager.KeyBinding.Pause);
+        moveUpText.text = _inputService.GetKeyBindingText(InputKeyBinding.Move_Up);
+        moveDownText.text = _inputService.GetKeyBindingText(InputKeyBinding.Move_Down);
+        moveLeftText.text = _inputService.GetKeyBindingText(InputKeyBinding.Move_Left);
+        moveRightText.text = _inputService.GetKeyBindingText(InputKeyBinding.Move_Right);
+        interactText.text = _inputService.GetKeyBindingText(InputKeyBinding.Interact);
+        altInteractText.text = _inputService.GetKeyBindingText(InputKeyBinding.Alt_Interact);
+        pauseText.text = _inputService.GetKeyBindingText(InputKeyBinding.Pause);
     }
     public void Show(Action onCloseButtonAction)
     {
@@ -132,10 +146,10 @@ public class OptionsUI : MonoBehaviour
     {
         pressToRebindKeyTransform.gameObject.SetActive(false);
     }
-    private void RebindBinding(InputManager.KeyBinding binding)
+    private void RebindBinding(InputKeyBinding binding)
     {
         ShowPressToRebindKey();
-        InputManager.Instance.RebindKeyBinding(binding, () =>
+        _inputService.RebindKeyBinding(binding, () =>
         {
             HidePressToRebindKey();
             UpdateVisual();

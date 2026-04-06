@@ -54,7 +54,7 @@ public class KitchenObject : MonoBehaviour
             return false;
         }
     }
-
+    //TODO: убрать static
     public static KitchenObject SpawnKitchenObject(KitchenObjectSo kitchenObjectSo, IKitchenObjectParent kitchenObjectParent)
     {
         Transform kitchenObjectTransform = Instantiate(kitchenObjectSo.prefab);

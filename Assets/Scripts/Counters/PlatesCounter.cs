@@ -1,9 +1,12 @@
+using Assets.Scripts;
+using Assets.Scripts.Managers.Game;
 using System;
 using UnityEngine;
+using Zenject;
 
 public class PlatesCounter : BaseCounter
 {
-
+    private IGameService _gameService;
     public event EventHandler onPlateSpawned;
     public event EventHandler onPlateRemoved;
 
@@ -15,6 +18,11 @@ public class PlatesCounter : BaseCounter
     private int platesSpawnedAmount;
     private int platesSpawnedAmountMax = 4;
 
+    [Inject]
+    private void Construct(IGameService gameService)
+    {
+        _gameService = gameService;
+    }
     private void Update()
     {
         spawnPlateTimer += Time.deltaTime;
@@ -22,7 +30,7 @@ public class PlatesCounter : BaseCounter
         {
             spawnPlateTimer = 0f;
 
-            if(GameManager.Instance.IsGamePlaying() && platesSpawnedAmount < platesSpawnedAmountMax)
+            if(_gameService.IsGamePlaying() && platesSpawnedAmount < platesSpawnedAmountMax)
             {
                 platesSpawnedAmount++;
                 onPlateSpawned?.Invoke(this, EventArgs.Empty);
