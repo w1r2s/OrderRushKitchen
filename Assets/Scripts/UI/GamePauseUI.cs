@@ -9,12 +9,15 @@ public class GamePauseUI : MonoBehaviour
     [SerializeField] private Button mainMenuButton;
     [SerializeField] private Button optionsButton;
 
+
+    private OptionsUI _optionsUI;
     private IGameService _gameService;
 
     [Inject]
-    private void Construct(IGameService gameService)
+    private void Construct(IGameService gameService, OptionsUI optionsUI)
     {
         _gameService = gameService;
+        _optionsUI = optionsUI;
     }
     private void Start()
     {
@@ -31,8 +34,7 @@ public class GamePauseUI : MonoBehaviour
         optionsButton.onClick.AddListener(() =>
         {
             Hide();
-            //TODO: ”брать OptionsUI в DI
-            OptionsUI.Instance.Show(Show);
+            _optionsUI.Show(Show);
         });
         Hide();
     }

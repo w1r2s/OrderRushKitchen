@@ -1,6 +1,8 @@
 ﻿using Assets.Scripts.Managers.Game;
+using Assets.Scripts.Managers.Sound;
 using System;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
 
 namespace Assets.Scripts
 {
@@ -14,6 +16,7 @@ namespace Assets.Scripts
 
         private readonly RecipeListSo _recipeListSo;
         private readonly IGameService _gameService;
+        private readonly IAudioService _audioService;
 
         private List<RecipeSo> _waitingRecipes;
 
@@ -21,12 +24,14 @@ namespace Assets.Scripts
         private float spawnTimerMax = 4f;
         private int waitingRecipeMax = 4;
         private int successfulRecipes;
+        private float volume = 1f;
 
-        public DeliveryService(RecipeListSo recipeListSo, IGameService gameService)
+        public DeliveryService(RecipeListSo recipeListSo, IGameService gameService, IAudioService audioService)
         {
             _gameService = gameService;
             _recipeListSo = recipeListSo;
             _waitingRecipes = new List<RecipeSo>();
+            _audioService = audioService;
         }
         public void Tick(float deltaTime)
         {
@@ -77,11 +82,14 @@ namespace Assets.Scripts
                         _waitingRecipes.RemoveAt(i);
                         OnRecipeCompleted?.Invoke(this, EventArgs.Empty);
                         OnRecipeSuccess?.Invoke(this, EventArgs.Empty);
+                      
+                        _audioService.PlayRecipeSuccess(plateKitchenObject.transform.position, volume);
                         return;
                     }
                 }
             }
             OnRecipeFailed?.Invoke(this, EventArgs.Empty);
+            _audioService.PlayRecipeFail(plateKitchenObject.transform.position, volume);
         }
 
         public List<RecipeSo> GetWaitingRecipes()

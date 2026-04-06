@@ -9,7 +9,6 @@ using Zenject;
 
 public class OptionsUI : MonoBehaviour
 {
-    public static OptionsUI Instance { get; private set; }
 
     [SerializeField] private Button soundEffectsButton;
     [SerializeField] private Button musicButton;

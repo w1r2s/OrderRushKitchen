@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
 
 namespace Assets.Scripts.Managers.Sound
 {
@@ -25,7 +23,7 @@ namespace Assets.Scripts.Managers.Sound
         {
             PlaySound(audioClipArray[Random.Range(0, audioClipArray.Length)], position, volume);
         }
-        public void PlayFootstep(Vector3 position, float volume)
+        public void PlayFootstep(Vector3 position, float volume = 1f)
         {
             PlaySound(_clips.footstep, position, volume);
         }
@@ -36,6 +34,14 @@ namespace Assets.Scripts.Managers.Sound
         public void PlayCut(Vector3 position, float volume = 1f)
         {
             PlaySound(_clips.chop, position, volume);
+        }
+        public void PlayDrop(Vector3 position, float volume = 1f)
+        {
+            PlaySound(_clips.objectDrop, position, volume);
+        }
+        public void PlayTrash(Vector3 position, float volume = 1f)
+        {
+            PlaySound(_clips.trash, position, volume);
         }
         public void ChangeVolume()
         {
@@ -49,6 +55,20 @@ namespace Assets.Scripts.Managers.Sound
         public float GetVolume()
         {
             return volume;
+        }
+
+        public void PlayRecipeSuccess(Vector3 position, float volume = 1f)
+        {
+            PlaySound(_clips.deliverySuccess, position, volume);
+        }
+
+        public void PlayRecipeFail(Vector3 position, float volume = 1f)
+        {
+            PlaySound(_clips.deliveryFailed, position, volume);
+        }
+        public void PlayPickUp(Vector3 position, float volume = 1f)
+        {
+            PlaySound(_clips.objectPickup, position, volume);
         }
     }
 }

@@ -1,5 +1,6 @@
 using Assets.Scripts.Managers.Game;
 using Assets.Scripts.Managers.Input;
+using Assets.Scripts.Managers.Sound;
 using System;
 using UnityEngine;
 using Zenject;
@@ -21,6 +22,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private IGameService _gameService;
     private IInputService _inputService;
+    private IAudioService _audioService;
 
     private Vector3 lastInteraction;
     private bool isWalking;
@@ -29,11 +31,11 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     private KitchenObject kitchenObject;
 
     [Inject]
-    private void Construct(IGameService gameService, IInputService inputManager)
+    private void Construct(IGameService gameService, IInputService inputManager, IAudioService audioService)
     {
         _gameService = gameService;
         _inputService = inputManager;
-
+        _audioService = audioService;
     }
 
     private void OnEnable()
@@ -185,6 +187,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         if (kitchenObject != null)
         {
             onPickedSomething?.Invoke(this, EventArgs.Empty);
+            _audioService.PlayPickUp(transform.position);
         }
 
     }

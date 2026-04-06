@@ -35,6 +35,8 @@ namespace Assets.Scripts.Managers.Installer
             Container.Bind<IMusicStorage>().To<PlayerPrefsMusicStorage>().AsSingle();
             Container.Bind<IMusicService>().To<MusicService>().AsSingle().NonLazy();
 
+            Container.Bind<OptionsUI>().FromComponentInHierarchy().AsSingle();
+
         }
     }
 }

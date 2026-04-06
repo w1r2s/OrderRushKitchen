@@ -35,6 +35,8 @@ namespace Assets.Scripts.Managers.Input
             _actions.Player.InteractAlternate.performed -= InteractAlternate_performed;
             _actions.Player.Pause.performed -= Pause_performed;
 
+            _actions.Disable();
+
             _actions.Dispose();
         }
         private void Pause_performed(InputAction.CallbackContext obj)
