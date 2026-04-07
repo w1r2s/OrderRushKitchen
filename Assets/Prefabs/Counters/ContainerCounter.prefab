@@ -83,7 +83,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 177adc0708ff3ad429be5a95994b5f15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ContainerCounter
-  counterTopPoint: {fileID: 3968550835614900916}
+  holdPoint: {fileID: 3968550835614900916}
   kitchenObjectSo: {fileID: 11400000, guid: 6206f3345e3eac24f99f38de84735cd8, type: 2}
 --- !u!4 &3968550835614900916 stripped
 Transform:

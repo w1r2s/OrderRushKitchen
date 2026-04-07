@@ -18,18 +18,18 @@ namespace Assets.Scripts.Managers.Sound
 
         private void Start()
         {
-            foreach (var counter in counters)
-            {
-                counter.OnObjectPlaced += OnObjectPlaced;
-            }
+            //foreach (var counter in counters)
+            //{
+            //    counter.OnObjectPlaced += OnObjectPlaced;
+            //}
         }
 
         private void OnDestroy()
         {
-            foreach (var counter in counters)
-            {
-                counter.OnObjectPlaced -= OnObjectPlaced;
-            }
+            //foreach (var counter in counters)
+            //{
+            //    counter.OnObjectPlaced -= OnObjectPlaced;
+            //}
         }
 
         private void OnObjectPlaced(object sender, EventArgs e)

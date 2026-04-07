@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d1ee5fb1a71997429b51481cf16e227, type: 3}
-  m_Name: _RecipeListSo
+  m_Name: _ProcessRecipes
   m_EditorClassIdentifier: Assembly-CSharp::RecipeListSo
-  recipeSoList:
-  - {fileID: 11400000, guid: abbd7b25250de3d4080bd4662b0b56d2, type: 2}
-  - {fileID: 11400000, guid: c6e2e9b4c2440e447ae7475fadca60e0, type: 2}
-  - {fileID: 11400000, guid: 9704869125e28ee42ae49d2592db4a39, type: 2}
-  - {fileID: 11400000, guid: 5b05dcd0c618eb04c893204e01387de3, type: 2}
+  recipes:
+  - {fileID: 11400000, guid: e0d7e912d814d704fa50cbc7987c2c9e, type: 2}
+  - {fileID: 11400000, guid: a35aaf2ff65427148b2649e85163cb2a, type: 2}
+  - {fileID: 11400000, guid: 74ed4804b3f9a7e478fda9fa198188d4, type: 2}
+  - {fileID: 11400000, guid: 6ad15e09c3bf92744b8837de19496a64, type: 2}
+  - {fileID: 11400000, guid: 7d9dfd3a111399e4093d353e1ceac99a, type: 2}

@@ -1,4 +1,3 @@
-using Assets.Scripts;
 using Assets.Scripts.Managers.Game;
 using System;
 using UnityEngine;
@@ -26,11 +25,11 @@ public class PlatesCounter : BaseCounter
     private void Update()
     {
         spawnPlateTimer += Time.deltaTime;
-        if(spawnPlateTimer > spawnPlateTimerMax)
+        if (spawnPlateTimer > spawnPlateTimerMax)
         {
             spawnPlateTimer = 0f;
 
-            if(_gameService.IsGamePlaying() && platesSpawnedAmount < platesSpawnedAmountMax)
+            if (_gameService.IsGamePlaying() && platesSpawnedAmount < platesSpawnedAmountMax)
             {
                 platesSpawnedAmount++;
                 onPlateSpawned?.Invoke(this, EventArgs.Empty);
@@ -39,14 +38,15 @@ public class PlatesCounter : BaseCounter
     }
     public override void Interact(Player player)
     {
-        if(!player.HasKitchenObject())
+        if (!player.HasObject)
         {
-            if(platesSpawnedAmount > 0)
+            if (platesSpawnedAmount > 0)
             {
                 platesSpawnedAmount--;
-                KitchenObject.SpawnKitchenObject(plateKitchenObjectSo, player);
 
-                onPlateRemoved?.Invoke(this,EventArgs.Empty);
+                player.SpawnAndSet(plateKitchenObjectSo.prefab);
+
+                onPlateRemoved?.Invoke(this, EventArgs.Empty);
             }
         }
 

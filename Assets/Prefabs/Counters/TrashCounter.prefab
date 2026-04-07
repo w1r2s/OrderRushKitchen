@@ -269,4 +269,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a27693d0bccad684f984d79339aa3ea8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TrashCounter
-  counterTopPoint: {fileID: 6140840668575983242}
+  holdPoint: {fileID: 6140840668575983242}

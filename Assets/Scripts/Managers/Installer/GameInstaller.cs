@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Managers.Game;
 using Assets.Scripts.Managers.Input;
 using Assets.Scripts.Managers.Sound;
+using Assets.Scripts.ScriptableObjects;
 using UnityEngine;
 using Zenject;
 
@@ -8,14 +9,15 @@ namespace Assets.Scripts.Managers.Installer
 {
     public class GameInstaller : MonoInstaller
     {
-        [SerializeField] private RecipeListSo recipeListSo;
+        [SerializeField] private ProcessRecipeListSo processRecipeListSo;
+        [SerializeField] private DishRecipeListSo dishRecipeListSo;
         [SerializeField] private AudioClipRefsSo audioClipRefsSo;
         [SerializeField] private MusicManager musicManager;
 
         public override void InstallBindings()
         {
 
-            Container.BindInstance(recipeListSo);
+          //  Container.BindInstance(processRecipeListSo.recipes);
             Container.BindInstance(audioClipRefsSo);
             Container.BindInstance(musicManager);
 
@@ -36,6 +38,12 @@ namespace Assets.Scripts.Managers.Installer
             Container.Bind<IMusicService>().To<MusicService>().AsSingle().NonLazy();
 
             Container.Bind<OptionsUI>().FromComponentInHierarchy().AsSingle();
+
+            // Process recipes
+            Container.Bind<RecipeDatabase>().AsSingle().WithArguments(processRecipeListSo.recipes);
+
+            // Dish recipes
+            Container.Bind<DishRecipeDatabase>().AsSingle().WithArguments(dishRecipeListSo.recipes);
 
         }
     }

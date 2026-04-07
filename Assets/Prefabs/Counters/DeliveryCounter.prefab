@@ -733,7 +733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d57626ac3f60f404fb2e2ae8aace59dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeliveryCounter
-  counterTopPoint: {fileID: 2364862518483459130}
+  holdPoint: {fileID: 2364862518483459130}
 --- !u!4 &2364862518483459130 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4022708050719910819, guid: d8d3f794fbe866147b6198d16b7562f7, type: 3}

@@ -13,21 +13,21 @@ public class DeliveryManagerSingleUI : MonoBehaviour
     {
         iconTemplate.gameObject.SetActive(false);
     }
-    public void SetRecipeSo(RecipeSo recipeSo)
+    public void SetRecipeSo(ProcessRecipeSo recipeSo)
     {
-        recipeNameText.text = recipeSo.recipeName;
+        //recipeNameText.text = recipeSo.recipeName;
 
-        foreach (Transform child in iconContainer)
-        {
-            if (child == iconTemplate)
-                continue;
-            Destroy(child.gameObject);
-        }
-        foreach (KitchenObjectSo kitchenObjectSo in recipeSo.kitchenObjectSoList)
-        {
-            Transform iconTransform = Instantiate(iconTemplate, iconContainer);
-            iconTransform.gameObject.SetActive(true);
-            iconTransform.GetComponent<Image>().sprite = kitchenObjectSo.sprite;
-        }
+        //foreach (Transform child in iconContainer)
+        //{
+        //    if (child == iconTemplate)
+        //        continue;
+        //    Destroy(child.gameObject);
+        //}
+        //foreach (KitchenObjectSo kitchenObjectSo in recipeSo.kitchenObjectSoList)
+        //{
+        //    Transform iconTransform = Instantiate(iconTemplate, iconContainer);
+        //    iconTransform.gameObject.SetActive(true);
+        //    iconTransform.GetComponent<Image>().sprite = kitchenObjectSo.sprite;
+        //}
     }
 }

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ce1869e02e2ae7439954a5625ee3a8c, type: 3}
   m_Name: MeatUncooked
   m_EditorClassIdentifier: Assembly-CSharp::KitchenObjectSo
-  prefab: {fileID: 7853379213395739836, guid: 9b5736f290df616468bf9dab45d269ad, type: 3}
+  prefab: {fileID: -6315440300819816411, guid: 9b5736f290df616468bf9dab45d269ad, type: 3}
   sprite: {fileID: 21300000, guid: aa1bacc24dde76e47b2ec0dd4e82385b, type: 3}
   objectName: Meat Uncooked

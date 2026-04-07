@@ -1,5 +1,4 @@
 using Assets.Scripts.Managers.Sound;
-using System;
 using Zenject;
 
 public class TrashCounter : BaseCounter
@@ -13,9 +12,12 @@ public class TrashCounter : BaseCounter
     }
     public override void Interact(Player player)
     {
-        if (player.HasKitchenObject())
+        if (player.HasObject)
         {
-            player.GetKitchenObject().DestroySelf();
+            var obj = player.GetObject();
+            player.RemoveObject();
+            Destroy(obj.gameObject);
+
             _audioService.PlayTrash(transform.position);
         }
     }

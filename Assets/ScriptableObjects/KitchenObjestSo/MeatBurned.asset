@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ce1869e02e2ae7439954a5625ee3a8c, type: 3}
   m_Name: MeatBurned
   m_EditorClassIdentifier: Assembly-CSharp::KitchenObjectSo
-  prefab: {fileID: 7853379213395739836, guid: d3d79d96878f475479fb19d47ffc17bd, type: 3}
+  prefab: {fileID: -6315440300819816411, guid: d3d79d96878f475479fb19d47ffc17bd, type: 3}
   sprite: {fileID: 21300000, guid: 713ea9afa60dd6e4ebf6503a33e8cc99, type: 3}
   objectName: Meat Burned

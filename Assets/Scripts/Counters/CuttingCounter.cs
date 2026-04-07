@@ -1,3 +1,4 @@
+using Assets.Scripts;
 using Assets.Scripts.Managers.Sound;
 using System;
 using UnityEngine;
@@ -5,106 +6,102 @@ using Zenject;
 
 public class CuttingCounter : BaseCounter, IHasProgress
 {
-    [SerializeField] private CuttingRecipeSo[] cuttingRecipeSoArray;
+    [SerializeField] private CuttingRecipeSo[] cuttingRecipes;
     private IAudioService _audioService;
+    private RecipeDatabase _recipes;
 
-    [Inject]
-    private void Construct(IAudioService audioService)
-    {
-        _audioService = audioService;
-    }
-    public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
-    public event EventHandler onCut;
 
     private int cuttingProgress;
+
+    public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
+    public event EventHandler OnCut;
+
+    [Inject]
+    private void Construct(IAudioService audioService, RecipeDatabase recipes)
+    {
+        _audioService = audioService;
+        _recipes = recipes;
+
+    }
     public override void Interact(Player player)
     {
-        if (!HasKitchenObject())
+        // попробовать положить на стол
+        if (!HasObject)
         {
-            if (player.HasKitchenObject())
-            {
-                if (HasRecipeWithInput(player.GetKitchenObject().GetKitchenObjectSo()))
-                {
-                    player.GetKitchenObject().SetKitchenObjectParent(this);
-                    cuttingProgress = 0;
+            if (!player.HasObject)
+                return;
 
-                    CuttingRecipeSo cuttingRecipeSo = GetCuttingRecipeSoWithInput(GetKitchenObject().GetKitchenObjectSo());
+            var playerObject = player.GetObject();
 
-                    OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
-                    {
-                        progressNormalized = (float)cuttingProgress / cuttingRecipeSo.cuttingProgressMax,
-                    });
-                }
-            }
+            if (!_recipes.TryGetRecipe<CuttingRecipeSo>(RecipeType.Cutting, playerObject.KitchenObjectSo, out var recipe))
+                return;
+
+            var obj = player.RemoveObject();
+            SetObject(obj);
+
+            cuttingProgress = 0;
+            UpdateProgress(recipe);
+            return;
+
         }
-        else
+        // забрать объект со стола
+        if (!player.HasObject)
         {
-            if (!player.HasKitchenObject())
+            var obj = RemoveObject();
+            player.SetObject(obj);
+            return;
+        }
+        // попробовать положить на тарелку
+        var playerObj = player.GetObject();
+        var counterObj = GetObject();
+        if (playerObj.TryGetPlate(out var plate))
+        {
+            if (plate.TryAddIngredient(counterObj.KitchenObjectSo))
             {
-                GetKitchenObject().SetKitchenObjectParent(player);
-            }
-            else
-            {
-                if (player.GetKitchenObject().TryGetPlate(out var plateKitchenObject))
-                {
-                    if (plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSo()))
-                    {
-                        GetKitchenObject().DestroySelf();
-                    }
-                }
+                RemoveAndDestroy();
             }
         }
 
     }
     public override void InteractAlternate(Player player)
     {
-        if (HasKitchenObject() && HasRecipeWithInput(GetKitchenObject().GetKitchenObjectSo()))
+        if (!HasObject)
+            return;
+        var counterObj = GetObject();
+
+        if (!_recipes.TryGetRecipe<CuttingRecipeSo>(RecipeType.Cutting ,counterObj.KitchenObjectSo, out var recipe))
+            return;
+
+        cuttingProgress++;
+        OnCut?.Invoke(this, EventArgs.Empty);
+        _audioService.PlayCut(transform.position);
+        UpdateProgress(recipe);
+
+        if (cuttingProgress >= recipe.cuttingProgressMax)
         {
-            cuttingProgress++;
-
-            onCut?.Invoke(this, EventArgs.Empty);
-            float volume = 1f;
-            _audioService.PlayCut(transform.position, volume);
-
-              CuttingRecipeSo cuttingRecipeSo = GetCuttingRecipeSoWithInput(GetKitchenObject().GetKitchenObjectSo());
-
-            OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
-            {
-                progressNormalized = (float)cuttingProgress / cuttingRecipeSo.cuttingProgressMax,
-            });
-
-            if (cuttingProgress >= cuttingRecipeSo.cuttingProgressMax)
-            {
-                KitchenObjectSo outputKitchenObjectSo = GetOutputForInput(GetKitchenObject().GetKitchenObjectSo());
-                GetKitchenObject().DestroySelf();
-
-                KitchenObject.SpawnKitchenObject(outputKitchenObjectSo, this);
-            }
+            CompleteCut(recipe);
         }
     }
-    private KitchenObjectSo GetOutputForInput(KitchenObjectSo kitchenObjectSo)
+
+    private void UpdateProgress(CuttingRecipeSo recipe)
     {
-        CuttingRecipeSo cuttingRecipeSo = GetCuttingRecipeSoWithInput(kitchenObjectSo);
-        if (cuttingRecipeSo != null)
+        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
         {
-            return cuttingRecipeSo.output;
-        }
-        return null;
+            progressNormalized = (float)cuttingProgress / recipe.cuttingProgressMax
+        });
     }
-    private bool HasRecipeWithInput(KitchenObjectSo kitchenObjectSo)
+    private void RemoveAndDestroy()
     {
-        CuttingRecipeSo cuttingRecipeSo = GetCuttingRecipeSoWithInput(kitchenObjectSo);
-        return cuttingRecipeSo != null;
-    }
-    private CuttingRecipeSo GetCuttingRecipeSoWithInput(KitchenObjectSo kitchenObjectSo)
-    {
-        foreach (var recipeSo in cuttingRecipeSoArray)
+        var obj = RemoveObject();
+        if (obj != null)
         {
-            if (recipeSo.input == kitchenObjectSo)
-            {
-                return recipeSo;
-            }
+            Destroy(obj.gameObject);
         }
-        return null;
+    }
+    private void CompleteCut(CuttingRecipeSo recipe)
+    {
+        RemoveAndDestroy();
+        KitchenObject newObj = Instantiate(recipe.output.prefab);
+        SetObject(newObj);
     }
 }

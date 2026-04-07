@@ -11,6 +11,6 @@ public interface IDeliveryService
     void Tick(float deltaTime);
     void DeliverRecipe(PlateKitchenObject plateKitchenObject);
 
-    List<RecipeSo> GetWaitingRecipes();
+    List<ProcessRecipeSo> GetWaitingRecipes();
     int GetSuccessfulRecipesAmount();
 }

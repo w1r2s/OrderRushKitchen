@@ -8,9 +8,9 @@ public class ContainerCounter : BaseCounter
     public event EventHandler OnPlayerGrabbedObject;
     public override void Interact(Player player)
     {
-        if (!player.HasKitchenObject())
+        if (!player.HasObject)
         {
-            KitchenObject.SpawnKitchenObject(kitchenObjectSo, player);
+            player.SpawnAndSet(kitchenObjectSo.prefab);
 
             OnPlayerGrabbedObject?.Invoke(this, EventArgs.Empty);
         }

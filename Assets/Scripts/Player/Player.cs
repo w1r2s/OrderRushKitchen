@@ -5,11 +5,11 @@ using System;
 using UnityEngine;
 using Zenject;
 
-public class Player : MonoBehaviour, IKitchenObjectParent
+public class Player : ObjectHolder
 {
-
-    public event EventHandler onPickedSomething;
+    public event EventHandler OnPickedSomething;
     public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
+
     public class OnSelectedCounterChangedEventArgs : EventArgs
     {
         public BaseCounter selectedCounter;
@@ -18,7 +18,6 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float rotationSpeed = 10f;
     [SerializeField] private LayerMask counterLayerMask;
-    [SerializeField] private Transform KitchenObjectHoldPoint;
 
     private IGameService _gameService;
     private IInputService _inputService;
@@ -28,28 +27,25 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     private bool isWalking;
 
     private BaseCounter selectedCounter;
-    private KitchenObject kitchenObject;
 
     [Inject]
-    private void Construct(IGameService gameService, IInputService inputManager, IAudioService audioService)
+    private void Construct(IGameService gameService, IInputService inputService, IAudioService audioService)
     {
         _gameService = gameService;
-        _inputService = inputManager;
+        _inputService = inputService;
         _audioService = audioService;
-    }
 
-    private void OnEnable()
-    {
         _inputService.OnInteractAction += OnInteract;
         _inputService.OnInteractAlternateAction += OnInteractAlternate;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
-        if (_inputService == null) return;
-
-        _inputService.OnInteractAction -= OnInteract;
-        _inputService.OnInteractAlternateAction -= OnInteractAlternate;
+        if (_inputService != null)
+        {
+            _inputService.OnInteractAction -= OnInteract;
+            _inputService.OnInteractAlternateAction -= OnInteractAlternate;
+        }
     }
 
     private void Update()
@@ -63,43 +59,30 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         HandleInteractions(input);
     }
 
+    private void OnInteract(object sender, EventArgs e)
+    {
+        if (!_gameService.IsGamePlaying())
+            return;
+
+        selectedCounter?.Interact(this);
+    }
+
     private void OnInteractAlternate(object sender, EventArgs e)
     {
         if (!_gameService.IsGamePlaying())
             return;
 
-        if (selectedCounter != null)
-        {
-            selectedCounter.InteractAlternate(this);
-        }
+        selectedCounter?.InteractAlternate(this);
     }
 
-    private void OnInteract(object sender, System.EventArgs e)
-    {
-        if (!_gameService.IsGamePlaying())
-            return;
-
-        if (selectedCounter != null)
-        {
-            selectedCounter.Interact(this);
-        }
-    }
-
-    public bool IsWalking()
-    {
-        return isWalking;
-    }
     private void HandleInteractions(Vector2 inputVector)
     {
-
-
         Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y);
 
         if (moveDir != Vector3.zero)
         {
             lastInteraction = moveDir;
         }
-
 
         float interactionDist = 2f;
 
@@ -121,23 +104,24 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         {
             SetSelectedCounter(null);
         }
-
     }
+
     private void HandleMovement(Vector2 inputVector)
     {
-
         Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y);
 
         float moveDist = moveSpeed * Time.deltaTime;
-        float playerRarius = .7f;
+        float playerRadius = .7f;
         float playerHeight = .7f;
 
-        bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRarius, moveDir, moveDist);
+        bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDir, moveDist);
 
         if (!canMove)
         {
             Vector3 moveDirX = new Vector3(moveDir.x, 0, 0).normalized;
-            canMove = moveDir.x != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRarius, moveDirX, moveDist);
+
+            canMove = moveDir.x != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirX, moveDist);
+
             if (canMove)
             {
                 moveDir = moveDirX;
@@ -145,17 +129,19 @@ public class Player : MonoBehaviour, IKitchenObjectParent
             else
             {
                 Vector3 moveDirY = new Vector3(0, 0, moveDir.z).normalized;
-                canMove = moveDir.z != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRarius, moveDirY, moveDist);
+
+                canMove = moveDir.z != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirY, moveDist);
+
                 if (canMove)
                 {
                     moveDir = moveDirY;
                 }
             }
         }
+
         if (canMove)
         {
             transform.position += moveDir * moveSpeed * Time.deltaTime;
-
         }
 
         isWalking = moveDir != Vector3.zero;
@@ -168,39 +154,27 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void SetSelectedCounter(BaseCounter selectedCounter)
     {
+        if (this.selectedCounter == selectedCounter)
+            return;
+
         this.selectedCounter = selectedCounter;
+
         OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs
         {
             selectedCounter = selectedCounter
         });
     }
 
-    public Transform GetKitchenObjectFollowTransform()
+    public override void SetObject(KitchenObject obj)
     {
-        return KitchenObjectHoldPoint;
-    }
+        base.SetObject(obj);
 
-    public void SetKitchenObjcet(KitchenObject kitchenObject)
-    {
-        this.kitchenObject = kitchenObject;
-
-        if (kitchenObject != null)
+        if (obj != null)
         {
-            onPickedSomething?.Invoke(this, EventArgs.Empty);
+            OnPickedSomething?.Invoke(this, EventArgs.Empty);
             _audioService.PlayPickUp(transform.position);
         }
+    }
 
-    }
-    public KitchenObject GetKitchenObject()
-    {
-        return kitchenObject;
-    }
-    public void ClearKitchenObject()
-    {
-        kitchenObject = null;
-    }
-    public bool HasKitchenObject()
-    {
-        return kitchenObject != null;
-    }
+    public bool IsWalking() => isWalking;
 }

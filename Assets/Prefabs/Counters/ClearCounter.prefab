@@ -273,5 +273,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 407c9d0e9f915ee429b14351fe97588f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClearCounter
-  kitchenObjectSo: {fileID: 11400000, guid: 6206f3345e3eac24f99f38de84735cd8, type: 2}
-  counterTopPoint: {fileID: 5329761118297494134}
+  holdPoint: {fileID: 5329761118297494134}

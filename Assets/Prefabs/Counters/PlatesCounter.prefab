@@ -194,7 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff547743e1fc1ee4e9e3d32e922e725b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlatesCounter
-  counterTopPoint: {fileID: 2507091470428774218}
+  holdPoint: {fileID: 2507091470428774218}
   plateKitchenObjectSo: {fileID: 11400000, guid: 34891a94f3c3af04b8179a420f4884bb, type: 2}
 --- !u!4 &2507091470428774218 stripped
 Transform:
