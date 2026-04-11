@@ -1,4 +1,4 @@
-﻿using Assets.Scripts;
+using Assets.Scripts;
 using System;
 using UnityEngine;
 using Zenject;
@@ -64,8 +64,7 @@ public class StoveCounter : BaseCounter, IHasProgress
                 return;
 
             fryingRecipeSo = recipe;
-            obj = player.RemoveObject();
-            SetObject(obj);
+            PlaceObjectFromPlayer(player);
 
             state = State.Frying;
             fryingTimer = 0;

@@ -37,7 +37,7 @@ public class PlateKitchenObject : KitchenObject
             return true;
         }
     }
-    public List<KitchenObjectSo> GetKitchenObjectSoList()
+    public IReadOnlyList<KitchenObjectSo> GetKitchenObjectSoList()
     {
         return kitchenObjectSoList;
     }

@@ -17,7 +17,6 @@ namespace Assets.Scripts.Managers.Installer
         public override void InstallBindings()
         {
 
-          //  Container.BindInstance(processRecipeListSo.recipes);
             Container.BindInstance(audioClipRefsSo);
             Container.BindInstance(musicManager);
 
@@ -36,6 +35,7 @@ namespace Assets.Scripts.Managers.Installer
 
             Container.Bind<IMusicStorage>().To<PlayerPrefsMusicStorage>().AsSingle();
             Container.Bind<IMusicService>().To<MusicService>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<MusicInitializer>().AsSingle();
 
             Container.Bind<OptionsUI>().FromComponentInHierarchy().AsSingle();
 
@@ -44,7 +44,6 @@ namespace Assets.Scripts.Managers.Installer
 
             // Dish recipes
             Container.Bind<DishRecipeDatabase>().AsSingle().WithArguments(dishRecipeListSo.recipes);
-
         }
     }
 }

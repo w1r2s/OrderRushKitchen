@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.ScriptableObjects;
+using System;
 using System.Collections.Generic;
 
 public interface IDeliveryService
@@ -11,6 +12,6 @@ public interface IDeliveryService
     void Tick(float deltaTime);
     void DeliverRecipe(PlateKitchenObject plateKitchenObject);
 
-    List<ProcessRecipeSo> GetWaitingRecipes();
+    List<DishRecipeSo> GetWaitingRecipes();
     int GetSuccessfulRecipesAmount();
 }

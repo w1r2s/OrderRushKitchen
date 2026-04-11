@@ -22,11 +22,6 @@ public class GameOverUI : MonoBehaviour
         _gameService.OnGameStateChanged += GameManager_OnGameStateChanged;
         Hide();
     }
-    [Inject]
-    private void Construct(IDeliveryService deliveryService)
-    {
-        _deliveryService = deliveryService;
-    }
     private void GameManager_OnGameStateChanged(object sender, System.EventArgs e)
     {
         if (_gameService.IsGameOver())

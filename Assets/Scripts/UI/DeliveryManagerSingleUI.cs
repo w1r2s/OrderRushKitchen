@@ -1,3 +1,4 @@
+using Assets.Scripts.ScriptableObjects;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,21 +14,23 @@ public class DeliveryManagerSingleUI : MonoBehaviour
     {
         iconTemplate.gameObject.SetActive(false);
     }
-    public void SetRecipeSo(ProcessRecipeSo recipeSo)
+    public void SetRecipeSo(DishRecipeSo recipeSo)
     {
-        //recipeNameText.text = recipeSo.recipeName;
+        recipeNameText.text = recipeSo.recipeName;
 
-        //foreach (Transform child in iconContainer)
-        //{
-        //    if (child == iconTemplate)
-        //        continue;
-        //    Destroy(child.gameObject);
-        //}
-        //foreach (KitchenObjectSo kitchenObjectSo in recipeSo.kitchenObjectSoList)
-        //{
-        //    Transform iconTransform = Instantiate(iconTemplate, iconContainer);
-        //    iconTransform.gameObject.SetActive(true);
-        //    iconTransform.GetComponent<Image>().sprite = kitchenObjectSo.sprite;
-        //}
+        foreach (Transform child in iconContainer)
+        {
+            if (child == iconTemplate)
+                continue;
+            Destroy(child.gameObject);
+        }
+        foreach (KitchenObjectSo kitchenObjectSo in recipeSo.ingredients)
+        {
+            Transform iconTransform = Instantiate(iconTemplate, iconContainer);
+            iconTransform.gameObject.SetActive(true);
+
+            var image = iconTransform.GetComponent<Image>();
+            image.sprite = kitchenObjectSo.sprite;
+        }
     }
 }

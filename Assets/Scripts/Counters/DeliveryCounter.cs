@@ -11,13 +11,17 @@ public class DeliveryCounter : BaseCounter
     }
     public override void Interact(Player player)
     {
-        //if (player.HasKitchenObject())
-        //{
-        //    if (player.GetKitchenObject().TryGetPlate(out var plate))
-        //    {
-        //        _deliveryService.DeliverRecipe(plate);
-        //        player.GetKitchenObject().DestroySelf();
-        //    }
-        //}
+        if (!player.HasObject)
+            return;
+
+        var obj = player.GetObject();
+
+        if (!obj.TryGetPlate(out var plate))
+            return;
+
+        _deliveryService.DeliverRecipe(plate);
+
+        obj = player.RemoveObject();
+        Destroy(obj.gameObject);
     }
 }

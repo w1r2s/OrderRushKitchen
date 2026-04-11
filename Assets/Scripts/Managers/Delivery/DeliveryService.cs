@@ -1,8 +1,9 @@
 ﻿using Assets.Scripts.Managers.Game;
 using Assets.Scripts.Managers.Sound;
+using Assets.Scripts.ScriptableObjects;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
 
 namespace Assets.Scripts
 {
@@ -14,85 +15,79 @@ namespace Assets.Scripts
         public event EventHandler OnRecipeSuccess;
         public event EventHandler OnRecipeFailed;
 
-        private readonly RecipeDatabase _recipeData;
+        private readonly DishRecipeDatabase _dishRecipes;
         private readonly IGameService _gameService;
         private readonly IAudioService _audioService;
 
-        private List<ProcessRecipeSo> _waitingRecipes;
+        private List<DishRecipeSo> _waitingRecipes = new();
 
         private float spawnTimer;
         private float spawnTimerMax = 4f;
         private int waitingRecipeMax = 4;
         private int successfulRecipes;
-        private float volume = 1f;
 
-        public DeliveryService(RecipeDatabase recipeData, IGameService gameService, IAudioService audioService)
+        public DeliveryService(DishRecipeDatabase dishRecipes, IGameService gameService, IAudioService audioService)
         {
             _gameService = gameService;
-            _recipeData = recipeData;
-            _waitingRecipes = new List<ProcessRecipeSo>();
+            _dishRecipes = dishRecipes;
+            _waitingRecipes = new List<DishRecipeSo>();
             _audioService = audioService;
         }
         public void Tick(float deltaTime)
         {
-            //spawnTimer += deltaTime;
+            if (!_gameService.IsGamePlaying())
+                return;
 
-            //if (spawnTimer > spawnTimerMax)
-            //{
-            //    spawnTimer = 0;
+            spawnTimer += deltaTime;
 
-            //    if (_gameService.IsGamePlaying() && _waitingRecipes.Count < waitingRecipeMax)
-            //    {
-            //        RecipeSo recipe = _recipeListSo.recipeSoList[UnityEngine.Random.Range(0, _recipeListSo.recipeSoList.Count)];
-            //        _waitingRecipes.Add(recipe);
-            //        OnRecipeSpawned?.Invoke(this, EventArgs.Empty);
-            //    }
-            //}
+            if (spawnTimer < spawnTimerMax)
+                return;
+
+            spawnTimer = 0;
+
+            if (_waitingRecipes.Count >= waitingRecipeMax)
+                return;
+
+            var recipe = _dishRecipes.GetRandomRecipe();
+            _waitingRecipes.Add(recipe);
+            OnRecipeSpawned?.Invoke(this, EventArgs.Empty);
         }
 
 
-        public void DeliverRecipe(PlateKitchenObject plateKitchenObject)
+        public void DeliverRecipe(PlateKitchenObject plate)
         {
-            //for (int i = 0; i < _waitingRecipes.Count; i++)
-            //{
-            //    RecipeSo waitingRecipeSo = _waitingRecipes[i];
-            //    if (waitingRecipeSo.kitchenObjectSoList.Count == plateKitchenObject.GetKitchenObjectSoList().Count)
-            //    {
-            //        bool plateMatch = true;
-            //        foreach (KitchenObjectSo recipeKitchenObjectSo in waitingRecipeSo.kitchenObjectSoList)
-            //        {
-            //            bool found = false;
-            //            foreach (KitchenObjectSo plateKitchenObjectSo in plateKitchenObject.GetKitchenObjectSoList())
-            //            {
-            //                if (plateKitchenObjectSo == recipeKitchenObjectSo)
-            //                {
-            //                    found = true;
-            //                    break;
-            //                }
-            //            }
-            //            if (!found)
-            //            {
-            //                plateMatch = false;
-            //            }
-            //        }
-            //        if (plateMatch)
-            //        {
-            //            successfulRecipes++;
+            var plateIngredients = plate.GetKitchenObjectSoList();
+            for (int i = 0; i < _waitingRecipes.Count; i++)
+            {
+                var recipe = _waitingRecipes[i];
+                if (IsMatch(recipe, plateIngredients))
+                {
+                    successfulRecipes++;
+                    _waitingRecipes.RemoveAt(i);
+                    OnRecipeCompleted?.Invoke(this, EventArgs.Empty);
+                    OnRecipeSuccess?.Invoke(this, EventArgs.Empty);
 
-            //            _waitingRecipes.RemoveAt(i);
-            //            OnRecipeCompleted?.Invoke(this, EventArgs.Empty);
-            //            OnRecipeSuccess?.Invoke(this, EventArgs.Empty);
-
-            //            _audioService.PlayRecipeSuccess(plateKitchenObject.transform.position, volume);
-            //            return;
-            //        }
-            //    }
-            //}
-            //OnRecipeFailed?.Invoke(this, EventArgs.Empty);
-            //_audioService.PlayRecipeFail(plateKitchenObject.transform.position, volume);
+                    _audioService.PlayRecipeSuccess(plate.transform.position);
+                    return;
+                }
+            }
+            OnRecipeFailed?.Invoke(this, EventArgs.Empty);
+            _audioService.PlayRecipeFail(plate.transform.position);
         }
+        private bool IsMatch(DishRecipeSo recipe, IReadOnlyList<KitchenObjectSo> ingredients)
+        {
+            if (recipe.ingredients.Count != ingredients.Count)
+                return false;
 
-        public List<ProcessRecipeSo> GetWaitingRecipes()
+            foreach (var ingredient in recipe.ingredients)
+            {
+                if (!ingredients.Contains(ingredient))
+                    return false;
+            }
+
+            return true;
+        }
+        public List<DishRecipeSo> GetWaitingRecipes()
         {
             return _waitingRecipes;
         }

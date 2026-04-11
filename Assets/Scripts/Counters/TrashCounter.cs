@@ -12,13 +12,15 @@ public class TrashCounter : BaseCounter
     }
     public override void Interact(Player player)
     {
-        if (player.HasObject)
+        if (!player.HasObject)
         {
-            var obj = player.GetObject();
-            player.RemoveObject();
-            Destroy(obj.gameObject);
-
-            _audioService.PlayTrash(transform.position);
+            return;
         }
+
+        var obj = player.RemoveObject();
+        Destroy(obj.gameObject);
+
+        _audioService.PlayTrash(transform.position);
+
     }
 }

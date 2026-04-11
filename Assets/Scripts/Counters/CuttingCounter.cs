@@ -36,8 +36,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
             if (!_recipes.TryGetRecipe<CuttingRecipeSo>(RecipeType.Cutting, playerObject.KitchenObjectSo, out var recipe))
                 return;
 
-            var obj = player.RemoveObject();
-            SetObject(obj);
+            PlaceObjectFromPlayer(player);
 
             cuttingProgress = 0;
             UpdateProgress(recipe);

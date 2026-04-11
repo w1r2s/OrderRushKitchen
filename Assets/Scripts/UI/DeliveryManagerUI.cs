@@ -26,6 +26,13 @@ public class DeliveryManagerUI : MonoBehaviour
 
         UpdateVisual();
     }
+    private void OnDestroy()
+    {
+        if (_deliveryService == null) return;
+
+        _deliveryService.OnRecipeSpawned -= DeliveryManager_OnRecipeSpawned;
+        _deliveryService.OnRecipeCompleted -= DeliveryManager_OnRecipeCompleted;
+    }
     private void DeliveryManager_OnRecipeSpawned(object sender, System.EventArgs e)
     {
         UpdateVisual();

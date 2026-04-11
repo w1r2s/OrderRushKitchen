@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class ClearCounter : BaseCounter
 {
     public override void Interact(Player player)
@@ -10,8 +8,7 @@ public class ClearCounter : BaseCounter
             if (!player.HasObject)
                 return;
 
-            KitchenObject playerObject = player.RemoveObject();
-            SetObject(playerObject);
+            PlaceObjectFromPlayer(player);
             return;
         }
 

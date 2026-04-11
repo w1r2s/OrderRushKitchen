@@ -34,4 +34,8 @@ public class DishRecipeDatabase
 
         return true;
     }
+    public DishRecipeSo GetRandomRecipe()
+    {
+        return _recipes[UnityEngine.Random.Range(0, _recipes.Count)];
+    }
 }
