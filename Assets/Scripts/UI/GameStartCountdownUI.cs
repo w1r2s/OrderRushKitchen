@@ -1,20 +1,28 @@
+using Assets.Scripts.Managers.Game;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 public class GameStartCountdownUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI CountdownText;
+    private IGameService _gameService;
 
+    [Inject]
+    private void Construct(IGameService gameService)
+    {
+        _gameService = gameService;
+    }
 
     private void Start()
     {
-        GameManager.Instance.OnGameStateChanged += GameManager_OnGameStateChanged;
+        _gameService.OnGameStateChanged += GameManager_OnGameStateChanged;
         Hide();
     }
 
     private void GameManager_OnGameStateChanged(object sender, System.EventArgs e)
     {
-        if (GameManager.Instance.IsCountdownToStartActive())
+        if (_gameService.IsCountdownToStartActive())
         {
             Show();
         }
@@ -25,7 +33,7 @@ public class GameStartCountdownUI : MonoBehaviour
     }
     private void Update()
     {
-        CountdownText.text = GameManager.Instance.GetCountdownToStartTimer().ToString("#");
+        CountdownText.text = _gameService.GetCountdownToStartTimer().ToString("#");
     }
     private void Show()
     {

@@ -1,48 +1,23 @@
-using System;
-using UnityEngine;
+using Assets.Scripts.Managers.Sound;
+using Zenject;
 
-public class BaseCounter : MonoBehaviour, IKitchenObjectParent
+public abstract class BaseCounter : ObjectHolder
 {
-    public static event EventHandler OnAnyObjectPlaced;
-    public static void ResetStaticData()
+    private IAudioService _audioService;
+
+    [Inject]
+    protected void ConstructBase(IAudioService audioService)
     {
-        OnAnyObjectPlaced = null;
+        _audioService = audioService;
     }
 
-    [SerializeField] private Transform counterTopPoint;
+    public abstract void Interact(Player player);
+    public virtual void InteractAlternate(Player player) { }
 
-    private KitchenObject kitchenObject;
-    public virtual void Interact(Player player)
+    protected void PlaceObjectFromPlayer(Player player)
     {
-        Debug.LogError("BaseCounter.Interact");
-    }
-    public virtual void InteractAlternate(Player player)
-    {
-    }
-
-    public Transform GetKitchenObjectFollowTransform()
-    {
-        return counterTopPoint;
-    }
-
-    public void SetKitchenObjcet(KitchenObject kitchenObject)
-    {
-        this.kitchenObject = kitchenObject;
-        if (kitchenObject != null)
-        {
-            OnAnyObjectPlaced?.Invoke(this, EventArgs.Empty);
-        }
-    }
-    public KitchenObject GetKitchenObject()
-    {
-        return kitchenObject;
-    }
-    public void ClearKitchenObject()
-    {
-        kitchenObject = null;
-    }
-    public bool HasKitchenObject()
-    {
-        return kitchenObject != null;
+        var kitchenObject = player.RemoveObject();
+        SetObject(kitchenObject);
+        _audioService.PlayDrop(transform.position);
     }
 }

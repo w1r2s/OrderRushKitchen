@@ -86,8 +86,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44f6d8593c4681544b64a1c2936ea4e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CuttingCounter
-  counterTopPoint: {fileID: 2624475783902209690}
-  cuttingRecipeSoArray:
+  holdPoint: {fileID: 2624475783902209690}
+  cuttingRecipes:
   - {fileID: 11400000, guid: e0d7e912d814d704fa50cbc7987c2c9e, type: 2}
   - {fileID: 11400000, guid: a35aaf2ff65427148b2649e85163cb2a, type: 2}
   - {fileID: 11400000, guid: 74ed4804b3f9a7e478fda9fa198188d4, type: 2}

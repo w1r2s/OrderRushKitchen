@@ -1,19 +1,26 @@
-using System;
+using Assets.Scripts.Managers.Sound;
+using Zenject;
 
 public class TrashCounter : BaseCounter
 {
-    public static event EventHandler OnAnyObjectTrashed;
-    new public static void ResetStaticData()
+    private IAudioService _audioService;
+
+    [Inject]
+    private void Construct(IAudioService audioService)
     {
-        OnAnyObjectTrashed = null;
+        _audioService = audioService;
     }
     public override void Interact(Player player)
     {
-        if (player.HasKitchenObject())
+        if (!player.HasObject)
         {
-            player.GetKitchenObject().DestroySelf();
-
-            OnAnyObjectTrashed?.Invoke(this, EventArgs.Empty);
+            return;
         }
+
+        var obj = player.RemoveObject();
+        Destroy(obj.gameObject);
+
+        _audioService.PlayTrash(transform.position);
+
     }
 }

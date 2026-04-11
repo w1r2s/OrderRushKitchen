@@ -1,4 +1,6 @@
+using Assets.Scripts.Managers.Sound;
 using UnityEngine;
+using Zenject;
 
 public class StoveCounterSound : MonoBehaviour
 {
@@ -6,6 +8,13 @@ public class StoveCounterSound : MonoBehaviour
     private AudioSource audioSource;
     private float warningSoundTimer;
   private bool playWarningSound;
+
+    private IAudioService _audioService;
+    [Inject]
+    private void Construct(IAudioService audioService)
+    {
+        _audioService = audioService;
+    }
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -45,7 +54,7 @@ public class StoveCounterSound : MonoBehaviour
                 float warningSoundTimerMax = 0.2f;
                 warningSoundTimer = warningSoundTimerMax;
 
-                SoundManager.Instance.PlayWarningSound(stoveCounter.transform.position);
+                _audioService.PlayWarning(stoveCounter.transform.position);
             }
         }
     }

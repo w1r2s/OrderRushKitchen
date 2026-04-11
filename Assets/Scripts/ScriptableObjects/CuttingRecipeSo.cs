@@ -1,9 +1,8 @@
 using UnityEngine;
 
 [CreateAssetMenu()]
-public class CuttingRecipeSo : ScriptableObject
+public class CuttingRecipeSo : ProcessRecipeSo
 {
-    public KitchenObjectSo input;
-    public KitchenObjectSo output;
     public int cuttingProgressMax;
+    public override RecipeType Type => RecipeType.Cutting;
 }

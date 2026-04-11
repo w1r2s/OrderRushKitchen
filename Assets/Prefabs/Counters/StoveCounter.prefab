@@ -488,7 +488,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cee4c564bf0239242a0582307e9e2ade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StoveCounter
-  counterTopPoint: {fileID: 3580221005622482610}
+  holdPoint: {fileID: 3580221005622482610}
   fryingRecipeSoArray:
   - {fileID: 11400000, guid: 6ad15e09c3bf92744b8837de19496a64, type: 2}
   burningRecipeSoArray:

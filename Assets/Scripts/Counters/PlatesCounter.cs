@@ -1,9 +1,11 @@
+using Assets.Scripts.Managers.Game;
 using System;
 using UnityEngine;
+using Zenject;
 
 public class PlatesCounter : BaseCounter
 {
-
+    private IGameService _gameService;
     public event EventHandler onPlateSpawned;
     public event EventHandler onPlateRemoved;
 
@@ -15,14 +17,19 @@ public class PlatesCounter : BaseCounter
     private int platesSpawnedAmount;
     private int platesSpawnedAmountMax = 4;
 
+    [Inject]
+    private void Construct(IGameService gameService)
+    {
+        _gameService = gameService;
+    }
     private void Update()
     {
         spawnPlateTimer += Time.deltaTime;
-        if(spawnPlateTimer > spawnPlateTimerMax)
+        if (spawnPlateTimer > spawnPlateTimerMax)
         {
             spawnPlateTimer = 0f;
 
-            if(GameManager.Instance.IsGamePlaying() && platesSpawnedAmount < platesSpawnedAmountMax)
+            if (_gameService.IsGamePlaying() && platesSpawnedAmount < platesSpawnedAmountMax)
             {
                 platesSpawnedAmount++;
                 onPlateSpawned?.Invoke(this, EventArgs.Empty);
@@ -31,14 +38,15 @@ public class PlatesCounter : BaseCounter
     }
     public override void Interact(Player player)
     {
-        if(!player.HasKitchenObject())
+        if (!player.HasObject)
         {
-            if(platesSpawnedAmount > 0)
+            if (platesSpawnedAmount > 0)
             {
                 platesSpawnedAmount--;
-                KitchenObject.SpawnKitchenObject(plateKitchenObjectSo, player);
 
-                onPlateRemoved?.Invoke(this,EventArgs.Empty);
+                player.SpawnAndSet(plateKitchenObjectSo.prefab);
+
+                onPlateRemoved?.Invoke(this, EventArgs.Empty);
             }
         }
 

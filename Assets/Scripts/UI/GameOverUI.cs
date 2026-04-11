@@ -1,21 +1,32 @@
+using Assets.Scripts.Managers.Game;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 public class GameOverUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI recipesDeliveredText;
+    private IDeliveryService _deliveryService;
+    private IGameService _gameService;
 
+    [SerializeField] private TextMeshProUGUI recipesDeliveredText;
+    
+    
+    [Inject]
+    private void Construct(IGameService gameService,IDeliveryService deliveryService)
+    {
+        _gameService = gameService;
+        _deliveryService = deliveryService;
+    }
     private void Start()
     {
-        GameManager.Instance.OnGameStateChanged += GameManager_OnGameStateChanged;
+        _gameService.OnGameStateChanged += GameManager_OnGameStateChanged;
         Hide();
     }
-
     private void GameManager_OnGameStateChanged(object sender, System.EventArgs e)
     {
-        if (GameManager.Instance.IsGameOver())
+        if (_gameService.IsGameOver())
         {
-            recipesDeliveredText.text = DeliveryManager.Instance.GetSuccessfulRecipesAmount().ToString();
+            recipesDeliveredText.text = _deliveryService.GetSuccessfulRecipesAmount().ToString();
             Show();
         }
         else

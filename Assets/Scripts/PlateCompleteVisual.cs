@@ -21,6 +21,11 @@ public class PlateCompleteVisual : MonoBehaviour
             kitchenObjectSoGameObject.kitchenObject.SetActive(false);
         }
     }
+    private void OnDestroy()
+    {
+        if (plateKitchenObject != null)
+            plateKitchenObject.OnIngredientAdded -= PlateKitchenObject_OnIngredientAdded;
+    }
 
     private void PlateKitchenObject_OnIngredientAdded(object sender, PlateKitchenObject.OnIngredientAddedEventArgs e)
     {
