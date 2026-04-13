@@ -14,6 +14,9 @@ namespace Assets.Scripts.Managers.Installer
         [SerializeField] private AudioClipRefsSo audioClipRefsSo;
         [SerializeField] private MusicManager musicManager;
 
+        [SerializeField] private MenuItemDefinitionListSo menuDefinitionListSo;
+        [SerializeField] private LevelDefinitionListSo levelDefinitionListSo;
+
         public override void InstallBindings()
         {
 
@@ -44,6 +47,10 @@ namespace Assets.Scripts.Managers.Installer
 
             // Dish recipes
             Container.Bind<DishRecipeDatabase>().AsSingle().WithArguments(dishRecipeListSo.recipes);
+
+            Container.Bind<MenuItemDatabase>().AsSingle().WithArguments(menuDefinitionListSo.items);
+
+            Container.Bind<LevelDatabase>().AsSingle().WithArguments(levelDefinitionListSo.levels);
         }
     }
 }
