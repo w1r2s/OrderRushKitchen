@@ -1207,8 +1207,8 @@ MonoBehaviour:
   dishRecipeListSo: {fileID: 11400000, guid: a756e510d541fa3448977800ab13c99b, type: 2}
   audioClipRefsSo: {fileID: 11400000, guid: 78bf51ca80a889340906b5a13f9eb9b9, type: 2}
   musicManager: {fileID: 138731747}
-  menuDefinitionListSo: {fileID: 0}
-  levelDefinitionListSo: {fileID: 0}
+  menuDefinitionListSo: {fileID: 11400000, guid: ab27ba88112c6b94ab3d73a4d24b4e63, type: 2}
+  levelDefinitionListSo: {fileID: 11400000, guid: 143e3858423b9014d9fd855041d8e810, type: 2}
 --- !u!4 &281345973
 Transform:
   m_ObjectHideFlags: 0
@@ -2686,6 +2686,53 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 424138990}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &426883099
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 426883101}
+  - component: {fileID: 426883100}
+  m_Layer: 0
+  m_Name: OrderDebugController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &426883100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426883099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e8b3229a18da8c448c4bb472a000a27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.DebugField.OrderDebugController
+  menuItems:
+  - {fileID: 11400000, guid: 6c62ba9121bfa144996280cce32a3180, type: 2}
+  outputMenuItem: {fileID: 11400000, guid: 6c62ba9121bfa144996280cce32a3180, type: 2}
+--- !u!4 &426883101
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426883099}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -11103,3 +11150,4 @@ SceneRoots:
   - {fileID: 86227319}
   - {fileID: 281345973}
   - {fileID: 1461939465}
+  - {fileID: 426883101}

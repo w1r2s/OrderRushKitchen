@@ -8,7 +8,7 @@ namespace Assets.Scripts.Order
         void Tick(float deltaTime);
         ActiveOrder CreateOrder(IEnumerable<MenuItemDefinitionSo> items);
         IReadOnlyList<ActiveOrder> GetActiveOrders();
-        void RemoveInactiveOrders();
+        int RemoveInactiveOrders();
         bool TryFulfillOrderItem(MenuItemDefinitionSo menuItem);
     }
 }

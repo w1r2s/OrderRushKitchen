@@ -45,9 +45,11 @@ namespace Assets.Scripts.Order
 
             }
         }
-        public void RemoveInactiveOrders()
+        public int RemoveInactiveOrders()
         {
+            var removeCount = _orders.Where(order => !order.IsActive).Count();
             _orders.RemoveAll(order => !order.IsActive);
+            return removeCount;
         }
 
         public bool TryFulfillOrderItem(MenuItemDefinitionSo menuItem)
