@@ -1207,6 +1207,8 @@ MonoBehaviour:
   dishRecipeListSo: {fileID: 11400000, guid: a756e510d541fa3448977800ab13c99b, type: 2}
   audioClipRefsSo: {fileID: 11400000, guid: 78bf51ca80a889340906b5a13f9eb9b9, type: 2}
   musicManager: {fileID: 138731747}
+  menuDefinitionListSo: {fileID: 0}
+  levelDefinitionListSo: {fileID: 0}
 --- !u!4 &281345973
 Transform:
   m_ObjectHideFlags: 0
@@ -7405,6 +7407,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1446186608}
   m_CullTransparentMesh: 1
+--- !u!1 &1461939463
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1461939465}
+  - component: {fileID: 1461939464}
+  m_Layer: 0
+  m_Name: OrderManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1461939464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1461939463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c73612c6c738da4d8a8205f16c671d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Order.OrderManager
+--- !u!4 &1461939465
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1461939463}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1467400321
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11056,3 +11102,4 @@ SceneRoots:
   - {fileID: 689309036}
   - {fileID: 86227319}
   - {fileID: 281345973}
+  - {fileID: 1461939465}

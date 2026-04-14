@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Managers.Game;
 using Assets.Scripts.Managers.Input;
 using Assets.Scripts.Managers.Sound;
+using Assets.Scripts.Order;
 using Assets.Scripts.ScriptableObjects;
 using UnityEngine;
 using Zenject;
@@ -51,6 +52,8 @@ namespace Assets.Scripts.Managers.Installer
             Container.Bind<MenuItemDatabase>().AsSingle().WithArguments(menuDefinitionListSo.items);
 
             Container.Bind<LevelDatabase>().AsSingle().WithArguments(levelDefinitionListSo.levels);
+
+            Container.Bind<IOrderService>().To<OrderService>().AsSingle();
         }
     }
 }
