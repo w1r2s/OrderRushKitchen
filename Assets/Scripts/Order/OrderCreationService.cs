@@ -7,25 +7,33 @@ namespace Assets.Scripts.Order
     {
         private readonly MenuItemDatabase _menuDatabase;
         private readonly IOrderService _orderService;
-
-        private const int MAX_ITEMS_IN_ORDER = 3;
-        public OrderCreationService(MenuItemDatabase menuDatabase, IOrderService orderService)
+        private readonly LevelDefinitionSo _levelConfig;
+        public OrderCreationService(MenuItemDatabase menuDatabase, IOrderService orderService, LevelDefinitionSo levelDefinitionSo)
         {
             _menuDatabase = menuDatabase;
             _orderService = orderService;
+            _levelConfig = levelDefinitionSo;
         }
 
         public bool TryCreateOrder(out ActiveOrder order)
         {
-            var menuItems = _menuDatabase.GetAll();
+            var menuItems = _menuDatabase.GetAvailableForLevel(_levelConfig.levelNumber);
 
             order = null;
             if (menuItems.Count == 0)
             {
                 return false;
             }
-            int itemsToPick = UnityEngine.Random.Range(1, MAX_ITEMS_IN_ORDER + 1); // + 1 because of exclusive upper range
 
+            int itemsToPick;
+            if (IsMultiItemOrder())
+            {
+                itemsToPick = UnityEngine.Random.Range(_levelConfig.minItemsPerOrder, _levelConfig.maxItemsPerOrder + 1); // + 1 because of exclusive upper range
+            }
+            else
+            {
+                itemsToPick = 1;
+            }
             IReadOnlyList<MenuItemDefinitionSo> menuItemList = SelectRandomItems(menuItems, itemsToPick);
 
             if (menuItemList.Count == 0)
@@ -51,6 +59,17 @@ namespace Assets.Scripts.Order
             }
             return outList;
         }
+        private bool IsMultiItemOrder()
+        {
+            var chance = UnityEngine.Random.Range(0.0f, 1.0f);
 
+            if (chance <= _levelConfig.multiItemOrderChance)
+            {
+
+                return true;
+            }
+
+            return false;
+        }
     }
 }

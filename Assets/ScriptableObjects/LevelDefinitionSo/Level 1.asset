@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.ScriptableObjects.LevelDefinitionSo
   levelNumber: 1
   requiredCompletedOrders: 5
-  multiItemOrderChance: 0
+  multiItemOrderChance: 0.5
   minItemsPerOrder: 1
-  maxItemsPerOrder: 1
+  maxItemsPerOrder: 3
   satisfactionDrainMultiplier: 1
   maxActiveOrders: 2

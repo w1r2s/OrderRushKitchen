@@ -18,11 +18,17 @@ namespace Assets.Scripts.Managers.Installer
         [SerializeField] private MenuItemDefinitionListSo menuDefinitionListSo;
         [SerializeField] private LevelDefinitionListSo levelDefinitionListSo;
 
+        //temp
+        [SerializeField] private LevelDefinitionSo levelDefinitionSo;
+
         public override void InstallBindings()
         {
 
             Container.BindInstance(audioClipRefsSo);
             Container.BindInstance(musicManager);
+            
+            // temp
+            Container.BindInstance(levelDefinitionSo);
 
             Container.Bind<IGameService>().To<GameService>().AsSingle();
             Container.Bind<IDeliveryService>().To<DeliveryService>().AsSingle();
