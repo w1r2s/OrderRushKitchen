@@ -1,6 +1,6 @@
 ﻿namespace Assets.Scripts.Order
 {
-    public interface IOrderCreationService
+    public interface IOrderFlowService
     {
         bool TryCreateOrder(out ActiveOrder order);
     }

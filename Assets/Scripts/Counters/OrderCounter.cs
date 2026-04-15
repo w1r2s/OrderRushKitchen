@@ -6,17 +6,16 @@ namespace Assets.Scripts.Counters
 {
     public class OrderCounter : BaseCounter
     {
-        private IOrderCreationService _orderCreationService;
+        private IOrderFlowService _orderFlowService;
 
         [Inject]
-        private void Construct(IOrderCreationService orderCreationService)
+        private void Construct(IOrderFlowService orderFlowService)
         {
-            _orderCreationService = orderCreationService;
+            _orderFlowService = orderFlowService;
         }
         public override void Interact(Player player)
         {
-
-            if (!_orderCreationService.TryCreateOrder(out var order))
+            if (!_orderFlowService.TryCreateOrder(out var order))
             {
                 Debug.Log("Failed to create order: no valid menu items configured.");
                 return;

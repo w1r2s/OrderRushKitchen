@@ -3,26 +3,24 @@ using System.Collections.Generic;
 
 namespace Assets.Scripts.Order
 {
-    public class OrderCreationService : IOrderCreationService
+    //TODO: Apply menuItem weight collection into generation rules, aplly level restrictions into generation.
+    public class OrderGenerationService : IOrderGenerationService
     {
         private readonly MenuItemDatabase _menuDatabase;
-        private readonly IOrderService _orderService;
         private readonly LevelDefinitionSo _levelConfig;
-        public OrderCreationService(MenuItemDatabase menuDatabase, IOrderService orderService, LevelDefinitionSo levelDefinitionSo)
+
+        public OrderGenerationService(MenuItemDatabase menuDatabase, LevelDefinitionSo levelConfig)
         {
             _menuDatabase = menuDatabase;
-            _orderService = orderService;
-            _levelConfig = levelDefinitionSo;
+            _levelConfig = levelConfig;
         }
 
-        public bool TryCreateOrder(out ActiveOrder order)
+        public IReadOnlyList<MenuItemDefinitionSo> GenerateOrderItems()
         {
             var menuItems = _menuDatabase.GetAvailableForLevel(_levelConfig.levelNumber);
-
-            order = null;
             if (menuItems.Count == 0)
             {
-                return false;
+                return null;
             }
 
             int itemsToPick;
@@ -34,22 +32,16 @@ namespace Assets.Scripts.Order
             {
                 itemsToPick = 1;
             }
-            IReadOnlyList<MenuItemDefinitionSo> menuItemList = SelectRandomItems(menuItems, itemsToPick);
 
+            var menuItemList = SelectMenuItems(menuItems, itemsToPick);
             if (menuItemList.Count == 0)
             {
-                return false;
+                return null;
             }
 
-            order = _orderService.CreateOrder(menuItemList);
-
-            if (order == null)
-            {
-                return false;
-            }
-            return true;
+            return menuItemList;
         }
-        private IReadOnlyList<MenuItemDefinitionSo> SelectRandomItems(IReadOnlyList<MenuItemDefinitionSo> menuItems, int count)
+        private IReadOnlyList<MenuItemDefinitionSo> SelectMenuItems(IReadOnlyList<MenuItemDefinitionSo> menuItems, int count)
         {
             var outList = new List<MenuItemDefinitionSo>();
             for (int i = 0; i < count; i++)
@@ -57,6 +49,7 @@ namespace Assets.Scripts.Order
                 var randomItem = menuItems[UnityEngine.Random.Range(0, menuItems.Count)];
                 outList.Add(randomItem);
             }
+
             return outList;
         }
         private bool IsMultiItemOrder()
@@ -71,5 +64,7 @@ namespace Assets.Scripts.Order
 
             return false;
         }
+
+
     }
 }
