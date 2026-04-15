@@ -54,6 +54,7 @@ namespace Assets.Scripts.Managers.Installer
             Container.Bind<LevelDatabase>().AsSingle().WithArguments(levelDefinitionListSo.levels);
 
             Container.Bind<IOrderService>().To<OrderService>().AsSingle();
+            Container.Bind<IOrderCreationService>().To<OrderCreationService>().AsSingle();
         }
     }
 }

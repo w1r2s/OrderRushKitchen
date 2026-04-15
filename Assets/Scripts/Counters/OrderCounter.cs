@@ -1,6 +1,4 @@
 ﻿using Assets.Scripts.Order;
-using Assets.Scripts.ScriptableObjects;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -8,19 +6,17 @@ namespace Assets.Scripts.Counters
 {
     public class OrderCounter : BaseCounter
     {
-        [SerializeField] private List<MenuItemDefinitionSo> orderItems;
-
-        private IOrderService _orderService;
+        private IOrderCreationService _orderCreationService;
 
         [Inject]
-        private void Construct(IOrderService orderService)
+        private void Construct(IOrderCreationService orderCreationService)
         {
-            _orderService = orderService;
+            _orderCreationService = orderCreationService;
         }
         public override void Interact(Player player)
         {
-          var order = _orderService.CreateOrder(orderItems);
-            if (order == null)
+
+            if (!_orderCreationService.TryCreateOrder(out var order))
             {
                 Debug.Log("Failed to create order: no valid menu items configured.");
                 return;
