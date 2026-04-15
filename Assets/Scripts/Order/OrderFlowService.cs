@@ -15,27 +15,23 @@ namespace Assets.Scripts.Order
             _levelConfig = levelConfig;
         }
 
-        public bool TryCreateOrder(out ActiveOrder order)
+        public OrderFlowResult TryCreateOrder()
         {
-            order = null;
-
             if (_orderService.GetActiveOrders().Count >= _levelConfig.maxActiveOrders)
-                return false;
+                return new OrderFlowResult(false, null, OrderFlowFailureReason.MaxActiveOrdersReached);
 
             var menuItemList = _orderGenerationService.GenerateOrderItems();
             if (menuItemList == null)
             {
-                return false;
+                return new OrderFlowResult(false, null, OrderFlowFailureReason.InvalidGeneratedOrder);
             }
-
-            order = _orderService.CreateOrder(menuItemList);
+            var order = _orderService.CreateOrder(menuItemList);
             if (order == null)
             {
-                return false;
+                return new OrderFlowResult(false, order, OrderFlowFailureReason.OrderCreationFailed);
             }
 
-
-            return true;
+            return new OrderFlowResult(true, order, null);
         }
 
     }

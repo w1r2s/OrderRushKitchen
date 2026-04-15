@@ -15,15 +15,16 @@ namespace Assets.Scripts.Counters
         }
         public override void Interact(Player player)
         {
-            if (!_orderFlowService.TryCreateOrder(out var order))
+            var orderResult = _orderFlowService.TryCreateOrder();
+            if(!orderResult.Success)
             {
-                Debug.Log("Failed to create order: no valid menu items configured.");
+                Debug.Log($"Failed to create order: {orderResult.FailureReason}");
                 return;
             }
             Debug.Log($"Order created:\n" +
-                $"order id: {order.Id},\n" +
-                $"order items count: {order.OrderItems.Count},\n" +
-                $"order max time: {order.MaxTime}");
+                $"order id: {orderResult.Order.Id},\n" +
+                $"order items count: {orderResult.Order.OrderItems.Count},\n" +
+                $"order max time: {orderResult.Order.MaxTime}");
         }
     }
 }
