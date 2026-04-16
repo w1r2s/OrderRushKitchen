@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.ScriptableObjects;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts.Order
@@ -9,6 +10,10 @@ namespace Assets.Scripts.Order
         private readonly MenuItemDatabase _menuDatabase;
         private readonly LevelDefinitionSo _levelConfig;
 
+        private const float SINGLE_DECAY_K = 0.9f;
+        private const float MULTI_DECAY_K = 0.35f;
+        private const float DIFFICULTY_K = 0.5f;
+        private const float CURRENT_LEVEL_ITEM_CHANCE = 0.7f;
         public OrderGenerationService(MenuItemDatabase menuDatabase, LevelDefinitionSo levelConfig)
         {
             _menuDatabase = menuDatabase;
@@ -18,43 +23,86 @@ namespace Assets.Scripts.Order
         public IReadOnlyList<MenuItemDefinitionSo> GenerateOrderItems()
         {
             var menuItems = _menuDatabase.GetAvailableForLevel(_levelConfig.levelNumber);
-            if (menuItems.Count == 0)
+            if (menuItems == null || menuItems.Count == 0)
             {
                 return null;
             }
+            List<MenuItemDefinitionSo> outList;
 
-            int itemsToPick;
             if (IsMultiItemOrder())
             {
                 var minItems = Mathf.Max(1, _levelConfig.minItemsPerOrder);
                 var maxItems = Mathf.Max(minItems, _levelConfig.maxItemsPerOrder);
 
                 // upper bound exclusive
-                itemsToPick = Random.Range(minItems, maxItems + 1);
+                int itemsToPick = Random.Range(minItems, maxItems + 1);
+                if (itemsToPick == 1)
+                {
+                    outList = GenerateSingleItemOrder(menuItems);
+                    if (outList.Count == 0)
+                    {
+                        return null;
+                    }
+
+                    return outList;
+                }
+
+                outList = GenerateMultiItemOrder(menuItems, itemsToPick);
             }
             else
             {
-                itemsToPick = 1;
+                outList = GenerateSingleItemOrder(menuItems);
             }
 
-            if (itemsToPick <= 0)
+            if (outList.Count == 0)
             {
                 return null;
             }
 
-            var weightedDict = CalculateWeight(menuItems, out var weightSum);
-            if (weightedDict == null || weightedDict.Count == 0)
-            {
-                return null;
-            }
+            return outList;
+        }
+        private List<MenuItemDefinitionSo> GenerateSingleItemOrder(IReadOnlyList<MenuItemDefinitionSo> menuItems)
+        {
+            List<MenuItemDefinitionSo> menuItemList = new();
+            int itemsToPick = 1;
 
-            var menuItemList = SelectItemsWeighted(weightedDict, weightSum, itemsToPick);
-            if (menuItemList == null || menuItemList.Count == 0)
+            var weightedDict = CalculateWeight(menuItems, SINGLE_DECAY_K, out float weightSum);
+            if (weightedDict.Count == 0 || weightSum <= 0)
             {
-                return null;
+                return menuItemList;
             }
+            menuItemList = SelectItemsWeighted(weightedDict, weightSum, itemsToPick);
 
             return menuItemList;
+        }
+        private List<MenuItemDefinitionSo> GenerateMultiItemOrder(IReadOnlyList<MenuItemDefinitionSo> menuItems, int itemsToPick)
+        {
+            List<MenuItemDefinitionSo> menuItemsList = new();
+            var boostApplied = false;
+
+            var weightedDict = CalculateWeight(menuItems, MULTI_DECAY_K, out float weightSum);
+            if (weightedDict.Count == 0 || weightSum <= 0)
+            {
+                return menuItemsList;
+            }
+            var chance = Random.Range(0f, 1f);
+            if (chance <= CURRENT_LEVEL_ITEM_CHANCE)
+            {
+                menuItemsList = SelectFirstItemForMulti(weightedDict, weightSum);
+
+                boostApplied = menuItemsList.Count > 0;
+            }
+            if (!boostApplied)
+            {
+                menuItemsList = SelectItemsWeighted(weightedDict, weightSum, itemsToPick);
+                return menuItemsList;
+            }
+            var otherItems = SelectItemsWeighted(weightedDict, weightSum, itemsToPick - 1);
+
+            if (otherItems.Count != 0)
+                menuItemsList.AddRange(otherItems);
+
+            return menuItemsList;
         }
 
         private bool IsMultiItemOrder()
@@ -63,37 +111,44 @@ namespace Assets.Scripts.Order
             return chance <= _levelConfig.multiItemOrderChance;
         }
 
-        private Dictionary<MenuItemDefinitionSo, float> CalculateWeight(IReadOnlyList<MenuItemDefinitionSo> menuItems, out float weightSum)
+        private Dictionary<MenuItemDefinitionSo, float> CalculateWeight(IReadOnlyList<MenuItemDefinitionSo> menuItems, float itemDecayK, out float weightSum)
         {
             Dictionary<MenuItemDefinitionSo, float> outItems = new();
-            var k = 0.5f;
             weightSum = 0;
 
             foreach (var item in menuItems)
             {
-                var difficultyPenalty = Mathf.Max(0, item.difficulty - _levelConfig.levelNumber);
-                var effectiveWeight = item.baseSpawnWeight / (1f + difficultyPenalty * k);
+                // насколько сложное блюдо.
+                var diffDelta = Mathf.Max(0, item.difficulty - _levelConfig.levelNumber);
+                var diffPenalty = 1 + diffDelta * DIFFICULTY_K;
+
+                //насколько устаревшее блюдо.
+                var levelDist = Mathf.Max(0, _levelConfig.levelNumber - item.minLevel);
+                var tierFactor = 1 / (1 + levelDist * itemDecayK);
+
+                var effectiveWeight = item.baseSpawnWeight * tierFactor / diffPenalty;
+                if (effectiveWeight <= 0)
+                {
+                    continue;
+                }
+
                 outItems.Add(item, effectiveWeight);
                 weightSum += effectiveWeight;
             }
 
-            if (weightSum <= 0)
-                return null;
-
             return outItems;
         }
-        private IReadOnlyList<MenuItemDefinitionSo> SelectItemsWeighted(Dictionary<MenuItemDefinitionSo, float> menuItems, float weightSum, int count)
+        private List<MenuItemDefinitionSo> SelectItemsWeighted(Dictionary<MenuItemDefinitionSo, float> menuItems, float weightSum, int count)
         {
-            if (menuItems == null || menuItems.Count == 0 || weightSum <= 0f || count <= 0)
+            if (menuItems.Count == 0 || weightSum <= 0f || count <= 0)
             {
-                return null;
+                return new List<MenuItemDefinitionSo>();
             }
-
             var outList = new List<MenuItemDefinitionSo>();
 
             for (int i = 0; i < count; i++)
             {
-                var randW = Random.Range(0, weightSum);
+                var randW = Random.Range(0f, weightSum);
                 var accSum = 0f;
                 var picked = false;
                 MenuItemDefinitionSo lastItem = null;
@@ -114,6 +169,26 @@ namespace Assets.Scripts.Order
                     outList.Add(lastItem);
                 }
             }
+            return outList;
+        }
+        private List<MenuItemDefinitionSo> SelectFirstItemForMulti(Dictionary<MenuItemDefinitionSo, float> menuItems, float weightSum)
+        {
+            if (menuItems.Count == 0 || weightSum <= 0f)
+            {
+                return new List<MenuItemDefinitionSo>();
+            }
+
+            var currentLevelItems = menuItems
+                .Where(itemKey => itemKey.Key.minLevel == _levelConfig.levelNumber)
+                .ToDictionary(item => item.Key, itemValue => itemValue.Value);
+
+            var currentLevelWeightSum = currentLevelItems.Sum(item => item.Value);
+
+            if (currentLevelItems.Count == 0 || currentLevelWeightSum <= 0f)
+            {
+                return new List<MenuItemDefinitionSo>();
+            }
+            var outList = SelectItemsWeighted(currentLevelItems, currentLevelWeightSum, 1);
             return outList;
         }
     }

@@ -1286,7 +1286,7 @@ MonoBehaviour:
   musicManager: {fileID: 138731747}
   menuDefinitionListSo: {fileID: 11400000, guid: ab27ba88112c6b94ab3d73a4d24b4e63, type: 2}
   levelDefinitionListSo: {fileID: 11400000, guid: 143e3858423b9014d9fd855041d8e810, type: 2}
-  levelDefinitionSo: {fileID: 11400000, guid: 944ca43c72693c940bc98e70166114ae, type: 2}
+  levelDefinitionSo: {fileID: 11400000, guid: b68496b0baeefa74a8481bf7dea78684, type: 2}
 --- !u!4 &281345973
 Transform:
   m_ObjectHideFlags: 0
