@@ -18,8 +18,8 @@ MonoBehaviour:
   icon: {fileID: 0}
   difficulty: 3
   preparationTime: 120
-  baseSpawnWeight: 1
-  minLevel: 3
+  baseSpawnWeight: 0.7
+  minLevel: 2
   requiredIngredients:
   - {fileID: 11400000, guid: 7d4e30fd051b4144fa3f521a2d6ab031, type: 2}
   - {fileID: 11400000, guid: 1c928a25da69b5145be2bcd04ca9a8d7, type: 2}

@@ -16,7 +16,7 @@ MonoBehaviour:
   displayName: Salad
   category: 0
   icon: {fileID: 0}
-  difficulty: 1
+  difficulty: 2
   preparationTime: 20
   baseSpawnWeight: 1
   minLevel: 1

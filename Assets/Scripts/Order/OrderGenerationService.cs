@@ -1,9 +1,9 @@
 ﻿using Assets.Scripts.ScriptableObjects;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts.Order
 {
-    //TODO: Apply menuItem weight collection into generation rules, aplly level restrictions into generation.
     public class OrderGenerationService : IOrderGenerationService
     {
         private readonly MenuItemDatabase _menuDatabase;
@@ -26,45 +26,95 @@ namespace Assets.Scripts.Order
             int itemsToPick;
             if (IsMultiItemOrder())
             {
-                itemsToPick = UnityEngine.Random.Range(_levelConfig.minItemsPerOrder, _levelConfig.maxItemsPerOrder + 1); // + 1 because of exclusive upper range
+                var minItems = Mathf.Max(1, _levelConfig.minItemsPerOrder);
+                var maxItems = Mathf.Max(minItems, _levelConfig.maxItemsPerOrder);
+
+                // upper bound exclusive
+                itemsToPick = Random.Range(minItems, maxItems + 1);
             }
             else
             {
                 itemsToPick = 1;
             }
 
-            var menuItemList = SelectMenuItems(menuItems, itemsToPick);
-            if (menuItemList.Count == 0)
+            if (itemsToPick <= 0)
+            {
+                return null;
+            }
+
+            var weightedDict = CalculateWeight(menuItems, out var weightSum);
+            if (weightedDict == null || weightedDict.Count == 0)
+            {
+                return null;
+            }
+
+            var menuItemList = SelectItemsWeighted(weightedDict, weightSum, itemsToPick);
+            if (menuItemList == null || menuItemList.Count == 0)
             {
                 return null;
             }
 
             return menuItemList;
         }
-        private IReadOnlyList<MenuItemDefinitionSo> SelectMenuItems(IReadOnlyList<MenuItemDefinitionSo> menuItems, int count)
-        {
-            var outList = new List<MenuItemDefinitionSo>();
-            for (int i = 0; i < count; i++)
-            {
-                var randomItem = menuItems[UnityEngine.Random.Range(0, menuItems.Count)];
-                outList.Add(randomItem);
-            }
 
-            return outList;
-        }
         private bool IsMultiItemOrder()
         {
-            var chance = UnityEngine.Random.Range(0.0f, 1.0f);
-
-            if (chance <= _levelConfig.multiItemOrderChance)
-            {
-
-                return true;
-            }
-
-            return false;
+            var chance = Random.Range(0.0f, 1.0f);
+            return chance <= _levelConfig.multiItemOrderChance;
         }
 
+        private Dictionary<MenuItemDefinitionSo, float> CalculateWeight(IReadOnlyList<MenuItemDefinitionSo> menuItems, out float weightSum)
+        {
+            Dictionary<MenuItemDefinitionSo, float> outItems = new();
+            var k = 0.5f;
+            weightSum = 0;
 
+            foreach (var item in menuItems)
+            {
+                var difficultyPenalty = Mathf.Max(0, item.difficulty - _levelConfig.levelNumber);
+                var effectiveWeight = item.baseSpawnWeight / (1f + difficultyPenalty * k);
+                outItems.Add(item, effectiveWeight);
+                weightSum += effectiveWeight;
+            }
+
+            if (weightSum <= 0)
+                return null;
+
+            return outItems;
+        }
+        private IReadOnlyList<MenuItemDefinitionSo> SelectItemsWeighted(Dictionary<MenuItemDefinitionSo, float> menuItems, float weightSum, int count)
+        {
+            if (menuItems == null || menuItems.Count == 0 || weightSum <= 0f || count <= 0)
+            {
+                return null;
+            }
+
+            var outList = new List<MenuItemDefinitionSo>();
+
+            for (int i = 0; i < count; i++)
+            {
+                var randW = Random.Range(0, weightSum);
+                var accSum = 0f;
+                var picked = false;
+                MenuItemDefinitionSo lastItem = null;
+
+                foreach (var item in menuItems)
+                {
+                    lastItem = item.Key;
+                    accSum += item.Value;
+                    if (accSum >= randW)
+                    {
+                        outList.Add(item.Key);
+                        picked = true;
+                        break;
+                    }
+                }
+                if (!picked && lastItem != null)
+                {
+                    outList.Add(lastItem);
+                }
+            }
+            return outList;
+        }
     }
 }
