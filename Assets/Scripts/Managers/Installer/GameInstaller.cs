@@ -57,9 +57,12 @@ namespace Assets.Scripts.Managers.Installer
             Container.Bind<LevelDatabase>().AsSingle().WithArguments(levelDefinitionListSo.levels);
             Container.Bind<ICurrentLevelProvider>().To<CurrentLevelProvider>().AsSingle();
 
+            // order system
             Container.Bind<IOrderService>().To<OrderService>().AsSingle();
             Container.Bind<IOrderFlowService>().To<OrderFlowService>().AsSingle();
             Container.Bind<IOrderGenerationService>().To<OrderGenerationService>().AsSingle();
+            Container.Bind<IOrderSubmissionService>().To<OrderSubmissionService>().AsSingle();
+            Container.Bind<IMenuItemResolver>().To<MenuItemResolver>().AsSingle();
         }
     }
 }

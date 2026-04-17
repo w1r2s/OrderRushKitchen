@@ -1,13 +1,16 @@
+using Assets.Scripts.Order;
+using UnityEngine;
 using Zenject;
 
 public class DeliveryCounter : BaseCounter
 {
-    private IDeliveryService _deliveryService;
-
+    private IOrderSubmissionService _submissionService;
+    private IMenuItemResolver _menuItemResolver;
     [Inject]
-    public void Construct(IDeliveryService deliveryService)
+    public void Construct(IOrderSubmissionService submissionService, IMenuItemResolver menuItemResolver)
     {
-        _deliveryService = deliveryService;
+        _submissionService = submissionService;
+        _menuItemResolver = menuItemResolver;
     }
     public override void Interact(Player player)
     {
@@ -19,9 +22,17 @@ public class DeliveryCounter : BaseCounter
         if (!obj.TryGetPlate(out var plate))
             return;
 
-        _deliveryService.DeliverRecipe(plate);
+        var itemsCandidates = plate.GetKitchenObjectSoList();
+        var menuCandidate = _menuItemResolver.TryResolveMenuItem(itemsCandidates);
+
+        if (!_submissionService.TrySubmit(menuCandidate, out var submitFailReason))
+        {
+            Debug.Log($"{submitFailReason}");
+            return;
+        }
 
         obj = player.RemoveObject();
         Destroy(obj.gameObject);
+        Debug.Log($"order delivered");
     }
 }
