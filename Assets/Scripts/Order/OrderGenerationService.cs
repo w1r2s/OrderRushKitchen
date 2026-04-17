@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.ScriptableObjects;
+﻿using Assets.Scripts.Level;
+using Assets.Scripts.ScriptableObjects;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,21 +9,23 @@ namespace Assets.Scripts.Order
     public class OrderGenerationService : IOrderGenerationService
     {
         private readonly MenuItemDatabase _menuDatabase;
-        private readonly LevelDefinitionSo _levelConfig;
+        private readonly ICurrentLevelProvider _levelProvider;
 
         private const float SINGLE_DECAY_K = 0.9f;
         private const float MULTI_DECAY_K = 0.35f;
         private const float DIFFICULTY_K = 0.5f;
         private const float CURRENT_LEVEL_ITEM_CHANCE = 0.7f;
-        public OrderGenerationService(MenuItemDatabase menuDatabase, LevelDefinitionSo levelConfig)
+        public OrderGenerationService(MenuItemDatabase menuDatabase, ICurrentLevelProvider levelConfig)
         {
             _menuDatabase = menuDatabase;
-            _levelConfig = levelConfig;
+            _levelProvider = levelConfig;
         }
 
         public IReadOnlyList<MenuItemDefinitionSo> GenerateOrderItems()
         {
-            var menuItems = _menuDatabase.GetAvailableForLevel(_levelConfig.levelNumber);
+            var level = _levelProvider.CurrentLevel;
+
+            var menuItems = _menuDatabase.GetAvailableForLevel(level.levelNumber);
             if (menuItems == null || menuItems.Count == 0)
             {
                 return null;
@@ -31,8 +34,8 @@ namespace Assets.Scripts.Order
 
             if (IsMultiItemOrder())
             {
-                var minItems = Mathf.Max(1, _levelConfig.minItemsPerOrder);
-                var maxItems = Mathf.Max(minItems, _levelConfig.maxItemsPerOrder);
+                var minItems = Mathf.Max(1, level.minItemsPerOrder);
+                var maxItems = Mathf.Max(minItems, level.maxItemsPerOrder);
 
                 // upper bound exclusive
                 int itemsToPick = Random.Range(minItems, maxItems + 1);
@@ -108,22 +111,23 @@ namespace Assets.Scripts.Order
         private bool IsMultiItemOrder()
         {
             var chance = Random.Range(0.0f, 1.0f);
-            return chance <= _levelConfig.multiItemOrderChance;
+            return chance <= _levelProvider.CurrentLevel.multiItemOrderChance;
         }
 
         private Dictionary<MenuItemDefinitionSo, float> CalculateWeight(IReadOnlyList<MenuItemDefinitionSo> menuItems, float itemDecayK, out float weightSum)
         {
+            var levelNumber = _levelProvider.CurrentLevel.levelNumber;
             Dictionary<MenuItemDefinitionSo, float> outItems = new();
             weightSum = 0;
 
             foreach (var item in menuItems)
             {
                 // насколько сложное блюдо.
-                var diffDelta = Mathf.Max(0, item.difficulty - _levelConfig.levelNumber);
+                var diffDelta = Mathf.Max(0, item.difficulty - levelNumber);
                 var diffPenalty = 1 + diffDelta * DIFFICULTY_K;
 
                 //насколько устаревшее блюдо.
-                var levelDist = Mathf.Max(0, _levelConfig.levelNumber - item.minLevel);
+                var levelDist = Mathf.Max(0, levelNumber - item.minLevel);
                 var tierFactor = 1 / (1 + levelDist * itemDecayK);
 
                 var effectiveWeight = item.baseSpawnWeight * tierFactor / diffPenalty;
@@ -132,7 +136,8 @@ namespace Assets.Scripts.Order
                     continue;
                 }
 
-                outItems.Add(item, effectiveWeight);
+                outItems[item] = effectiveWeight;
+
                 weightSum += effectiveWeight;
             }
 
@@ -177,9 +182,10 @@ namespace Assets.Scripts.Order
             {
                 return new List<MenuItemDefinitionSo>();
             }
+            var levelNumber = _levelProvider.CurrentLevel.levelNumber;
 
             var currentLevelItems = menuItems
-                .Where(itemKey => itemKey.Key.minLevel == _levelConfig.levelNumber)
+                .Where(itemKey => itemKey.Key.minLevel == levelNumber)
                 .ToDictionary(item => item.Key, itemValue => itemValue.Value);
 
             var currentLevelWeightSum = currentLevelItems.Sum(item => item.Value);

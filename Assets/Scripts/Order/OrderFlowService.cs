@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.ScriptableObjects;
+﻿using Assets.Scripts.Level;
 
 namespace Assets.Scripts.Order
 {
@@ -7,17 +7,17 @@ namespace Assets.Scripts.Order
 
         private readonly IOrderService _orderService;
         private readonly IOrderGenerationService _orderGenerationService;
-        private readonly LevelDefinitionSo _levelConfig;
-        public OrderFlowService(IOrderService orderService, IOrderGenerationService orderGenerationService, LevelDefinitionSo levelConfig)
+        private readonly ICurrentLevelProvider _currentLevel;
+        public OrderFlowService(IOrderService orderService, IOrderGenerationService orderGenerationService, ICurrentLevelProvider levelConfig)
         {
             _orderService = orderService;
             _orderGenerationService = orderGenerationService;
-            _levelConfig = levelConfig;
+            _currentLevel = levelConfig;
         }
 
         public OrderFlowResult TryCreateOrder()
         {
-            if (_orderService.GetActiveOrders().Count >= _levelConfig.maxActiveOrders)
+            if (_orderService.GetActiveOrders().Count >= _currentLevel.CurrentLevel.maxActiveOrders)
                 return new OrderFlowResult(false, null, OrderFlowFailureReason.MaxActiveOrdersReached);
 
             var menuItemList = _orderGenerationService.GenerateOrderItems();

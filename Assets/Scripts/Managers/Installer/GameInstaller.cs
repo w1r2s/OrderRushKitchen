@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Managers.Game;
+﻿using Assets.Scripts.Level;
+using Assets.Scripts.Managers.Game;
 using Assets.Scripts.Managers.Input;
 using Assets.Scripts.Managers.Sound;
 using Assets.Scripts.Order;
@@ -18,8 +19,6 @@ namespace Assets.Scripts.Managers.Installer
         [SerializeField] private MenuItemDefinitionListSo menuDefinitionListSo;
         [SerializeField] private LevelDefinitionListSo levelDefinitionListSo;
 
-        //temp
-        [SerializeField] private LevelDefinitionSo levelDefinitionSo;
 
         public override void InstallBindings()
         {
@@ -27,8 +26,6 @@ namespace Assets.Scripts.Managers.Installer
             Container.BindInstance(audioClipRefsSo);
             Container.BindInstance(musicManager);
             
-            // temp
-            Container.BindInstance(levelDefinitionSo);
 
             Container.Bind<IGameService>().To<GameService>().AsSingle();
             Container.Bind<IDeliveryService>().To<DeliveryService>().AsSingle();
@@ -58,6 +55,7 @@ namespace Assets.Scripts.Managers.Installer
             Container.Bind<MenuItemDatabase>().AsSingle().WithArguments(menuDefinitionListSo.items);
 
             Container.Bind<LevelDatabase>().AsSingle().WithArguments(levelDefinitionListSo.levels);
+            Container.Bind<ICurrentLevelProvider>().To<CurrentLevelProvider>().AsSingle();
 
             Container.Bind<IOrderService>().To<OrderService>().AsSingle();
             Container.Bind<IOrderFlowService>().To<OrderFlowService>().AsSingle();

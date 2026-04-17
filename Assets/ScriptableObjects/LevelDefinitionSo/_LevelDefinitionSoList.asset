@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.ScriptableObjects.LevelDefinitionListSo
   levels:
   - {fileID: 11400000, guid: 944ca43c72693c940bc98e70166114ae, type: 2}
+  - {fileID: 11400000, guid: b68496b0baeefa74a8481bf7dea78684, type: 2}
