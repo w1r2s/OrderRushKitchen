@@ -1,6 +1,8 @@
-﻿using Assets.Scripts.Managers.Game;
+﻿using Assets.Scripts.Level;
+using Assets.Scripts.Managers.Game;
 using Assets.Scripts.Managers.Input;
 using Assets.Scripts.Managers.Sound;
+using Assets.Scripts.Order;
 using Assets.Scripts.ScriptableObjects;
 using UnityEngine;
 using Zenject;
@@ -10,21 +12,20 @@ namespace Assets.Scripts.Managers.Installer
     public class GameInstaller : MonoInstaller
     {
         [SerializeField] private ProcessRecipeListSo processRecipeListSo;
-        [SerializeField] private DishRecipeListSo dishRecipeListSo;
         [SerializeField] private AudioClipRefsSo audioClipRefsSo;
         [SerializeField] private MusicManager musicManager;
 
         [SerializeField] private MenuItemDefinitionListSo menuDefinitionListSo;
         [SerializeField] private LevelDefinitionListSo levelDefinitionListSo;
 
+
         public override void InstallBindings()
         {
 
             Container.BindInstance(audioClipRefsSo);
             Container.BindInstance(musicManager);
-
+            
             Container.Bind<IGameService>().To<GameService>().AsSingle();
-            Container.Bind<IDeliveryService>().To<DeliveryService>().AsSingle();
            
             Container.Bind<Player>().FromComponentInHierarchy().AsSingle();
 
@@ -45,12 +46,17 @@ namespace Assets.Scripts.Managers.Installer
             // Process recipes
             Container.Bind<RecipeDatabase>().AsSingle().WithArguments(processRecipeListSo.recipes);
 
-            // Dish recipes
-            Container.Bind<DishRecipeDatabase>().AsSingle().WithArguments(dishRecipeListSo.recipes);
-
             Container.Bind<MenuItemDatabase>().AsSingle().WithArguments(menuDefinitionListSo.items);
 
             Container.Bind<LevelDatabase>().AsSingle().WithArguments(levelDefinitionListSo.levels);
+            Container.Bind<ICurrentLevelProvider>().To<CurrentLevelProvider>().AsSingle();
+
+            // order system
+            Container.Bind<IOrderService>().To<OrderService>().AsSingle();
+            Container.Bind<IOrderFlowService>().To<OrderFlowService>().AsSingle();
+            Container.Bind<IOrderGenerationService>().To<OrderGenerationService>().AsSingle();
+            Container.Bind<IOrderSubmissionService>().To<OrderSubmissionService>().AsSingle();
+            Container.Bind<IMenuItemResolver>().To<MenuItemResolver>().AsSingle();
         }
     }
 }
