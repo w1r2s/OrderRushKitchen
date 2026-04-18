@@ -9,7 +9,6 @@ namespace Assets.Scripts.Order
         void Tick(float deltaTime);
         ActiveOrder CreateOrder(IEnumerable<MenuItemDefinitionSo> items);
         IReadOnlyList<ActiveOrder> GetActiveOrders();
-        int RemoveInactiveOrders();
         bool TryFulfillOrderItem(MenuItemDefinitionSo menuItem);
 
         public event EventHandler<OrderServiceEventArgs> OnOrderCreated;

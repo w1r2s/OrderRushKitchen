@@ -5,17 +5,15 @@ using Zenject;
 
 public class GameOverUI : MonoBehaviour
 {
-    private IDeliveryService _deliveryService;
     private IGameService _gameService;
 
     [SerializeField] private TextMeshProUGUI recipesDeliveredText;
-    
-    
+
+
     [Inject]
-    private void Construct(IGameService gameService,IDeliveryService deliveryService)
+    private void Construct(IGameService gameService)
     {
         _gameService = gameService;
-        _deliveryService = deliveryService;
     }
     private void Start()
     {
@@ -26,7 +24,7 @@ public class GameOverUI : MonoBehaviour
     {
         if (_gameService.IsGameOver())
         {
-            recipesDeliveredText.text = _deliveryService.GetSuccessfulRecipesAmount().ToString();
+             recipesDeliveredText.text = "In progress";
             Show();
         }
         else

@@ -33,10 +33,6 @@ namespace Assets.Scripts.DebugField
             {
                 GetActiveOrders();
             }
-            if (Input.GetKeyDown(KeyCode.F4))
-            {
-                RemoveInactiveOrders();
-            }
         }
 
         private void CreateOrder(IEnumerable<MenuItemDefinitionSo> menuItems)
@@ -85,12 +81,6 @@ namespace Assets.Scripts.DebugField
                     $"order remaining time: {order.RemainingTime}");
             }
 
-        }
-        private void RemoveInactiveOrders()
-        {
-
-            var removedOrders = _orderService.RemoveInactiveOrders();
-            Debug.Log($"remove orders method finished. Removed: {removedOrders}.");
         }
     }
 }

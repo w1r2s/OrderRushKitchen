@@ -15,6 +15,7 @@ namespace Assets.Scripts.Order
 
         private readonly List<ActiveOrder> _orders;
 
+        private bool needsCleanup;
         public OrderService()
         {
             _orders = new List<ActiveOrder>();
@@ -53,15 +54,21 @@ namespace Assets.Scripts.Order
                 if (order.IsFailed)
                 {
                     OnOrderFailed?.Invoke(this, new OrderServiceEventArgs(order));
+                    needsCleanup = true;
                     continue;
                 }
             }
+            if (needsCleanup)
+            {
+                RemoveInactiveOrders();
+                needsCleanup = false;
+            }
         }
-        public int RemoveInactiveOrders()
+        public void RemoveInactiveOrders()
         {
             var removeCount = _orders.Where(order => !order.IsActive).Count();
             if (removeCount == 0)
-                return 0;
+                return;
 
             for (var i = _orders.Count - 1; i >= 0; i--)
             {
@@ -71,8 +78,6 @@ namespace Assets.Scripts.Order
                 _orders.RemoveAt(i);
                 OnOrderRemoved?.Invoke(this, new OrderServiceEventArgs(order));
             }
-
-            return removeCount;
         }
 
         public bool TryFulfillOrderItem(MenuItemDefinitionSo menuItem)
@@ -88,7 +93,10 @@ namespace Assets.Scripts.Order
                 if (order.TryFulfill(menuItem))
                 {
                     if (order.IsCompleted)
+                    {
                         OnOrderCompleted?.Invoke(this, new OrderServiceEventArgs(order));
+                        needsCleanup = true;
+                    }
                     else
                         OnOrderUpdated?.Invoke(this, new OrderServiceEventArgs(order));
 
