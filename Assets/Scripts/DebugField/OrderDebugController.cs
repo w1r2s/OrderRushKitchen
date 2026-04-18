@@ -69,7 +69,7 @@ namespace Assets.Scripts.DebugField
             }
             else
             {
-                    Debug.Log($"cannot fulfill {deliveredItem?.key}.");
+                    Debug.Log($"cannot fulfill {deliveredItem.key}.");
             }
         }
         private void GetActiveOrders()

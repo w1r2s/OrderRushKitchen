@@ -7,6 +7,12 @@ namespace Assets.Scripts.Order
 {
     public class OrderService : IOrderService
     {
+        public event EventHandler<OrderServiceEventArgs> OnOrderCreated;
+        public event EventHandler<OrderServiceEventArgs> OnOrderRemoved;
+        public event EventHandler<OrderServiceEventArgs> OnOrderUpdated;
+        public event EventHandler<OrderServiceEventArgs> OnOrderCompleted;
+        public event EventHandler<OrderServiceEventArgs> OnOrderFailed;
+
         private readonly List<ActiveOrder> _orders;
 
         public OrderService()
@@ -16,17 +22,18 @@ namespace Assets.Scripts.Order
         public ActiveOrder CreateOrder(IEnumerable<MenuItemDefinitionSo> items)
         {
             if (items == null)
-               return null;
-         
+                return null;
+
             var validItems = items.Where(item => item != null).ToList();
 
-            if( validItems.Count == 0 )
+            if (validItems.Count == 0)
                 return null;
 
             var order = new ActiveOrder(Guid.NewGuid().ToString(), validItems);
 
             _orders.Add(order);
 
+            OnOrderCreated?.Invoke(this, new OrderServiceEventArgs(order));
             return order;
         }
 
@@ -39,16 +46,32 @@ namespace Assets.Scripts.Order
         {
             foreach (var order in _orders)
             {
-                if(!order.IsActive) continue;
+                if (!order.IsActive) continue;
 
                 order.Tick(deltaTime);
 
+                if (order.IsFailed)
+                {
+                    OnOrderFailed?.Invoke(this, new OrderServiceEventArgs(order));
+                    continue;
+                }
             }
         }
         public int RemoveInactiveOrders()
         {
             var removeCount = _orders.Where(order => !order.IsActive).Count();
-            _orders.RemoveAll(order => !order.IsActive);
+            if (removeCount == 0)
+                return 0;
+
+            for (var i = _orders.Count - 1; i >= 0; i--)
+            {
+                if (_orders[i].IsActive)
+                    continue;
+                var order = _orders[i];
+                _orders.RemoveAt(i);
+                OnOrderRemoved?.Invoke(this, new OrderServiceEventArgs(order));
+            }
+
             return removeCount;
         }
 
@@ -56,14 +79,21 @@ namespace Assets.Scripts.Order
         {
             if (menuItem == null)
                 return false;
-           
+
             foreach (var order in _orders)
             {
                 if (!order.IsActive)
                     continue;
 
                 if (order.TryFulfill(menuItem))
+                {
+                    if (order.IsCompleted)
+                        OnOrderCompleted?.Invoke(this, new OrderServiceEventArgs(order));
+                    else
+                        OnOrderUpdated?.Invoke(this, new OrderServiceEventArgs(order));
+
                     return true;
+                }
             }
 
             return false;

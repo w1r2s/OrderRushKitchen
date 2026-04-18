@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.ScriptableObjects;
+using System;
 using System.Collections.Generic;
 
 namespace Assets.Scripts.Order
@@ -10,5 +11,11 @@ namespace Assets.Scripts.Order
         IReadOnlyList<ActiveOrder> GetActiveOrders();
         int RemoveInactiveOrders();
         bool TryFulfillOrderItem(MenuItemDefinitionSo menuItem);
+
+        public event EventHandler<OrderServiceEventArgs> OnOrderCreated;
+        public event EventHandler<OrderServiceEventArgs> OnOrderRemoved;
+        public event EventHandler<OrderServiceEventArgs> OnOrderUpdated;
+        public event EventHandler<OrderServiceEventArgs> OnOrderCompleted;
+        public event EventHandler<OrderServiceEventArgs> OnOrderFailed;
     }
 }
