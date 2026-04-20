@@ -64,15 +64,22 @@ public class ClearCounter : BaseCounter
         KitchenObject counterObjectOnCounter = GetObject();
         if (counterObjectOnCounter.TryGetPlate(out PlateKitchenObject counterPlate))
         {
-            var menuItemCandidate = counterPlate.GetKitchenObjectSoList();
-            var menuItem = _menuItemResolver.TryResolveMenuItem(menuItemCandidate);
+            if (counterPlate.State != PlateState.Assembly)
+                return;
+
+            var ingredients = counterPlate.GetKitchenObjectSoList();
+            var menuItem = _menuItemResolver.TryResolveMenuItem(ingredients);
             if (menuItem == null)
             {
+                // TODO(M5): replace with UI/audio feedback
                 Debug.Log($"serve resolve failed");
                 return;
             }
             if (!counterPlate.TryServe(menuItem))
+            {
+                // TODO(M5): replace with UI/audio feedback
                 Debug.Log($"serve failed.");
+            }
         }
     }
 }
