@@ -1,5 +1,17 @@
+using Assets.Scripts.Order;
+using Assets.Scripts.Serving;
+using UnityEngine;
+using Zenject;
+
 public class ClearCounter : BaseCounter
 {
+    private IMenuItemResolver _menuItemResolver;
+
+    [Inject]
+    private void Construct(IMenuItemResolver menuItemResolver)
+    {
+        _menuItemResolver = menuItemResolver;
+    }
     public override void Interact(Player player)
     {
         // На стойке пусто -> кладём предмет игрока
@@ -42,6 +54,25 @@ public class ClearCounter : BaseCounter
                 KitchenObject removedObject = player.RemoveObject();
                 Destroy(removedObject.gameObject);
             }
+        }
+    }
+    public override void InteractAlternate(Player player)
+    {
+        if (!HasObject)
+            return;
+
+        KitchenObject counterObjectOnCounter = GetObject();
+        if (counterObjectOnCounter.TryGetPlate(out PlateKitchenObject counterPlate))
+        {
+            var menuItemCandidate = counterPlate.GetKitchenObjectSoList();
+            var menuItem = _menuItemResolver.TryResolveMenuItem(menuItemCandidate);
+            if (menuItem == null)
+            {
+                Debug.Log($"serve resolve failed");
+                return;
+            }
+            if (!counterPlate.TryServe(menuItem))
+                Debug.Log($"serve failed.");
         }
     }
 }

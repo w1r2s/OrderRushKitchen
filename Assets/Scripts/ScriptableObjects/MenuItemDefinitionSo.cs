@@ -15,6 +15,7 @@ namespace Assets.Scripts.ScriptableObjects
 
         [Header("Presentation")]
         public Sprite icon;
+        public GameObject servedVisualPrefab;
 
         [Header("Gameplay")]
         [Min(1)]
