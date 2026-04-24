@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Serving
 {
-    public class ServedMenuItemKitchenObject : KitchenObject
+    public class ServedMenuItemKitchenObject : KitchenObject, ISubmittableMenuItemSource
     {
         public MenuItemDefinitionSo ServedMenuItem { get; private set; }
         [SerializeField] private Transform contentRoot;
@@ -26,7 +26,17 @@ namespace Assets.Scripts.Serving
             ServedMenuItem = menuItem;
 
             Instantiate(ServedMenuItem.servedVisualPrefab, contentRoot, false);
-            
+
+            return true;
+        }
+
+        public bool TryGetMenuItemForSubmit(out MenuItemDefinitionSo menuItem)
+        {
+            menuItem = null;
+            if (ServedMenuItem == null)
+                return false;
+
+            menuItem = ServedMenuItem;
             return true;
         }
     }

@@ -1,5 +1,4 @@
 using Assets.Scripts.Order;
-using Assets.Scripts.ScriptableObjects;
 using Assets.Scripts.Serving;
 using UnityEngine;
 using Zenject;
@@ -17,37 +16,22 @@ public class DeliveryCounter : BaseCounter
     {
         if (!player.HasObject)
             return;
-        MenuItemDefinitionSo itemToSubmit = null;
-        if (player.TryGetObjectAs<PlateKitchenObject>(out var plate))
-        {
 
-            if (plate.State != PlateState.Served)
-                return;
+        var obj = player.GetObject();
 
-            if (plate.ResolvedMenuItem == null)
-                return;
-
-            itemToSubmit = plate.ResolvedMenuItem;
-        }
-
-        if (player.TryGetObjectAs<ServedMenuItemKitchenObject>(out var servedMenuItem))
-        {
-            if (servedMenuItem.ServedMenuItem == null)
-                return;
-
-            itemToSubmit = servedMenuItem.ServedMenuItem;
-        }
-
-        if (itemToSubmit == null)
+        if (obj is not ISubmittableMenuItemSource source)
             return;
 
-        if (!_submissionService.TrySubmit(itemToSubmit, out var submitFailReason))
+        if (!source.TryGetMenuItemForSubmit(out var menuItem) || menuItem == null)
+            return;
+
+        if (!_submissionService.TrySubmit(menuItem, out var submitFailReason))
         {
             Debug.Log($"{submitFailReason}");
             return;
         }
-        var obj = player.RemoveObject();
-        Destroy(obj.gameObject);
+        var removed = player.RemoveObject();
+        Destroy(removed.gameObject);
         Debug.Log($"order delivered");
     }
 }

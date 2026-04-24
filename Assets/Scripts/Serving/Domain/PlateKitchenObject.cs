@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Serving
 {
-    public class PlateKitchenObject : KitchenObject
+    public class PlateKitchenObject : KitchenObject, ISubmittableMenuItemSource
     {
         public event EventHandler<IngredientsChangedEventArgs> OnIngredientsChanged;
         public event EventHandler<PlateStateChangedEventArgs> OnPlateStateChanged;
@@ -68,6 +68,19 @@ namespace Assets.Scripts.Serving
         public IReadOnlyList<KitchenObjectSo> GetKitchenObjectSoList()
         {
             return kitchenObjectSoList;
+        }
+
+        public bool TryGetMenuItemForSubmit(out MenuItemDefinitionSo menuItem)
+        {
+            menuItem = null;
+            if (State != PlateState.Served)
+                return false;
+
+            if (ResolvedMenuItem == null)
+                return false;
+
+            menuItem = ResolvedMenuItem;
+            return true;
         }
     }
 }
