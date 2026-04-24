@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: Water
   category: 1
   icon: {fileID: 0}
+  servedVisualPrefab: {fileID: 4325073077237835904, guid: 8849fd40222aec94bbeffb57fb232108, type: 3}
   difficulty: 1
   preparationTime: 15
   baseSpawnWeight: 0.5
