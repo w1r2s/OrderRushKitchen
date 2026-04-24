@@ -60,4 +60,9 @@ public abstract class ObjectHolder : MonoBehaviour
         var obj = Instantiate(prefab);
         SetObject(obj);
     }
+    public bool TryGetObjectAs<T>(out T value) where T : KitchenObject
+    {
+        value = _object as T;
+        return value != null;
+    }
 }

@@ -1,4 +1,5 @@
 using Assets.Scripts;
+using Assets.Scripts.Serving;
 using System;
 using UnityEngine;
 using Zenject;
@@ -96,7 +97,7 @@ public class StoveCounter : BaseCounter, IHasProgress
         // попробовать положить на тарелку
         var playerObj = player.GetObject();
         var counterObj = GetObject();
-        if (playerObj.TryGetPlate(out var plate))
+        if (player.TryGetObjectAs<PlateKitchenObject>(out var plate))
         {
             if (plate.TryAddIngredient(counterObj.KitchenObjectSo))
             {

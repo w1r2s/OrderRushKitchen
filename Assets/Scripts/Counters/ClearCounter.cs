@@ -36,7 +36,7 @@ public class ClearCounter : BaseCounter
         KitchenObject playerObjectInHand = player.GetObject();
         KitchenObject counterObjectOnCounter = GetObject();
 
-        if (playerObjectInHand.TryGetPlate(out PlateKitchenObject playerPlate))
+        if (player.TryGetObjectAs<PlateKitchenObject>(out var playerPlate))
         {
             if (playerPlate.TryAddIngredient(counterObjectOnCounter.KitchenObjectSo))
             {
@@ -47,7 +47,7 @@ public class ClearCounter : BaseCounter
             return;
         }
 
-        if (counterObjectOnCounter.TryGetPlate(out PlateKitchenObject counterPlate))
+        if (TryGetObjectAs<PlateKitchenObject>(out var counterPlate))
         {
             if (counterPlate.TryAddIngredient(playerObjectInHand.KitchenObjectSo))
             {
@@ -55,14 +55,14 @@ public class ClearCounter : BaseCounter
                 Destroy(removedObject.gameObject);
             }
         }
+
     }
     public override void InteractAlternate(Player player)
     {
         if (!HasObject)
             return;
 
-        KitchenObject counterObjectOnCounter = GetObject();
-        if (counterObjectOnCounter.TryGetPlate(out PlateKitchenObject counterPlate))
+        if (TryGetObjectAs<PlateKitchenObject>(out var counterPlate))
         {
             if (counterPlate.State != PlateState.Assembly)
                 return;

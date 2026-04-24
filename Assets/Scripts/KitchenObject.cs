@@ -1,4 +1,3 @@
-using Assets.Scripts.Serving;
 using UnityEngine;
 
 public class KitchenObject : MonoBehaviour
@@ -19,17 +18,5 @@ public class KitchenObject : MonoBehaviour
     public void ClearHolder()
     {
         _holder = null;
-    }
-
-    public bool TryGetPlate(out PlateKitchenObject plate)
-    {
-        if (this is PlateKitchenObject p)
-        {
-            plate = p;
-            return true;
-        }
-
-        plate = null;
-        return false;
     }
 }
