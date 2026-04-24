@@ -4,6 +4,7 @@ using Assets.Scripts.Managers.Input;
 using Assets.Scripts.Managers.Sound;
 using Assets.Scripts.Order;
 using Assets.Scripts.ScriptableObjects;
+using Assets.Scripts.Serving;
 using UnityEngine;
 using Zenject;
 
@@ -18,7 +19,7 @@ namespace Assets.Scripts.Managers.Installer
         [SerializeField] private MenuItemDefinitionListSo menuDefinitionListSo;
         [SerializeField] private LevelDefinitionListSo levelDefinitionListSo;
 
-
+        [SerializeField] private KitchenObjectSo servedMenuItemContainerSo;
         public override void InstallBindings()
         {
 
@@ -57,6 +58,8 @@ namespace Assets.Scripts.Managers.Installer
             Container.Bind<IOrderGenerationService>().To<OrderGenerationService>().AsSingle();
             Container.Bind<IOrderSubmissionService>().To<OrderSubmissionService>().AsSingle();
             Container.Bind<IMenuItemResolver>().To<MenuItemResolver>().AsSingle();
+
+            Container.Bind<IServedMenuItemFactory>().To<ServedMenuItemFactory>().AsSingle().WithArguments(servedMenuItemContainerSo);
         }
     }
 }

@@ -9,13 +9,14 @@ namespace Assets.Scripts.DebugField
     {
         private MenuItemDatabase _menuDataBase;
         private Player _player;
-        [SerializeField] private ServedMenuItemKitchenObject servedItemPrefab;
+        private IServedMenuItemFactory _servedItemFactory;
 
         [Inject]
-        private void Construct(Player player, MenuItemDatabase menuDataBase)
+        private void Construct(Player player, MenuItemDatabase menuDataBase, IServedMenuItemFactory servedItemFactory)
         {
             _menuDataBase = menuDataBase;
             _player = player;
+            _servedItemFactory = servedItemFactory;
         }
         private void Update()
         {
@@ -30,21 +31,14 @@ namespace Assets.Scripts.DebugField
                     Debug.Log("no served item found");
                     return;
                 }
-                if (servedItemPrefab == null)
+
+                if (_servedItemFactory.TryCreate(drinkItem, _player, out _))
                 {
-                    Debug.Log("spawner prefab not found");
-                    return;
-                }
-                var servedItem = Instantiate(servedItemPrefab);
-                if (servedItem.TryInitialize(drinkItem))
-                {
-                    _player.SetObject(servedItem);
                     Debug.Log("served spawn Success");
                     return;
                 }
-              
+
                 Debug.Log("served spawn failed");
-                Destroy(servedItem);
             }
         }
     }
