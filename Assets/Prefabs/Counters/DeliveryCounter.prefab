@@ -276,7 +276,6 @@ GameObject:
   - component: {fileID: 139961541746046289}
   - component: {fileID: 6313934575658948246}
   - component: {fileID: 3836596776964044858}
-  - component: {fileID: 9111065066096164603}
   - component: {fileID: 7161677757824894422}
   - component: {fileID: 9115086208258382519}
   m_Layer: 5
@@ -285,7 +284,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5181726435931805432
 RectTransform:
   m_ObjectHideFlags: 0
@@ -371,25 +370,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &9111065066096164603
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2990131853843724135}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 956c75b3daf218a458d465ad7e7cc870, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DeliveryResultUI
-  backgroundImage: {fileID: 3795698643448137623}
-  iconImage: {fileID: 368583111187180668}
-  messageText: {fileID: 501223227114264233}
-  successColor: {r: 0, g: 0.6784314, b: 0.043137256, a: 1}
-  failedColor: {r: 0.62352943, g: 0.023529412, b: 0, a: 1}
-  successSprite: {fileID: 21300000, guid: 6c562ac6d3e47ff4794df31886c6d864, type: 3}
-  failedSprite: {fileID: 21300000, guid: 0d6e1281049dccc4189bf308b2ccf331, type: 3}
 --- !u!95 &7161677757824894422
 Animator:
   serializedVersion: 7

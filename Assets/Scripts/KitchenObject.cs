@@ -19,16 +19,4 @@ public class KitchenObject : MonoBehaviour
     {
         _holder = null;
     }
-
-    public bool TryGetPlate(out PlateKitchenObject plate)
-    {
-        if (this is PlateKitchenObject p)
-        {
-            plate = p;
-            return true;
-        }
-
-        plate = null;
-        return false;
-    }
 }

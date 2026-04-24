@@ -1,5 +1,17 @@
+using Assets.Scripts.Order;
+using Assets.Scripts.Serving;
+using UnityEngine;
+using Zenject;
+
 public class ClearCounter : BaseCounter
 {
+    private IMenuItemResolver _menuItemResolver;
+
+    [Inject]
+    private void Construct(IMenuItemResolver menuItemResolver)
+    {
+        _menuItemResolver = menuItemResolver;
+    }
     public override void Interact(Player player)
     {
         // На стойке пусто -> кладём предмет игрока
@@ -24,7 +36,7 @@ public class ClearCounter : BaseCounter
         KitchenObject playerObjectInHand = player.GetObject();
         KitchenObject counterObjectOnCounter = GetObject();
 
-        if (playerObjectInHand.TryGetPlate(out PlateKitchenObject playerPlate))
+        if (player.TryGetObjectAs<PlateKitchenObject>(out var playerPlate))
         {
             if (playerPlate.TryAddIngredient(counterObjectOnCounter.KitchenObjectSo))
             {
@@ -35,12 +47,38 @@ public class ClearCounter : BaseCounter
             return;
         }
 
-        if (counterObjectOnCounter.TryGetPlate(out PlateKitchenObject counterPlate))
+        if (TryGetObjectAs<PlateKitchenObject>(out var counterPlate))
         {
             if (counterPlate.TryAddIngredient(playerObjectInHand.KitchenObjectSo))
             {
                 KitchenObject removedObject = player.RemoveObject();
                 Destroy(removedObject.gameObject);
+            }
+        }
+
+    }
+    public override void InteractAlternate(Player player)
+    {
+        if (!HasObject)
+            return;
+
+        if (TryGetObjectAs<PlateKitchenObject>(out var counterPlate))
+        {
+            if (counterPlate.State != PlateState.Assembly)
+                return;
+
+            var ingredients = counterPlate.GetKitchenObjectSoList();
+            var menuItem = _menuItemResolver.TryResolveMenuItem(ingredients);
+            if (menuItem == null)
+            {
+                // TODO(M5): replace with UI/audio feedback
+                Debug.Log($"serve resolve failed");
+                return;
+            }
+            if (!counterPlate.TryServe(menuItem))
+            {
+                // TODO(M5): replace with UI/audio feedback
+                Debug.Log($"serve failed.");
             }
         }
     }
