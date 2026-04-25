@@ -10,7 +10,6 @@ namespace Assets.Scripts.Selection
 
         public event EventHandler OnSelectionOpened;
         public event EventHandler OnSelectionClosed;
-        public event EventHandler OnSelectionConfirmed;
 
         private bool _isOpen;
         public bool IsOpen => _isOpen;
@@ -75,7 +74,6 @@ namespace Assets.Scripts.Selection
 
             CurrentTargetHolder.SpawnAndSet(kitchenObjectSo.prefab);
 
-            OnSelectionConfirmed?.Invoke(this, EventArgs.Empty);
             CloseSelection();
             return true;
         }
@@ -93,7 +91,6 @@ namespace Assets.Scripts.Selection
             if (!_menuItemFactory.TryCreate(menuItem, CurrentTargetHolder, out _))
                 return false;
 
-            OnSelectionConfirmed?.Invoke(this, EventArgs.Empty);
             CloseSelection();
             return true;
         }
