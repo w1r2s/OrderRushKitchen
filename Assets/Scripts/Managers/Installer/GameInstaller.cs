@@ -4,6 +4,7 @@ using Assets.Scripts.Managers.Input;
 using Assets.Scripts.Managers.Sound;
 using Assets.Scripts.Order;
 using Assets.Scripts.ScriptableObjects;
+using Assets.Scripts.Selection;
 using Assets.Scripts.Serving;
 using UnityEngine;
 using Zenject;
@@ -25,9 +26,9 @@ namespace Assets.Scripts.Managers.Installer
 
             Container.BindInstance(audioClipRefsSo);
             Container.BindInstance(musicManager);
-            
+
             Container.Bind<IGameService>().To<GameService>().AsSingle();
-           
+
             Container.Bind<Player>().FromComponentInHierarchy().AsSingle();
 
             Container.Bind<Actions>().AsSingle();
@@ -60,6 +61,8 @@ namespace Assets.Scripts.Managers.Installer
             Container.Bind<IMenuItemResolver>().To<MenuItemResolver>().AsSingle();
 
             Container.Bind<IServedMenuItemFactory>().To<ServedMenuItemFactory>().AsSingle().WithArguments(servedMenuItemContainerSo);
+
+            Container.Bind<IItemSelectionService>().To<ItemSelectionService>().AsSingle();
         }
     }
 }
