@@ -325,7 +325,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Counters.DrinkCounter
   holdPoint: {fileID: 1307222471418527176}
-  defaultDrinkMenuItem: {fileID: 11400000, guid: ddf3b6810501c62429b219739869c04e, type: 2}
+  drinkOptions:
+  - {fileID: 11400000, guid: ddf3b6810501c62429b219739869c04e, type: 2}
 --- !u!4 &7356667592448353926 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4895283548506796269, guid: d8d3f794fbe866147b6198d16b7562f7, type: 3}

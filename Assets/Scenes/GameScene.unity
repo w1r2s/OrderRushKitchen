@@ -4249,7 +4249,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9372549, g: 0.6843798, b: 0.427451, a: 0.8}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4476,6 +4476,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7183382846426436854, guid: f9ac2834eefffdb45bed643e85792c90, type: 3}
+      propertyPath: ingredientOptions.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7183382846426436854, guid: f9ac2834eefffdb45bed643e85792c90, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 12e5de0393060484f84c9fc2f0c6f162, type: 2}
+    - target: {fileID: 7183382846426436854, guid: f9ac2834eefffdb45bed643e85792c90, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 155abaf9592c5c34c8171fcabe365ccc, type: 2}
+    - target: {fileID: 7183382846426436854, guid: f9ac2834eefffdb45bed643e85792c90, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e0ae5b79cf324a45a93c325940d8eeb, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5039,6 +5055,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7183382846426436854, guid: 0044eaf2d9ab74a4fb17d7edb4ef632f, type: 3}
+      propertyPath: ingredientOptions.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7183382846426436854, guid: 0044eaf2d9ab74a4fb17d7edb4ef632f, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 7d4e30fd051b4144fa3f521a2d6ab031, type: 2}
+    - target: {fileID: 7183382846426436854, guid: 0044eaf2d9ab74a4fb17d7edb4ef632f, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: d444effe36cabc9478048eb5244c6be3, type: 2}
+    - target: {fileID: 7183382846426436854, guid: 0044eaf2d9ab74a4fb17d7edb4ef632f, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 9bd5a6e6b14b92b40a0c93355535fbfb, type: 2}
+    - target: {fileID: 7183382846426436854, guid: 0044eaf2d9ab74a4fb17d7edb4ef632f, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e0ae5b79cf324a45a93c325940d8eeb, type: 2}
+    - target: {fileID: 7183382846426436854, guid: 0044eaf2d9ab74a4fb17d7edb4ef632f, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[4]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 6206f3345e3eac24f99f38de84735cd8, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5730,7 +5770,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7360,6 +7400,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4515968843767181891, guid: d82e7c287d0f9004f846a5fe224408ac, type: 3}
+      propertyPath: ingredientOptions.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515968843767181891, guid: d82e7c287d0f9004f846a5fe224408ac, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 7d4e30fd051b4144fa3f521a2d6ab031, type: 2}
+    - target: {fileID: 4515968843767181891, guid: d82e7c287d0f9004f846a5fe224408ac, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: d444effe36cabc9478048eb5244c6be3, type: 2}
+    - target: {fileID: 4515968843767181891, guid: d82e7c287d0f9004f846a5fe224408ac, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 9bd5a6e6b14b92b40a0c93355535fbfb, type: 2}
+    - target: {fileID: 4515968843767181891, guid: d82e7c287d0f9004f846a5fe224408ac, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e0ae5b79cf324a45a93c325940d8eeb, type: 2}
+    - target: {fileID: 4515968843767181891, guid: d82e7c287d0f9004f846a5fe224408ac, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[4]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 6206f3345e3eac24f99f38de84735cd8, type: 2}
     - target: {fileID: 4723360346724555176, guid: d82e7c287d0f9004f846a5fe224408ac, type: 3}
       propertyPath: m_Name
       value: ContainerCounter_Tomato
@@ -10891,14 +10955,6 @@ MonoBehaviour:
   closeButton: {fileID: 356241265}
   ShelfRowTemplate: {fileID: 2146594227}
   ItemButtonTemplate: {fileID: 475230594}
-  ingredientOptions:
-  - {fileID: 11400000, guid: d444effe36cabc9478048eb5244c6be3, type: 2}
-  - {fileID: 11400000, guid: 9bd5a6e6b14b92b40a0c93355535fbfb, type: 2}
-  - {fileID: 11400000, guid: 8e0ae5b79cf324a45a93c325940d8eeb, type: 2}
-  - {fileID: 11400000, guid: 6206f3345e3eac24f99f38de84735cd8, type: 2}
-  - {fileID: 11400000, guid: 7d4e30fd051b4144fa3f521a2d6ab031, type: 2}
-  menuItemOptions:
-  - {fileID: 11400000, guid: ddf3b6810501c62429b219739869c04e, type: 2}
   itemsPerRow: 3
 --- !u!1 &1977944567
 GameObject:
@@ -11197,7 +11253,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.0627451}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -11817,6 +11873,62 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7183382846426436854, guid: ba0414271f964464e941dae8b3b1dfb2, type: 3}
+      propertyPath: ingredientOptions.Array.size
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 7183382846426436854, guid: ba0414271f964464e941dae8b3b1dfb2, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 7d4e30fd051b4144fa3f521a2d6ab031, type: 2}
+    - target: {fileID: 7183382846426436854, guid: ba0414271f964464e941dae8b3b1dfb2, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: d444effe36cabc9478048eb5244c6be3, type: 2}
+    - target: {fileID: 7183382846426436854, guid: ba0414271f964464e941dae8b3b1dfb2, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 1c928a25da69b5145be2bcd04ca9a8d7, type: 2}
+    - target: {fileID: 7183382846426436854, guid: ba0414271f964464e941dae8b3b1dfb2, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 9bd5a6e6b14b92b40a0c93355535fbfb, type: 2}
+    - target: {fileID: 7183382846426436854, guid: ba0414271f964464e941dae8b3b1dfb2, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[4]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 7a89356f1ff23ff45a85fe4f716c9c6b, type: 2}
+    - target: {fileID: 7183382846426436854, guid: ba0414271f964464e941dae8b3b1dfb2, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[5]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 12e5de0393060484f84c9fc2f0c6f162, type: 2}
+    - target: {fileID: 7183382846426436854, guid: ba0414271f964464e941dae8b3b1dfb2, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[6]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 155abaf9592c5c34c8171fcabe365ccc, type: 2}
+    - target: {fileID: 7183382846426436854, guid: ba0414271f964464e941dae8b3b1dfb2, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[7]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e0ae5b79cf324a45a93c325940d8eeb, type: 2}
+    - target: {fileID: 7183382846426436854, guid: ba0414271f964464e941dae8b3b1dfb2, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[8]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 34891a94f3c3af04b8179a420f4884bb, type: 2}
+    - target: {fileID: 7183382846426436854, guid: ba0414271f964464e941dae8b3b1dfb2, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[9]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 6206f3345e3eac24f99f38de84735cd8, type: 2}
+    - target: {fileID: 7183382846426436854, guid: ba0414271f964464e941dae8b3b1dfb2, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[10]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 2a18ece86eaf6fc4d89b4db2eff8cf0d, type: 2}
+    - target: {fileID: 7183382846426436854, guid: ba0414271f964464e941dae8b3b1dfb2, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[11]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 34891a94f3c3af04b8179a420f4884bb, type: 2}
+    - target: {fileID: 7183382846426436854, guid: ba0414271f964464e941dae8b3b1dfb2, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[12]'
+      value: 
+      objectReference: {fileID: 11400000, guid: a0a3c525c6c594344bd522768eb121da, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

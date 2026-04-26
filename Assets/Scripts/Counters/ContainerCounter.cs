@@ -1,5 +1,6 @@
 using Assets.Scripts.Selection;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -7,7 +8,7 @@ public class ContainerCounter : BaseCounter
 {
     private IItemSelectionService _selectionService;
 
-    [SerializeField] private KitchenObjectSo kitchenObjectSo;
+    [SerializeField] List<KitchenObjectSo> ingredientOptions;
 
     public event EventHandler OnPlayerGrabbedObject;
 
@@ -25,15 +26,6 @@ public class ContainerCounter : BaseCounter
             _selectionService.CloseSelection();
             return;
         }
-        _selectionService.OpenIngredientsSelection(player);
-
-        return;
-
-        //if (!player.HasObject)
-        //{
-        //    player.SpawnAndSet(kitchenObjectSo.prefab);
-
-        //    OnPlayerGrabbedObject?.Invoke(this, EventArgs.Empty);
-        //}
+        _selectionService.OpenIngredientsSelection(player, ingredientOptions);
     }
 }

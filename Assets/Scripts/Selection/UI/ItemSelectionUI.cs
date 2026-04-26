@@ -20,10 +20,6 @@ namespace Assets.Scripts.Selection.UI
         [SerializeField] private RectTransform ShelfRowTemplate;
         [SerializeField] private ItemSelectionButtonUI ItemButtonTemplate;
 
-
-        [SerializeField] private List<KitchenObjectSo> ingredientOptions;
-        [SerializeField] private List<MenuItemDefinitionSo> menuItemOptions;
-
         [SerializeField] private int itemsPerRow = 3;
         private readonly List<GameObject> _spawnedRows = new();
 
@@ -107,10 +103,15 @@ namespace Assets.Scripts.Selection.UI
 
             var perRow = Mathf.Max(1, itemsPerRow);
 
+            var options = _selectionService.CurrentIngredientOptions;
+
+            if (options == null || options.Count == 0)
+                return;
+
             int added = 0;
-            for (int i = 0; i < ingredientOptions.Count; i++)
+            for (int i = 0; i < _selectionService.CurrentIngredientOptions.Count; i++)
             {
-                var item = ingredientOptions[i];
+                var item = options[i];
                 if (item == null)
                     continue;
                 if (added % perRow == 0)
@@ -129,10 +130,15 @@ namespace Assets.Scripts.Selection.UI
 
             var perRow = Mathf.Max(1, itemsPerRow);
 
+            var options = _selectionService.CurrentDrinkOptions;
+
+            if (options == null || options.Count == 0)
+                return;
+
             int added = 0;
-            for (int i = 0; i < menuItemOptions.Count; i++)
+            for (int i = 0; i < options.Count; i++)
             {
-                var item = menuItemOptions[i];
+                var item = options[i];
                 if (item == null || item.category != MenuItemCategory.Drink)
                     continue;
 

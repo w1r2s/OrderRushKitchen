@@ -1,6 +1,6 @@
 ﻿using Assets.Scripts.ScriptableObjects;
 using Assets.Scripts.Selection;
-using Assets.Scripts.Serving;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -8,15 +8,13 @@ namespace Assets.Scripts.Counters
 {
     public class DrinkCounter : BaseCounter
     {
-        private IServedMenuItemFactory _servedItemFactory;
         private IItemSelectionService _selectionService;
 
-        [SerializeField] private MenuItemDefinitionSo defaultDrinkMenuItem;
+        [SerializeField] private List<MenuItemDefinitionSo> drinkOptions;
 
         [Inject]
-        private void Construct(IServedMenuItemFactory servedItemFactory, IItemSelectionService selectionService)
+        private void Construct(IItemSelectionService selectionService)
         {
-            _servedItemFactory = servedItemFactory;
             _selectionService = selectionService;
         }
 
@@ -30,21 +28,7 @@ namespace Assets.Scripts.Counters
                 _selectionService.CloseSelection();
                 return;
             }
-            _selectionService.OpenDrinksSelection(player);
-            return;
-            //
-
-            //if (defaultDrinkMenuItem == null || defaultDrinkMenuItem.category != MenuItemCategory.Drink)
-            //{
-            //    Debug.LogWarning("drink counter: default item is null or not drink type");
-            //    return;
-            //}
-            //if (!_servedItemFactory.TryCreate(defaultDrinkMenuItem, player, out _))
-            //{
-            //    Debug.LogWarning("drink counter: create servedItem failed");
-            //    return;
-            //}
-            //Debug.Log("drink counter: drink granted");
+            _selectionService.OpenDrinksSelection(player, drinkOptions);
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Assets.Scripts.ScriptableObjects;
 using Assets.Scripts.Serving;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Assets.Scripts.Selection
 {
@@ -19,30 +21,35 @@ namespace Assets.Scripts.Selection
         private ObjectHolder _targetHolder;
         public ObjectHolder CurrentTargetHolder => _targetHolder;
 
+        public IReadOnlyList<MenuItemDefinitionSo> CurrentDrinkOptions { get; private set; }
+        public IReadOnlyList<KitchenObjectSo> CurrentIngredientOptions { get; private set; }
+
         public ItemSelectionService(IServedMenuItemFactory menuItemFactory)
         {
             _menuItemFactory = menuItemFactory;
         }
-        public void OpenDrinksSelection(ObjectHolder targetHolder)
+        public void OpenDrinksSelection(ObjectHolder targetHolder, IReadOnlyList<MenuItemDefinitionSo> options)
         {
             if (_isOpen)
                 return;
-            if (targetHolder == null)
+            if (targetHolder == null || options == null || options.Count == 0)
                 return;
 
+            CurrentDrinkOptions = options;
             _targetHolder = targetHolder;
             _isOpen = true;
             CurrentMode = ItemSelectionMode.Drinks;
             OnSelectionOpened?.Invoke(this, EventArgs.Empty);
         }
 
-        public void OpenIngredientsSelection(ObjectHolder targetHolder)
+        public void OpenIngredientsSelection(ObjectHolder targetHolder, IReadOnlyList<KitchenObjectSo> options)
         {
             if (_isOpen)
                 return;
-            if (targetHolder == null)
+            if (targetHolder == null || options == null || options.Count == 0)
                 return;
 
+            CurrentIngredientOptions = options;
             _targetHolder = targetHolder;
             _isOpen = true;
             CurrentMode = ItemSelectionMode.Ingredients;
@@ -57,6 +64,8 @@ namespace Assets.Scripts.Selection
 
             _isOpen = false;
             _targetHolder = null;
+            CurrentDrinkOptions = null;
+            CurrentIngredientOptions = null;
             CurrentMode = ItemSelectionMode.None;
             OnSelectionClosed?.Invoke(this, EventArgs.Empty);
         }
@@ -71,6 +80,10 @@ namespace Assets.Scripts.Selection
 
             if (CurrentTargetHolder.HasObject)
                 return false;
+
+            if (CurrentIngredientOptions == null || !CurrentIngredientOptions.Contains(kitchenObjectSo))
+                return false;
+
 
             CurrentTargetHolder.SpawnAndSet(kitchenObjectSo.prefab);
 
@@ -88,6 +101,10 @@ namespace Assets.Scripts.Selection
 
             if (CurrentTargetHolder.HasObject)
                 return false;
+
+            if (CurrentDrinkOptions == null || !CurrentDrinkOptions.Contains(menuItem))
+                return false;
+
             if (!_menuItemFactory.TryCreate(menuItem, CurrentTargetHolder, out _))
                 return false;
 
