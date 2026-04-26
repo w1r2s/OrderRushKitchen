@@ -56,6 +56,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7230296125251446017, guid: e1d6e80575d93c2439354a375b9bb874, type: 3}
+      propertyPath: ingredientOptions.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7230296125251446017, guid: e1d6e80575d93c2439354a375b9bb874, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 7d4e30fd051b4144fa3f521a2d6ab031, type: 2}
+    - target: {fileID: 7230296125251446017, guid: e1d6e80575d93c2439354a375b9bb874, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: d444effe36cabc9478048eb5244c6be3, type: 2}
+    - target: {fileID: 7230296125251446017, guid: e1d6e80575d93c2439354a375b9bb874, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e0ae5b79cf324a45a93c325940d8eeb, type: 2}
+    - target: {fileID: 7230296125251446017, guid: e1d6e80575d93c2439354a375b9bb874, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 6206f3345e3eac24f99f38de84735cd8, type: 2}
+    - target: {fileID: 7230296125251446017, guid: e1d6e80575d93c2439354a375b9bb874, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[4]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 6206f3345e3eac24f99f38de84735cd8, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

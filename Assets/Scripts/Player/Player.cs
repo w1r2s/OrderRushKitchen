@@ -1,6 +1,7 @@
 using Assets.Scripts.Managers.Game;
 using Assets.Scripts.Managers.Input;
 using Assets.Scripts.Managers.Sound;
+using Assets.Scripts.Selection;
 using System;
 using UnityEngine;
 using Zenject;
@@ -22,6 +23,7 @@ public class Player : ObjectHolder
     private IGameService _gameService;
     private IInputService _inputService;
     private IAudioService _audioService;
+    IItemSelectionService _selectionService;
 
     private Vector3 lastInteraction;
     private bool isWalking;
@@ -29,11 +31,12 @@ public class Player : ObjectHolder
     private BaseCounter selectedCounter;
 
     [Inject]
-    private void Construct(IGameService gameService, IInputService inputService, IAudioService audioService)
+    private void Construct(IGameService gameService, IInputService inputService, IAudioService audioService, IItemSelectionService selectionService)
     {
         _gameService = gameService;
         _inputService = inputService;
         _audioService = audioService;
+        _selectionService = selectionService;
 
         _inputService.OnInteractAction += OnInteract;
         _inputService.OnInteractAlternateAction += OnInteractAlternate;
@@ -53,6 +56,9 @@ public class Player : ObjectHolder
         if (!_gameService.IsGamePlaying())
             return;
 
+        if (_selectionService.IsOpen)
+            return;
+
         Vector2 input = _inputService.GetMovementVectorNormalized();
 
         HandleMovement(input);
@@ -64,12 +70,17 @@ public class Player : ObjectHolder
         if (!_gameService.IsGamePlaying())
             return;
 
+        if (_selectionService.IsOpen)
+            return;
         selectedCounter?.Interact(this);
     }
 
     private void OnInteractAlternate(object sender, EventArgs e)
     {
         if (!_gameService.IsGamePlaying())
+            return;
+
+        if (_selectionService.IsOpen)
             return;
 
         selectedCounter?.InteractAlternate(this);
