@@ -63,6 +63,9 @@ namespace Assets.Scripts.Managers.Installer
             Container.Bind<IServedMenuItemFactory>().To<ServedMenuItemFactory>().AsSingle().WithArguments(servedMenuItemContainerSo);
 
             Container.Bind<IItemSelectionService>().To<ItemSelectionService>().AsSingle();
+
+            Container.Bind<ILevelProgressionService>().To<LevelProgressionService>().AsSingle();
+            Container.BindInterfacesTo<LevelProgressionRuntime>().AsSingle();
         }
     }
 }
