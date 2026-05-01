@@ -26,17 +26,9 @@ namespace Assets.Scripts.Counters
                 {
                     OnOrderAcceptFailed?.Invoke(this, new OrderCounterOrderFailedEventArgs(orderResult.FailureReason.Value));
                 }
-
-                Debug.Log($"Failed to create order: {orderResult.FailureReason}");
                 return;
             }
             OnOrderAccepted?.Invoke(this, EventArgs.Empty);
-
-
-            Debug.Log($"Order created:\n" +
-                $"order id: {orderResult.Order.Id},\n" +
-                $"order items count: {orderResult.Order.OrderItems.Count},\n" +
-                $"order max time: {orderResult.Order.MaxTime}");
         }
     }
 }
