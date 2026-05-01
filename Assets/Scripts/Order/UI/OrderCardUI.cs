@@ -9,7 +9,14 @@ namespace Assets.Scripts.Order
         [SerializeField] private Slider progressSlider;
         [SerializeField] private Transform itemsSectionsContainer;
         [SerializeField] private OrderItemSectionUI orderItemSectionTemplate;
+        [SerializeField] private CanvasGroup cardCanvasGroup;
+        [SerializeField] private float finalAlpha = 0.6f;
 
+        [SerializeField] private Image cardImage;
+        [SerializeField] private Color normalColor;
+        [SerializeField] private Color completedColor;
+        [SerializeField] private Color failedColor;
+      
         private readonly List<OrderItemSectionUI> _sections = new();
 
         public void Bind(ActiveOrder order)
@@ -31,6 +38,24 @@ namespace Assets.Scripts.Order
             if (progressSlider != null)
             {
                 progressSlider.value = order.ProgressNormalized;
+            }
+
+            if (cardCanvasGroup != null)
+            {
+                var isFinal = order.IsCompleted || order.IsFailed;
+                cardCanvasGroup.alpha = isFinal ? finalAlpha : 1f;
+
+            }
+            if (cardImage != null)
+            {
+                if (order.IsFailed)
+                    cardImage.color = failedColor;
+
+                else if (order.IsCompleted)
+                    cardImage.color = completedColor;
+
+                else
+                    cardImage.color = normalColor;
             }
 
             var count = Mathf.Min(order.OrderItems.Count, _sections.Count);

@@ -38,7 +38,6 @@ namespace Assets.Scripts.Order
             {
                 sectionCanvasGroup.alpha = item.IsCompleted ? 0.65f : 1f;
             }
-
         }
 
         private void BuildIngredients(OrderItem item)

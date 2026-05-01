@@ -553,6 +553,7 @@ GameObject:
   - component: {fileID: 7009786238859920080}
   - component: {fileID: 8382335444211137760}
   - component: {fileID: 1395537889720868520}
+  - component: {fileID: 2021858721377236020}
   m_Layer: 5
   m_Name: OrderCardTemplate
   m_TagString: Untagged
@@ -660,6 +661,24 @@ MonoBehaviour:
   progressSlider: {fileID: 4033663570684558659}
   itemsSectionsContainer: {fileID: 8193595718477293147}
   orderItemSectionTemplate: {fileID: 6895223193866389263}
+  cardCanvasGroup: {fileID: 2021858721377236020}
+  finalAlpha: 0.6
+  cardImage: {fileID: 7009786238859920080}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  completedColor: {r: 0.43137255, g: 1, b: 0.43137255, a: 1}
+  failedColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!225 &2021858721377236020
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6522456919734708766}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &7576888582981740880
 GameObject:
   m_ObjectHideFlags: 0
@@ -958,7 +977,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8cc945e34abd0649b76a2a2d9eb0035, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Order.OrdersPanelUI
-  ordersPanel: {fileID: 8472018119409819031}
   ordersArea: {fileID: 5710781829454588959}
   orderCardTemplate: {fileID: 1395537889720868520}
 --- !u!1 &8834185144321454527

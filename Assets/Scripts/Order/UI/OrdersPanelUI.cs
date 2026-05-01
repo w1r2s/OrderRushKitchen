@@ -15,7 +15,6 @@ namespace Assets.Scripts.Order
         private IOrderService _orderService;
         private readonly Dictionary<string, CardBinding> _orders = new();
 
-        [SerializeField] private GameObject ordersPanel;
         [SerializeField] private Transform ordersArea;
         [SerializeField] private OrderCardUI orderCardTemplate;
 
