@@ -16,6 +16,8 @@ namespace Assets.Scripts.Order
         private readonly List<ActiveOrder> _orders;
 
         private bool needsCleanup;
+        private const float inactiveRemoveDelay = 1.25f;
+
         public OrderService()
         {
             _orders = new List<ActiveOrder>();
@@ -47,17 +49,24 @@ namespace Assets.Scripts.Order
         {
             foreach (var order in _orders)
             {
-                if (!order.IsActive) continue;
-
-                order.Tick(deltaTime);
-
-                if (order.IsFailed)
+                if (order.IsActive)
                 {
-                    OnOrderFailed?.Invoke(this, new OrderServiceEventArgs(order));
-                    needsCleanup = true;
-                    continue;
+                    order.Tick(deltaTime);
+
+                    if (order.IsFailed)
+                    {
+                        OnOrderFailed?.Invoke(this, new OrderServiceEventArgs(order));
+                    }
+                }
+
+                if (!order.IsActive)
+                {
+                    order.InactiveElapsed += deltaTime;
+
+                    needsCleanup |= order.InactiveElapsed >= inactiveRemoveDelay;
                 }
             }
+
             if (needsCleanup)
             {
                 RemoveInactiveOrders();
@@ -74,9 +83,13 @@ namespace Assets.Scripts.Order
             {
                 if (_orders[i].IsActive)
                     continue;
-                var order = _orders[i];
-                _orders.RemoveAt(i);
-                OnOrderRemoved?.Invoke(this, new OrderServiceEventArgs(order));
+
+                if (_orders[i].InactiveElapsed >= inactiveRemoveDelay)
+                {
+                    var order = _orders[i];
+                    _orders.RemoveAt(i);
+                    OnOrderRemoved?.Invoke(this, new OrderServiceEventArgs(order));
+                }
             }
         }
 
@@ -95,11 +108,11 @@ namespace Assets.Scripts.Order
                     if (order.IsCompleted)
                     {
                         OnOrderCompleted?.Invoke(this, new OrderServiceEventArgs(order));
-                        needsCleanup = true;
                     }
                     else
+                    {
                         OnOrderUpdated?.Invoke(this, new OrderServiceEventArgs(order));
-
+                    }
                     return true;
                 }
             }
