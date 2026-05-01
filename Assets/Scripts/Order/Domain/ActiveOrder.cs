@@ -25,6 +25,7 @@ namespace Assets.Scripts.Order
         public float ProgressNormalized => _maxTime <= 0f ? 0f : _remainingTime / _maxTime;
 
         public int CompletedItems => _orderItems.Count(item => item.IsCompleted);
+        public float InactiveElapsed { get; set; } = 0f;
 
         public ActiveOrder(string id, IEnumerable<MenuItemDefinitionSo> menuItems)
         {
