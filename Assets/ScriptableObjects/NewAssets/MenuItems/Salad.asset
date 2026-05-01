@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8aba6941c1dd0e4483b3c5fc9a1fd68, type: 3}
+  m_Name: Salad
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.ScriptableObjects.MenuItemDefinitionSo
+  key: Salad
+  displayName: Salad
+  category: 0
+  icon: {fileID: 21300000, guid: 80a8cceb8619e564e8556a0d30c6e08f, type: 3}
+  servedVisualPrefab: {fileID: 122461198297119023, guid: 521b425576313b14aa05121193ce56ab, type: 3}
+  difficulty: 1
+  preparationTime: 30
+  baseSpawnWeight: 1
+  minLevel: 1
+  requiredIngredients:
+  - {fileID: 11400000, guid: c986f65e69a03c84b989d18641965835, type: 2}
+  - {fileID: 11400000, guid: da99d1e9b9852d9448304d835427bd9f, type: 2}
