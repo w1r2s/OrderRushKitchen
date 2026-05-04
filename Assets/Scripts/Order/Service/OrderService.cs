@@ -119,5 +119,16 @@ namespace Assets.Scripts.Order
 
             return false;
         }
+        public void ClearAllOrders()
+        {
+            for (var i = _orders.Count - 1; i >= 0; i--)
+            {
+
+                var order = _orders[i];
+                _orders.RemoveAt(i);
+                OnOrderRemoved?.Invoke(this, new OrderServiceEventArgs(order));
+
+            }
+        }
     }
 }

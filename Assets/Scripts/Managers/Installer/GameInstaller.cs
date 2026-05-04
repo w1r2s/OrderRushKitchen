@@ -67,6 +67,7 @@ namespace Assets.Scripts.Managers.Installer
             Container.Bind<ILevelProgressionService>().To<LevelProgressionService>().AsSingle();
             Container.BindInterfacesTo<LevelProgressionRuntime>().AsSingle();
             Container.BindInterfacesTo<LevelStartupInitializer>().AsSingle();
+            Container.BindInterfacesAndSelfTo<LevelCompletionFlowService>().AsSingle();
         }
     }
 }
