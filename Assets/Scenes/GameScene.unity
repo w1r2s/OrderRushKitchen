@@ -1290,6 +1290,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6557015725543331262, guid: bbccf41af80b619448375c43a5bc427f, type: 3}
+      propertyPath: PlateVisualPrefab
+      value: 
+      objectReference: {fileID: 8283440110159730178, guid: 9b5bf664e3a89024bb0f5c98fdf44ad7, type: 3}
+    - target: {fileID: 8625062202899046354, guid: bbccf41af80b619448375c43a5bc427f, type: 3}
+      propertyPath: plateKitchenObjectSo
+      value: 
+      objectReference: {fileID: 11400000, guid: c895acd8f7603964fb19ba1c9022980e, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1796,10 +1804,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8b77032960f29447b7f90ab99d12fea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Managers.Installer.GameInstaller
-  processRecipeListSo: {fileID: 11400000, guid: c67597e7089598e4abe3a37bc21aad90, type: 2}
+  processRecipeListSo: {fileID: 11400000, guid: 4fb9e7473d007ab4bac6743d1a95561a, type: 2}
   audioClipRefsSo: {fileID: 11400000, guid: 78bf51ca80a889340906b5a13f9eb9b9, type: 2}
   musicManager: {fileID: 138731747}
-  menuDefinitionListSo: {fileID: 11400000, guid: ab27ba88112c6b94ab3d73a4d24b4e63, type: 2}
+  menuDefinitionListSo: {fileID: 11400000, guid: ebf0d52a252c69e4faa03fdf22d963f2, type: 2}
   levelDefinitionListSo: {fileID: 11400000, guid: 143e3858423b9014d9fd855041d8e810, type: 2}
   servedMenuItemContainerSo: {fileID: 11400000, guid: a0a3c525c6c594344bd522768eb121da, type: 2}
 --- !u!4 &281345973
@@ -3616,6 +3624,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 634674851}
     m_Modifications:
+    - target: {fileID: 2417154765922727316, guid: 6660bad6927ff9941a8612202c755fb2, type: 3}
+      propertyPath: drinkOptions.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417154765922727316, guid: 6660bad6927ff9941a8612202c755fb2, type: 3}
+      propertyPath: 'drinkOptions.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: d3291d947aea760449af985ab0628afa, type: 2}
+    - target: {fileID: 2417154765922727316, guid: 6660bad6927ff9941a8612202c755fb2, type: 3}
+      propertyPath: 'drinkOptions.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: c5579cd71100ef144b97f3bee7895dda, type: 2}
+    - target: {fileID: 2417154765922727316, guid: 6660bad6927ff9941a8612202c755fb2, type: 3}
+      propertyPath: 'drinkOptions.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: b5cb75e268cbecd44bc7c8a7304fbc35, type: 2}
     - target: {fileID: 4487646338586087830, guid: 6660bad6927ff9941a8612202c755fb2, type: 3}
       propertyPath: m_Name
       value: DrinkCounter
@@ -4352,6 +4376,38 @@ PrefabInstance:
       propertyPath: kitchenObjectSo
       value: 
       objectReference: {fileID: 11400000, guid: 2a18ece86eaf6fc4d89b4db2eff8cf0d, type: 2}
+    - target: {fileID: 4367958308533863376, guid: b0353d630aabeaf4192f4ae12d38ddc1, type: 3}
+      propertyPath: cuttingRecipes.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4367958308533863376, guid: b0353d630aabeaf4192f4ae12d38ddc1, type: 3}
+      propertyPath: 'cuttingRecipes.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 2cff9f1a79a2bd84e8379d7748fd101e, type: 2}
+    - target: {fileID: 4367958308533863376, guid: b0353d630aabeaf4192f4ae12d38ddc1, type: 3}
+      propertyPath: 'cuttingRecipes.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 9b3e413fd86b32f4286797ee51ae17db, type: 2}
+    - target: {fileID: 4367958308533863376, guid: b0353d630aabeaf4192f4ae12d38ddc1, type: 3}
+      propertyPath: 'cuttingRecipes.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: d0e8893abd00ad8489b2c4824d954204, type: 2}
+    - target: {fileID: 4367958308533863376, guid: b0353d630aabeaf4192f4ae12d38ddc1, type: 3}
+      propertyPath: 'cuttingRecipes.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: f5ab523278b17bd42b04b8076daabe29, type: 2}
+    - target: {fileID: 4367958308533863376, guid: b0353d630aabeaf4192f4ae12d38ddc1, type: 3}
+      propertyPath: 'cuttingRecipes.Array.data[4]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 514b4fed7441b804f9c822f00f2dde24, type: 2}
+    - target: {fileID: 4367958308533863376, guid: b0353d630aabeaf4192f4ae12d38ddc1, type: 3}
+      propertyPath: 'cuttingRecipes.Array.data[5]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 4dbb1c7392a81ed479b108e2557a7035, type: 2}
+    - target: {fileID: 4367958308533863376, guid: b0353d630aabeaf4192f4ae12d38ddc1, type: 3}
+      propertyPath: 'cuttingRecipes.Array.data[6]'
+      value: 
+      objectReference: {fileID: 11400000, guid: d0852fc3b2528684cb622215cc604d18, type: 2}
     - target: {fileID: 5787142056205303252, guid: b0353d630aabeaf4192f4ae12d38ddc1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.5
@@ -10549,6 +10605,42 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4515968843767181891, guid: ccbd0b27747076a4e854eff61361a5df, type: 3}
+      propertyPath: ingredientOptions.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515968843767181891, guid: ccbd0b27747076a4e854eff61361a5df, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: bdfdddcf928edfc4aabf903162113898, type: 2}
+    - target: {fileID: 4515968843767181891, guid: ccbd0b27747076a4e854eff61361a5df, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e5487695a86e1549b60f44d1931b2f8, type: 2}
+    - target: {fileID: 4515968843767181891, guid: ccbd0b27747076a4e854eff61361a5df, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: b32606c39b519e14988046ad06369599, type: 2}
+    - target: {fileID: 4515968843767181891, guid: ccbd0b27747076a4e854eff61361a5df, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: a4f66d74b9c6bdf4a8030ddefb69f743, type: 2}
+    - target: {fileID: 4515968843767181891, guid: ccbd0b27747076a4e854eff61361a5df, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[4]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 2e9cbdda9e8a5c74d92631d444b34435, type: 2}
+    - target: {fileID: 4515968843767181891, guid: ccbd0b27747076a4e854eff61361a5df, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[5]'
+      value: 
+      objectReference: {fileID: 11400000, guid: b862216fd7ff74741a845f9f6397e8f0, type: 2}
+    - target: {fileID: 4515968843767181891, guid: ccbd0b27747076a4e854eff61361a5df, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[6]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 3c80383833f290047b7b211e50427e1d, type: 2}
+    - target: {fileID: 4515968843767181891, guid: ccbd0b27747076a4e854eff61361a5df, type: 3}
+      propertyPath: 'ingredientOptions.Array.data[7]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 7826865baccdcbf4ab241db2b0e2fcaa, type: 2}
     - target: {fileID: 4723360346724555176, guid: ccbd0b27747076a4e854eff61361a5df, type: 3}
       propertyPath: m_Name
       value: ContainerCounter_CheeseBlock
