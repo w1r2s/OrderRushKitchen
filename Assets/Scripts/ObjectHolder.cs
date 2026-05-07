@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Assets.Scripts.Runtime;
+using System;
 using UnityEngine;
 
-public abstract class ObjectHolder : MonoBehaviour
+public abstract class ObjectHolder : MonoBehaviour, ILevelResettable
 {
     [SerializeField] private Transform holdPoint;
 
@@ -65,4 +66,13 @@ public abstract class ObjectHolder : MonoBehaviour
         value = _object as T;
         return value != null;
     }
+
+    public virtual void ResetForLevelTransition()
+    {
+        var obj = RemoveObject();
+
+        if (obj != null)
+            Destroy(obj.gameObject);
+    }
+
 }

@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.ScriptableObjects;
 using System;
-using System.Linq;
 using Zenject;
 
 namespace Assets.Scripts.Level
@@ -10,28 +9,48 @@ namespace Assets.Scripts.Level
         private readonly LevelDatabase _levelDatabase;
 
         private LevelDefinitionSo _currentLevel;
+
+        public event EventHandler OnCurrentLevelChanged;
+
         public LevelDefinitionSo CurrentLevel => _currentLevel;
 
         [Inject]
         public CurrentLevelProvider(LevelDatabase levelDatabase)
         {
             _levelDatabase = levelDatabase;
-            if (!_levelDatabase.TryGetLevel(1, out var level))
+        }
+
+        public bool TrySetCurrentLevel(int levelNumber)
+        {
+
+            if (levelNumber <= 0)
+                return false;
+
+            if (_currentLevel != null && _currentLevel.levelNumber == levelNumber)
+                return false;
+
+
+            if (!_levelDatabase.TryGetLevel(levelNumber, out var level))
             {
-                var firstLevel = _levelDatabase.GetAll()
-                    .OrderBy(l => l.levelNumber)
-                    .FirstOrDefault();
-
-                if (firstLevel == null)
-                {
-                    throw new InvalidOperationException(
-                        "CurrentLevelProvider: no levels configured in LevelDatabase.");
-                }
-
-                level = firstLevel;
+                return false;
             }
-
             _currentLevel = level;
+            OnCurrentLevelChanged?.Invoke(this, EventArgs.Empty);
+            return true;
+        }
+
+        public bool TryMoveToNextLevel()
+        {
+            if (_currentLevel == null)
+                return false;
+
+            if (!_levelDatabase.TryGetLevel(_currentLevel.levelNumber + 1, out var level))
+            {
+                return false;
+            }
+            _currentLevel = level;
+            OnCurrentLevelChanged?.Invoke(this, EventArgs.Empty);
+            return true;
         }
     }
 }

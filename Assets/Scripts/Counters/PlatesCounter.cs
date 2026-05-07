@@ -51,4 +51,15 @@ public class PlatesCounter : BaseCounter
         }
 
     }
+    public override void ResetForLevelTransition()
+    {
+        base.ResetForLevelTransition();
+
+        for (int i = platesSpawnedAmount; i > 0; i--)
+        {
+            platesSpawnedAmount--;
+            onPlateRemoved?.Invoke(this, EventArgs.Empty);
+        }
+        spawnPlateTimer = 0f;
+    }
 }

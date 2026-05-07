@@ -11,6 +11,8 @@ namespace Assets.Scripts.Order
         IReadOnlyList<ActiveOrder> GetActiveOrders();
         bool TryFulfillOrderItem(MenuItemDefinitionSo menuItem);
 
+        void ClearAllOrders();
+
         public event EventHandler<OrderServiceEventArgs> OnOrderCreated;
         public event EventHandler<OrderServiceEventArgs> OnOrderRemoved;
         public event EventHandler<OrderServiceEventArgs> OnOrderUpdated;

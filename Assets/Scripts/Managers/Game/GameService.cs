@@ -95,5 +95,9 @@ namespace Assets.Scripts.Managers.Game
                 OnGamePaused?.Invoke(this, EventArgs.Empty);
             }
         }
+       public void ResetGamePlayingTimer()
+        {
+            gamePlayingTimer = gamePlayingTimerMax;
+        }
     }
 }
