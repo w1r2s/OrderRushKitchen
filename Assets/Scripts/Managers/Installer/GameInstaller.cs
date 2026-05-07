@@ -71,6 +71,10 @@ namespace Assets.Scripts.Managers.Installer
             Container.BindInterfacesAndSelfTo<LevelCompletionFlowService>().AsSingle();
             Container.Bind<ILevelResettable>().FromComponentsInHierarchy().AsCached();
             Container.Bind<LevelSceneResetService>().AsSingle();
+
+            Container.Bind<PlateCompositionValidator>().AsSingle();
+            Container.Bind<PlateAssemblyService>().AsSingle();
+
         }
     }
 }

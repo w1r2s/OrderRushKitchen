@@ -6,6 +6,8 @@ using Zenject;
 
 public class StoveCounter : BaseCounter, IHasProgress
 {
+    private PlateAssemblyService _plateAssemblyService;
+
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
     public event EventHandler<OnStateChangedEventArgs> OnStateChanged;
     public class OnStateChangedEventArgs : EventArgs
@@ -30,9 +32,10 @@ public class StoveCounter : BaseCounter, IHasProgress
 
 
     [Inject]
-    private void Construct(RecipeDatabase recipes)
+    private void Construct(RecipeDatabase recipes, PlateAssemblyService plateAssemblyService)
     {
         _recipes = recipes;
+        _plateAssemblyService = plateAssemblyService;
     }
 
     private void Update()
@@ -99,7 +102,7 @@ public class StoveCounter : BaseCounter, IHasProgress
         var counterObj = GetObject();
         if (player.TryGetObjectAs<PlateKitchenObject>(out var plate))
         {
-            if (plate.TryAddIngredient(counterObj.KitchenObjectSo))
+            if (_plateAssemblyService.TryAddIngredient(plate, counterObj.KitchenObjectSo))
             {
 
                 counterObj = RemoveObject();

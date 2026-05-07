@@ -10,7 +10,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
     [SerializeField] private CuttingRecipeSo[] cuttingRecipes;
     private IAudioService _audioService;
     private RecipeDatabase _recipes;
-
+    private PlateAssemblyService _plateAssemblyService;
 
     private int cuttingProgress;
 
@@ -18,10 +18,11 @@ public class CuttingCounter : BaseCounter, IHasProgress
     public event EventHandler OnCut;
 
     [Inject]
-    private void Construct(IAudioService audioService, RecipeDatabase recipes)
+    private void Construct(IAudioService audioService, RecipeDatabase recipes, PlateAssemblyService plateAssemblyService)
     {
         _audioService = audioService;
         _recipes = recipes;
+        _plateAssemblyService = plateAssemblyService;
 
     }
     public override void Interact(Player player)
@@ -56,10 +57,10 @@ public class CuttingCounter : BaseCounter, IHasProgress
 
         if (player.TryGetObjectAs<PlateKitchenObject>(out var plate))
         {
-            if (plate.TryAddIngredient(counterObj.KitchenObjectSo))
-            {
-                RemoveAndDestroy();
-            }
+            if (!_plateAssemblyService.TryAddIngredient(plate, counterObj.KitchenObjectSo))
+                return;
+
+            RemoveAndDestroy();
         }
 
     }
@@ -69,7 +70,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
             return;
         var counterObj = GetObject();
 
-        if (!_recipes.TryGetRecipe<CuttingRecipeSo>(RecipeType.Cutting ,counterObj.KitchenObjectSo, out var recipe))
+        if (!_recipes.TryGetRecipe<CuttingRecipeSo>(RecipeType.Cutting, counterObj.KitchenObjectSo, out var recipe))
             return;
 
         cuttingProgress++;

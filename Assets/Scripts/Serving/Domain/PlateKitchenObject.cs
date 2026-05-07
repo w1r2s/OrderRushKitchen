@@ -37,10 +37,6 @@ namespace Assets.Scripts.Serving
             {
                 return false;
             }
-            if (kitchenObjectSoList.Contains(kitchenObjectSo))
-            {
-                return false;
-            }
             else
             {
                 kitchenObjectSoList.Add(kitchenObjectSo);

@@ -20,7 +20,7 @@ MonoBehaviour:
   difficulty: 3
   preparationTime: 65
   baseSpawnWeight: 0.75
-  minLevel: 99
+  minLevel: 4
   requiredIngredients:
   - {fileID: 11400000, guid: e7a9a5f3fb0123b47a2ba3cbaf493b11, type: 2}
   - {fileID: 11400000, guid: e7a9a5f3fb0123b47a2ba3cbaf493b11, type: 2}

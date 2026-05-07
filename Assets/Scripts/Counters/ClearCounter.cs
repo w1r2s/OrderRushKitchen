@@ -6,11 +6,13 @@ using Zenject;
 public class ClearCounter : BaseCounter
 {
     private IMenuItemResolver _menuItemResolver;
+    private PlateAssemblyService _plateAssemblyService;
 
     [Inject]
-    private void Construct(IMenuItemResolver menuItemResolver)
+    private void Construct(IMenuItemResolver menuItemResolver, PlateAssemblyService plateAssemblyService)
     {
         _menuItemResolver = menuItemResolver;
+        _plateAssemblyService = plateAssemblyService;
     }
     public override void Interact(Player player)
     {
@@ -38,22 +40,21 @@ public class ClearCounter : BaseCounter
 
         if (player.TryGetObjectAs<PlateKitchenObject>(out var playerPlate))
         {
-            if (playerPlate.TryAddIngredient(counterObjectOnCounter.KitchenObjectSo))
-            {
-                KitchenObject removedObject = RemoveObject();
-                Destroy(removedObject.gameObject);
-            }
+            if (!_plateAssemblyService.TryAddIngredient(playerPlate, counterObjectOnCounter.KitchenObjectSo))
+                return;
 
+            KitchenObject removedObject = RemoveObject();
+            Destroy(removedObject.gameObject);
             return;
         }
 
         if (TryGetObjectAs<PlateKitchenObject>(out var counterPlate))
         {
-            if (counterPlate.TryAddIngredient(playerObjectInHand.KitchenObjectSo))
-            {
+            if (!_plateAssemblyService.TryAddIngredient(counterPlate, playerObjectInHand.KitchenObjectSo))
+                return;
+            
                 KitchenObject removedObject = player.RemoveObject();
                 Destroy(removedObject.gameObject);
-            }
         }
 
     }
