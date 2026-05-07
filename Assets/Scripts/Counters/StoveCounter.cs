@@ -174,4 +174,21 @@ public class StoveCounter : BaseCounter, IHasProgress
     {
         return state == State.Fried;
     }
+    public override void ResetForLevelTransition()
+    {
+        base.ResetForLevelTransition();
+
+        state = State.Idle;
+        fryingTimer = 0f;
+        burningTimer = 0f;
+        fryingRecipeSo = null;
+        burningRecipeSo = null;
+
+        OnStateChanged?.Invoke(this, new OnStateChangedEventArgs { state = state });
+        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+        {
+            progressNormalized = 0f
+        });
+    }
+
 }

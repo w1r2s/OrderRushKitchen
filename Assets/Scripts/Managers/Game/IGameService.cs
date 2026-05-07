@@ -11,8 +11,8 @@ namespace Assets.Scripts.Managers.Game
         float GetCountdownToStartTimer();
         bool IsGameOver();
         float GetGamePlayingTimerNormalized();
-
         void TogglePauseGame();
+        void ResetGamePlayingTimer();
 
         event EventHandler OnGameStateChanged;
         event EventHandler OnGamePaused;

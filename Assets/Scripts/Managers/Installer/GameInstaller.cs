@@ -3,6 +3,7 @@ using Assets.Scripts.Managers.Game;
 using Assets.Scripts.Managers.Input;
 using Assets.Scripts.Managers.Sound;
 using Assets.Scripts.Order;
+using Assets.Scripts.Runtime;
 using Assets.Scripts.ScriptableObjects;
 using Assets.Scripts.Selection;
 using Assets.Scripts.Serving;
@@ -68,6 +69,8 @@ namespace Assets.Scripts.Managers.Installer
             Container.BindInterfacesTo<LevelProgressionRuntime>().AsSingle();
             Container.BindInterfacesTo<LevelStartupInitializer>().AsSingle();
             Container.BindInterfacesAndSelfTo<LevelCompletionFlowService>().AsSingle();
+            Container.Bind<ILevelResettable>().FromComponentsInHierarchy().AsCached();
+            Container.Bind<LevelSceneResetService>().AsSingle();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Order;
+using Assets.Scripts.Runtime;
 using System;
 using Zenject;
 
@@ -8,6 +9,7 @@ namespace Assets.Scripts.Level
     {
         private ILevelProgressionService _progressionService;
         private IOrderService _orderService;
+        private LevelSceneResetService _levelReset;
 
         public event EventHandler<LevelCompletionShownEventArgs> OnCompletionShown;
         public event EventHandler OnCompletionHidden;
@@ -16,10 +18,11 @@ namespace Assets.Scripts.Level
         public bool IsCompletionOpen { get; private set; }
 
         [Inject]
-        public LevelCompletionFlowService(ILevelProgressionService progressionService, IOrderService orderService)
+        public LevelCompletionFlowService(ILevelProgressionService progressionService, IOrderService orderService, LevelSceneResetService levelReset)
         {
             _progressionService = progressionService;
             _orderService = orderService;
+            _levelReset = levelReset;
         }
         private void ProgressionService_OnLevelCompleted(object sender, EventArgs e)
         {
@@ -38,6 +41,7 @@ namespace Assets.Scripts.Level
             if (_progressionService.TryAdvanceToNextLevel())
             {
                 _orderService.ClearAllOrders();
+                _levelReset.ResetForNextLevel();
                 IsCompletionOpen = false;
                 OnCompletionHidden?.Invoke(this, EventArgs.Empty);
                 return;
