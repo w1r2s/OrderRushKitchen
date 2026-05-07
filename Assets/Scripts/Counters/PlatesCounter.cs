@@ -2,8 +2,6 @@ using Assets.Scripts.Managers.Game;
 using System;
 using UnityEngine;
 using Zenject;
-using static StoveCounter;
-using static UnityEngine.CullingGroup;
 
 public class PlatesCounter : BaseCounter
 {
@@ -62,5 +60,6 @@ public class PlatesCounter : BaseCounter
             platesSpawnedAmount--;
             onPlateRemoved?.Invoke(this, EventArgs.Empty);
         }
+        spawnPlateTimer = 0f;
     }
 }
