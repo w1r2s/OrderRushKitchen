@@ -1804,12 +1804,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8b77032960f29447b7f90ab99d12fea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Managers.Installer.GameInstaller
-  processRecipeListSo: {fileID: 11400000, guid: 4fb9e7473d007ab4bac6743d1a95561a, type: 2}
   audioClipRefsSo: {fileID: 11400000, guid: 78bf51ca80a889340906b5a13f9eb9b9, type: 2}
   musicManager: {fileID: 138731747}
   menuDefinitionListSo: {fileID: 11400000, guid: ebf0d52a252c69e4faa03fdf22d963f2, type: 2}
-  levelDefinitionListSo: {fileID: 11400000, guid: 143e3858423b9014d9fd855041d8e810, type: 2}
+  processRecipeListSo: {fileID: 11400000, guid: 4fb9e7473d007ab4bac6743d1a95561a, type: 2}
+  processRecipes: {fileID: 11400000, guid: 1e37c03ed69e47e40b6d44b44f47d211, type: 2}
   servedMenuItemContainerSo: {fileID: 11400000, guid: a0a3c525c6c594344bd522768eb121da, type: 2}
+  levelDefinitionListSo: {fileID: 11400000, guid: 143e3858423b9014d9fd855041d8e810, type: 2}
 --- !u!4 &281345973
 Transform:
   m_ObjectHideFlags: 0

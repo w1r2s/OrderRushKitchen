@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Level;
+﻿using Assets.Scripts.Composition;
+using Assets.Scripts.Level;
 using System.Collections.Generic;
 using Zenject;
 
@@ -27,8 +28,7 @@ namespace Assets.Scripts.Serving
                 return false;
 
 
-            var candidateDict = BuildCounts(currentIngredients, candidate);
-
+            var candidateCounts = IngredientComposition.BuildCounts(currentIngredients, candidate);
 
             foreach (var menuItem in menuItems)
             {
@@ -40,25 +40,9 @@ namespace Assets.Scripts.Serving
                 if (currentIngredients.Count + 1 > requiredIngredients.Count)
                     continue;
 
-                var dict = BuildCounts(requiredIngredients);
+                var requiredCounts = IngredientComposition.BuildCounts(requiredIngredients);
 
-                bool found = true;
-                foreach (var key in candidateDict.Keys)
-                {
-                    if (!dict.TryGetValue(key, out var value))
-                    {
-                        found = false;
-                        break;
-                    }
-
-                    if (candidateDict[key] > value)
-                    {
-                        found = false;
-                        break;
-                    }
-                }
-
-                if (found)
+                if (IngredientComposition.IsSubsetOf(candidateCounts, requiredCounts))
                     return true;
 
             }
@@ -66,28 +50,5 @@ namespace Assets.Scripts.Serving
             return false;
         }
 
-        private Dictionary<KitchenObjectSo, int> BuildCounts(IReadOnlyList<KitchenObjectSo> ingredients, KitchenObjectSo candidate = null)
-        {
-
-            Dictionary<KitchenObjectSo, int> result = new();
-
-            foreach (KitchenObjectSo ingredient in ingredients)
-            {
-                if (!result.TryAdd(ingredient, 1))
-                {
-                    result[ingredient]++;
-                }
-            }
-
-            if (candidate != null)
-            {
-                if (!result.TryAdd(candidate, 1))
-                {
-                    result[candidate]++;
-                }
-            }
-
-            return result;
-        }
     }
 }
