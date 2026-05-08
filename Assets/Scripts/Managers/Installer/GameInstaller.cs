@@ -21,7 +21,6 @@ namespace Assets.Scripts.Managers.Installer
 
         [Header("Cooking area")]
         [SerializeField] private MenuItemDefinitionListSo menuDefinitionListSo;
-        [SerializeField] private ProcessRecipeListSo processRecipeListSo;
         [SerializeField] private CookingProcessRecipeListSo processRecipes;
         [SerializeField] private KitchenObjectSo servedMenuItemContainerSo;
 
@@ -54,7 +53,6 @@ namespace Assets.Scripts.Managers.Installer
             Container.Bind<OptionsUI>().FromComponentInHierarchy().AsSingle();
 
             // Process recipes
-            Container.Bind<RecipeDatabase>().AsSingle().WithArguments(processRecipeListSo.recipes);
             Container.Bind<CookingProcessRecipeResolver>().AsSingle().WithArguments(processRecipes.Recipes);
 
             Container.Bind<MenuItemDatabase>().AsSingle().WithArguments(menuDefinitionListSo.items);

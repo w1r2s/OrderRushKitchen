@@ -93,5 +93,16 @@ namespace Assets.Scripts.Cooking
 
             return false;
         }
+        public bool TryGetSingleInputRecipe<T>(CookingProcessType processType, KitchenObjectSo input, out T recipe) where T : CookingProcessRecipeSo
+        {
+            recipe = null;
+
+            if (!TryGetSingleInputRecipe(processType, input, out var baseRecipe))
+                return false;
+
+            recipe = baseRecipe as T;
+            return recipe != null;
+        }
+
     }
 }
