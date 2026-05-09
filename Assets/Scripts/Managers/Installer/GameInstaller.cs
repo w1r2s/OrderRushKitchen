@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Level;
+﻿using Assets.Scripts.Cooking;
+using Assets.Scripts.Level;
 using Assets.Scripts.Managers.Game;
 using Assets.Scripts.Managers.Input;
 using Assets.Scripts.Managers.Sound;
@@ -14,14 +15,19 @@ namespace Assets.Scripts.Managers.Installer
 {
     public class GameInstaller : MonoInstaller
     {
-        [SerializeField] private ProcessRecipeListSo processRecipeListSo;
+        [Header("Audio")]
         [SerializeField] private AudioClipRefsSo audioClipRefsSo;
         [SerializeField] private MusicManager musicManager;
 
+        [Header("Cooking area")]
         [SerializeField] private MenuItemDefinitionListSo menuDefinitionListSo;
+        [SerializeField] private CookingProcessRecipeListSo processRecipes;
+        [SerializeField] private KitchenObjectSo servedMenuItemContainerSo;
+
+        [Header("Levels config")]
         [SerializeField] private LevelDefinitionListSo levelDefinitionListSo;
 
-        [SerializeField] private KitchenObjectSo servedMenuItemContainerSo;
+
         public override void InstallBindings()
         {
 
@@ -47,7 +53,7 @@ namespace Assets.Scripts.Managers.Installer
             Container.Bind<OptionsUI>().FromComponentInHierarchy().AsSingle();
 
             // Process recipes
-            Container.Bind<RecipeDatabase>().AsSingle().WithArguments(processRecipeListSo.recipes);
+            Container.Bind<CookingProcessRecipeResolver>().AsSingle().WithArguments(processRecipes.Recipes);
 
             Container.Bind<MenuItemDatabase>().AsSingle().WithArguments(menuDefinitionListSo.items);
 
@@ -71,6 +77,10 @@ namespace Assets.Scripts.Managers.Installer
             Container.BindInterfacesAndSelfTo<LevelCompletionFlowService>().AsSingle();
             Container.Bind<ILevelResettable>().FromComponentsInHierarchy().AsCached();
             Container.Bind<LevelSceneResetService>().AsSingle();
+
+            Container.Bind<PlateCompositionValidator>().AsSingle();
+            Container.Bind<PlateAssemblyService>().AsSingle();
+
         }
     }
 }

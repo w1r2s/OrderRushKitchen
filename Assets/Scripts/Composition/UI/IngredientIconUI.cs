@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Scripts.Serving
+namespace Assets.Scripts.Composition
 {
-    public class PlateIconSingleUI : MonoBehaviour
+    public class IngredientIconUI : MonoBehaviour
     {
         [SerializeField] private Image image;
         public void SetKitchenObjectSo(KitchenObjectSo kitchenObjectSo)

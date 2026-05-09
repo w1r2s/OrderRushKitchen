@@ -1,32 +1,32 @@
-using Assets.Scripts;
+using Assets.Scripts.Cooking;
 using Assets.Scripts.Managers.Sound;
 using Assets.Scripts.Serving;
 using System;
-using UnityEngine;
 using Zenject;
 
 public class CuttingCounter : BaseCounter, IHasProgress
 {
-    [SerializeField] private CuttingRecipeSo[] cuttingRecipes;
     private IAudioService _audioService;
-    private RecipeDatabase _recipes;
-
+    private CookingProcessRecipeResolver _recipesResolver;
+    private PlateAssemblyService _plateAssemblyService;
 
     private int cuttingProgress;
 
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
     public event EventHandler OnCut;
 
+    private ActionCookingProcessRecipeSo cutRecipe;
+
     [Inject]
-    private void Construct(IAudioService audioService, RecipeDatabase recipes)
+    private void Construct(IAudioService audioService, CookingProcessRecipeResolver recipesResolver, PlateAssemblyService plateAssemblyService)
     {
         _audioService = audioService;
-        _recipes = recipes;
+        _recipesResolver = recipesResolver;
+        _plateAssemblyService = plateAssemblyService;
 
     }
     public override void Interact(Player player)
     {
-        // попробовать положить на стол
         if (!HasObject)
         {
             if (!player.HasObject)
@@ -34,31 +34,34 @@ public class CuttingCounter : BaseCounter, IHasProgress
 
             var playerObject = player.GetObject();
 
-            if (!_recipes.TryGetRecipe<CuttingRecipeSo>(RecipeType.Cutting, playerObject.KitchenObjectSo, out var recipe))
+            if (!_recipesResolver.TryGetSingleInputRecipe<ActionCookingProcessRecipeSo>(CookingProcessType.Cutting, playerObject.KitchenObjectSo, out var recipe))
                 return;
 
             PlaceObjectFromPlayer(player);
 
             cuttingProgress = 0;
-            UpdateProgress(recipe);
+            cutRecipe = recipe;
+            UpdateProgress(cutRecipe);
             return;
 
         }
-        // забрать объект со стола
+
         if (!player.HasObject)
         {
             var obj = RemoveObject();
             player.SetObject(obj);
+            ResetCuttingState();
             return;
         }
-        // попробовать положить на тарелку
+
         var counterObj = GetObject();
 
         if (player.TryGetObjectAs<PlateKitchenObject>(out var plate))
         {
-            if (plate.TryAddIngredient(counterObj.KitchenObjectSo))
+            if (_plateAssemblyService.TryAddIngredient(plate, counterObj.KitchenObjectSo))
             {
                 RemoveAndDestroy();
+                ResetCuttingState();
             }
         }
 
@@ -67,27 +70,29 @@ public class CuttingCounter : BaseCounter, IHasProgress
     {
         if (!HasObject)
             return;
-        var counterObj = GetObject();
 
-        if (!_recipes.TryGetRecipe<CuttingRecipeSo>(RecipeType.Cutting ,counterObj.KitchenObjectSo, out var recipe))
+        if (cutRecipe == null)
             return;
 
         cuttingProgress++;
         OnCut?.Invoke(this, EventArgs.Empty);
         _audioService.PlayCut(transform.position);
-        UpdateProgress(recipe);
+        UpdateProgress(cutRecipe);
 
-        if (cuttingProgress >= recipe.cuttingProgressMax)
+        if (cuttingProgress >= cutRecipe.RequiredActions)
         {
-            CompleteCut(recipe);
+            CompleteCut(cutRecipe);
         }
     }
 
-    private void UpdateProgress(CuttingRecipeSo recipe)
+    private void UpdateProgress(ActionCookingProcessRecipeSo recipe)
     {
+        if (recipe == null || recipe.RequiredActions <= 0)
+            return;
+
         OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
         {
-            progressNormalized = (float)cuttingProgress / recipe.cuttingProgressMax
+            progressNormalized = (float)cuttingProgress / recipe.RequiredActions
         });
     }
     private void RemoveAndDestroy()
@@ -98,10 +103,30 @@ public class CuttingCounter : BaseCounter, IHasProgress
             Destroy(obj.gameObject);
         }
     }
-    private void CompleteCut(CuttingRecipeSo recipe)
+    private void CompleteCut(ActionCookingProcessRecipeSo recipe)
     {
         RemoveAndDestroy();
-        KitchenObject newObj = Instantiate(recipe.output.prefab);
+
+        KitchenObject newObj = Instantiate(recipe.OutputKitchenObject.prefab);
         SetObject(newObj);
+
+        ResetCuttingState();
     }
+
+    private void ResetCuttingState()
+    {
+        cuttingProgress = 0;
+        cutRecipe = null;
+        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+        {
+            progressNormalized = 0f
+        });
+    }
+
+    public override void ResetForLevelTransition()
+    {
+        base.ResetForLevelTransition();
+        ResetCuttingState();
+    }
+
 }

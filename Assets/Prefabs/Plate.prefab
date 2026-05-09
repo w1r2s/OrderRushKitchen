@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 1198302619015823220}
   - component: {fileID: 3363947257649040289}
   - component: {fileID: 3361174612133765183}
-  - component: {fileID: 3968355782406862031}
+  - component: {fileID: 6131756182209474482}
   m_Layer: 5
   m_Name: PlateIconsUI
   m_TagString: Untagged
@@ -230,7 +230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LookAtCamera
   mode: 2
---- !u!114 &3968355782406862031
+--- !u!114 &6131756182209474482
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -239,10 +239,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1474784116433296248}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac550d2daa1210d4db671c71104e1d07, type: 3}
+  m_Script: {fileID: 11500000, guid: d0336e2a0db360a44b6a4bf7c08cf61c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Serving.PlateIconsUI
-  plateKitchenObject: {fileID: 2943442294953514494}
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Composition.IngredientsIconsUI
+  compositionSourceBehaviour: {fileID: 2943442294953514494}
   iconTemplate: {fileID: 863679862435703294}
 --- !u!1 &1499642681079237932
 GameObject:
@@ -253,7 +253,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 863679862435703294}
-  - component: {fileID: 2481090551167202489}
+  - component: {fileID: 7062153901607518309}
   m_Layer: 5
   m_Name: IconTemplate
   m_TagString: Untagged
@@ -282,7 +282,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0.45, y: -0.45}
   m_SizeDelta: {x: 0.3, y: 0.3}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2481090551167202489
+--- !u!114 &7062153901607518309
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -291,9 +291,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1499642681079237932}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4eedfac42fefd03468709daa6a09341a, type: 3}
+  m_Script: {fileID: 11500000, guid: 6555d3855a7e87c44808e8d7e02ecee3, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Serving.PlateIconSingleUI
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Composition.IngredientIconUI
   image: {fileID: 1577090952549713645}
 --- !u!1 &1526981131840195326
 GameObject:

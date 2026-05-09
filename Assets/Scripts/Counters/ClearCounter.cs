@@ -1,16 +1,17 @@
 using Assets.Scripts.Order;
 using Assets.Scripts.Serving;
-using UnityEngine;
 using Zenject;
 
 public class ClearCounter : BaseCounter
 {
     private IMenuItemResolver _menuItemResolver;
+    private PlateAssemblyService _plateAssemblyService;
 
     [Inject]
-    private void Construct(IMenuItemResolver menuItemResolver)
+    private void Construct(IMenuItemResolver menuItemResolver, PlateAssemblyService plateAssemblyService)
     {
         _menuItemResolver = menuItemResolver;
+        _plateAssemblyService = plateAssemblyService;
     }
     public override void Interact(Player player)
     {
@@ -38,22 +39,21 @@ public class ClearCounter : BaseCounter
 
         if (player.TryGetObjectAs<PlateKitchenObject>(out var playerPlate))
         {
-            if (playerPlate.TryAddIngredient(counterObjectOnCounter.KitchenObjectSo))
-            {
-                KitchenObject removedObject = RemoveObject();
-                Destroy(removedObject.gameObject);
-            }
+            if (!_plateAssemblyService.TryAddIngredient(playerPlate, counterObjectOnCounter.KitchenObjectSo))
+                return;
 
+            KitchenObject removedObject = RemoveObject();
+            Destroy(removedObject.gameObject);
             return;
         }
 
         if (TryGetObjectAs<PlateKitchenObject>(out var counterPlate))
         {
-            if (counterPlate.TryAddIngredient(playerObjectInHand.KitchenObjectSo))
-            {
-                KitchenObject removedObject = player.RemoveObject();
-                Destroy(removedObject.gameObject);
-            }
+            if (!_plateAssemblyService.TryAddIngredient(counterPlate, playerObjectInHand.KitchenObjectSo))
+                return;
+
+            KitchenObject removedObject = player.RemoveObject();
+            Destroy(removedObject.gameObject);
         }
 
     }
@@ -67,18 +67,17 @@ public class ClearCounter : BaseCounter
             if (counterPlate.State != PlateState.Assembly)
                 return;
 
-            var ingredients = counterPlate.GetKitchenObjectSoList();
-            var menuItem = _menuItemResolver.TryResolveMenuItem(ingredients);
+            var menuItem = _menuItemResolver.TryResolveMenuItem(counterPlate.Ingredients);
             if (menuItem == null)
             {
                 // TODO(M5): replace with UI/audio feedback
-                Debug.Log($"serve resolve failed");
+                // Debug.Log($"serve resolve failed");
                 return;
             }
             if (!counterPlate.TryServe(menuItem))
             {
                 // TODO(M5): replace with UI/audio feedback
-                Debug.Log($"serve failed.");
+                // Debug.Log($"serve failed.");
             }
         }
     }
