@@ -157,16 +157,18 @@
 - M5
 
 ### M7. Доработки cooking/domain gaps
-Статус: `TODO`
+Статус: `DONE`
 
 Цель:
 Закрыть ограничения текущей доменной модели блюд, которые сознательно не вошли в M6.
 
 Задачи:
-- [ ] Добавить поддержку duplicate ingredients в составе блюда.
-- [ ] Вернуть `Double_fried_potato` в активную прогрессию после поддержки дублей.
-- [ ] Спроектировать pot/soup cooking flow без копирования frying-логики вслепую.
-- [ ] Вернуть `Soup` в активную прогрессию после реализации pot/soup flow.
+- [x] Добавить поддержку duplicate ingredients в составе блюда.
+- [x] Вернуть `Double_fried_potato` в активную прогрессию после поддержки дублей.
+- [x] Ввести новую cooking process основу для single/multi input -> output.
+- [x] Реализовать pot/soup flow на новой cooking process основе.
+- [x] Постепенно мигрировать cutting/frying/burning с legacy `ProcessRecipeSo`/`RecipeDatabase`.
+- [x] Вернуть `Soup` в активную прогрессию после реализации pot/soup flow.
 
 Критерий готовности:
 - Блюда с повторяющимися ингредиентами корректно собираются и резолвятся.
@@ -198,7 +200,28 @@
 - M5
 - M6
 
-### M9. Очистка архитектуры под MVC
+### M9. Content integration pass
+Статус: `TODO`
+
+Цель:
+Интегрировать финальные модели counters и ключевой presentation-контент после стабилизации cooking flow и mobile constraints.
+
+Задачи:
+- [ ] Заменить временные counter models на итоговые.
+- [ ] Подогнать scale, colliders, interaction points и hold points под новые модели.
+- [ ] Проверить читаемость ингредиентов, тарелок, напитков и заказов с игровой камеры.
+- [ ] Сделать functional layout pass для UI после замены моделей и mobile проверки.
+- [ ] Зафиксировать оставшиеся visual-polish задачи отдельно от gameplay-интеграции.
+
+Критерий готовности:
+- Финальные counters не ломают interaction flow, collision, camera readability и mobile layout.
+- Gameplay можно проходить на новых моделях без временных interaction костылей.
+
+Зависимости:
+- M7
+- M8
+
+### M10. Очистка архитектуры под MVC
 Статус: `TODO`
 
 Цель:
@@ -223,7 +246,7 @@
 - M5
 - M6
 
-### M10. Локализация
+### M11. Локализация
 Статус: `TODO`
 
 Цель:
@@ -245,17 +268,18 @@
 - M6
 - M7
 
-### M11. Контент, модели, анимации, полировка
+### M12. Финальная полировка, баланс и presentation
 Статус: `TODO`
 
 Цель:
-Заменить прототипный визуал и довести presentation-слой до целевого состояния.
+Довести presentation-слой, баланс и визуальные детали до целевого состояния после стабилизации gameplay, mobile и content integration.
 
 Задачи:
-- [ ] Заменить временные модели на собственные ассеты.
-- [ ] Обновить визуал тарелки и предметов под новый набор блюд и напитков.
+- [ ] Обновить визуал тарелки и предметов под финальный набор блюд и напитков.
+- [ ] Заменить временные UI-фоны, цвета-плейсхолдеры и декоративные элементы.
 - [ ] Поправить анимации игрока и взаимодействий.
-- [ ] Доработать UI после стабилизации геймплейного цикла.
+- [ ] Доработать UI после стабилизации геймплейного цикла и mobile layout.
+- [ ] Выполнить финальный баланс времени, заказов и сложности уровней.
 - [ ] Проверить, что финальный контент согласован с локализацией.
 
 Критерий готовности:
@@ -267,6 +291,8 @@
 - M5
 - M6
 - M8
+- M9
+- M11
 
 ## Рекомендуемый порядок выполнения
 1. M1. Переработка доменной модели
@@ -277,19 +303,19 @@
 6. M6. Система уровней
 7. M7. Доработки cooking/domain gaps
 8. M8. Mobile input и управление
-9. M9. Очистка архитектуры под MVC
-10. M10. Локализация
-11. M11. Контент, модели, анимации, полировка
+9. M9. Content integration pass
+10. M10. Очистка архитектуры под MVC
+11. M11. Локализация
+12. M12. Финальная полировка, баланс и presentation
 
 ## Ближайший фокус
 Статус: `TODO`
 
 Фокус:
-- начать M7: закрыть cooking/domain gaps, сознательно вынесенные из M6
-- сначала добавить поддержку duplicate ingredients в составе блюда
-- после этого вернуть `Double_fried_potato` в активную прогрессию
-- затем спроектировать отдельный pot/soup cooking flow
-- не начинать mobile input до закрытия M7
+- подготовить переход с M7 на M8: закоммитить tracker и создать ветку под mobile input
+- начать M8 с фиксации целевого mobile input UX и границ поддержки
+- затем разделить input abstraction и конкретные desktop/mobile bindings
+- не начинать content integration pass до закрытия M8
 ## Журнал решений
 - 2026-04-11: Текущая архитектура уже частично сервисная, но игровая доменная модель всё ещё построена вокруг старого single-dish цикла.
 - 2026-04-11: Новые фичи не стоит наращивать поверх старых предположений `DeliveryService`.
@@ -317,5 +343,12 @@
 - 2026-05-06: Закрыт подэтап M6.4: настроены 5 `LevelDefinitionSo` с ростом `requiredCompletedOrders`, `maxActiveOrders`, `multiItemOrderChance` и `min/maxItemsPerOrder`.
 - 2026-05-07: Закрыт подэтап M6.5: добавлен reset runtime-состояния при переходе уровня через `ILevelResettable` и `LevelSceneResetService`; очищаются предметы на holder'ах, плита, тарелки, активные заказы и таймер уровня.
 - 2026-05-07: Этап M6 закрыт после ручной проверки полного прохода уровней 1-5: прогрессия, unlock контента, HUD, completion flow и reset runtime-состояния работают штатно; финальная настройка давления времени отложена до баланса после M7/M8.
+- 2026-05-07: В roadmap добавлен отдельный M9 `Content integration pass` перед MVC cleanup: финальные counter models, scale/colliders/hold points и functional UI layout после mobile constraints отделены от финальной полировки.
+- 2026-05-07: Закрыт подэтап M7.1: добавлена проверка partial composition через `PlateCompositionValidator`/`PlateAssemblyService`, counters переведены на единый путь добавления ингредиентов на тарелку, разрешены duplicate ingredients и `Double_fried_potato` включён в прогрессию с `minLevel = 4`.
+- 2026-05-07: Для M7.2 принято решение не вводить отдельную pot-only recipe system. Вместо этого вводим новую cooking process основу `single/multi input -> output`, которую сначала использует pot/soup flow, а затем на неё постепенно мигрируют cutting/frying/burning; legacy `ProcessRecipeSo`/`RecipeDatabase` не расширяем под pot.
+- 2026-05-08: Закрыт подэтап M7.2.1: добавлена новая cooking process модель (`CookingProcessRecipeSo`, timed/action recipes, list asset) и `CookingProcessRecipeResolver`; подключён новый recipe list в `GameInstaller`, старый runtime пока не мигрирован.
+- 2026-05-09: Закрыт подэтап M7.2.2: `CuttingCounter` и `StoveCounter` переведены на новую cooking process модель, runtime больше не использует legacy `RecipeDatabase`.
+- 2026-05-09: Закрыт подэтап M7.3: добавлен `PotCounter`, pot/soup recipe flow, общий composition icons UI для plate/pot/served menu item и `Soup` возвращён в активную прогрессию.
+- 2026-05-09: Этап M7 завершён: duplicate ingredients, новая cooking process основа, миграция текущих process counters и soup flow встроены в gameplay.
 
 
