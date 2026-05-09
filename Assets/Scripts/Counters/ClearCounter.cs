@@ -1,6 +1,5 @@
 using Assets.Scripts.Order;
 using Assets.Scripts.Serving;
-using UnityEngine;
 using Zenject;
 
 public class ClearCounter : BaseCounter
@@ -52,9 +51,9 @@ public class ClearCounter : BaseCounter
         {
             if (!_plateAssemblyService.TryAddIngredient(counterPlate, playerObjectInHand.KitchenObjectSo))
                 return;
-            
-                KitchenObject removedObject = player.RemoveObject();
-                Destroy(removedObject.gameObject);
+
+            KitchenObject removedObject = player.RemoveObject();
+            Destroy(removedObject.gameObject);
         }
 
     }
@@ -68,18 +67,17 @@ public class ClearCounter : BaseCounter
             if (counterPlate.State != PlateState.Assembly)
                 return;
 
-            var ingredients = counterPlate.GetKitchenObjectSoList();
-            var menuItem = _menuItemResolver.TryResolveMenuItem(ingredients);
+            var menuItem = _menuItemResolver.TryResolveMenuItem(counterPlate.Ingredients);
             if (menuItem == null)
             {
                 // TODO(M5): replace with UI/audio feedback
-                Debug.Log($"serve resolve failed");
+                // Debug.Log($"serve resolve failed");
                 return;
             }
             if (!counterPlate.TryServe(menuItem))
             {
                 // TODO(M5): replace with UI/audio feedback
-                Debug.Log($"serve failed.");
+                // Debug.Log($"serve failed.");
             }
         }
     }

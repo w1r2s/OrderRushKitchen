@@ -54,11 +54,11 @@ namespace Assets.Scripts.Serving
 
             if (plate.State == PlateState.Assembly)
             {
-                var objs = plate.GetKitchenObjectSoList();
-                if (objs.Count == 0)
+
+                if (plate.Ingredients.Count == 0)
                     return;
 
-                RenderAssembly(objs);
+                RenderAssembly(plate.Ingredients);
             }
             else
             {
@@ -78,13 +78,13 @@ namespace Assets.Scripts.Serving
 
             }
         }
-        private void Plate_OnIngredientsChanged(object sender, IngredientsChangedEventArgs e)
+        private void Plate_OnIngredientsChanged(object sender, EventArgs e)
         {
             if (plate.State != PlateState.Assembly)
                 return;
             ClearSpawnedVisuals();
 
-            RenderAssembly(e.IngredientsOnPlate);
+            RenderAssembly(plate.Ingredients);
 
         }
         private void Plate_OnPlateStateChanged(object sender, PlateStateChangedEventArgs e)

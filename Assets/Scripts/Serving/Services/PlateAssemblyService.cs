@@ -18,9 +18,7 @@ namespace Assets.Scripts.Serving
             if (plate == null)
                 return false;
 
-            var plateIngredients = plate.GetKitchenObjectSoList();
-
-            if (!_plateValidator.CanAddIngredient(candidate, plateIngredients))
+            if (!_plateValidator.CanAddIngredient(candidate, plate.Ingredients))
                 return false;
 
             if (!plate.TryAddIngredient(candidate))

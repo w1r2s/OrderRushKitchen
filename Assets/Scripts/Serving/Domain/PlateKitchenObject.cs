@@ -1,3 +1,4 @@
+using Assets.Scripts.Composition;
 using Assets.Scripts.ScriptableObjects;
 using System;
 using System.Collections.Generic;
@@ -5,15 +6,15 @@ using UnityEngine;
 
 namespace Assets.Scripts.Serving
 {
-    public class PlateKitchenObject : KitchenObject, ISubmittableMenuItemSource
+    public class PlateKitchenObject : KitchenObject, ISubmittableMenuItemSource, IIngredientCompositionSource
     {
-        public event EventHandler<IngredientsChangedEventArgs> OnIngredientsChanged;
+        public event EventHandler OnIngredientsChanged;
         public event EventHandler<PlateStateChangedEventArgs> OnPlateStateChanged;
 
         [SerializeField] private List<KitchenObjectSo> availableIngredients;
 
         private List<KitchenObjectSo> kitchenObjectSoList;
-
+        public IReadOnlyList<KitchenObjectSo> Ingredients => kitchenObjectSoList;
         public PlateState State => isServed ? PlateState.Served : PlateState.Assembly;
         private bool isServed;
 
@@ -41,7 +42,7 @@ namespace Assets.Scripts.Serving
             {
                 kitchenObjectSoList.Add(kitchenObjectSo);
 
-                OnIngredientsChanged?.Invoke(this, new IngredientsChangedEventArgs(new List<KitchenObjectSo>(kitchenObjectSoList)));
+                OnIngredientsChanged?.Invoke(this, EventArgs.Empty);
 
                 return true;
             }
@@ -60,10 +61,6 @@ namespace Assets.Scripts.Serving
             OnPlateStateChanged?.Invoke(this, new PlateStateChangedEventArgs(State, ResolvedMenuItem));
 
             return true;
-        }
-        public IReadOnlyList<KitchenObjectSo> GetKitchenObjectSoList()
-        {
-            return kitchenObjectSoList;
         }
 
         public bool TryGetMenuItemForSubmit(out MenuItemDefinitionSo menuItem)

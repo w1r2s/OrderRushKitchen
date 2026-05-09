@@ -123,4 +123,10 @@ public class CuttingCounter : BaseCounter, IHasProgress
         });
     }
 
+    public override void ResetForLevelTransition()
+    {
+        base.ResetForLevelTransition();
+        ResetCuttingState();
+    }
+
 }
