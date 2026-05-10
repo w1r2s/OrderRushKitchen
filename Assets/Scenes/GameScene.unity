@@ -5686,6 +5686,8 @@ GameObject:
   - component: {fileID: 625466436}
   - component: {fileID: 625466435}
   - component: {fileID: 625466434}
+  - component: {fileID: 625466438}
+  - component: {fileID: 625466437}
   m_Layer: 5
   m_Name: MobileControlCanvas
   m_TagString: Untagged
@@ -5778,6 +5780,30 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 20
   m_TargetDisplay: 0
+--- !u!114 &625466437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625466432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b40b9756ec0c00a43a162c8a92f240c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.UI.MobileGameplayControlsUI
+--- !u!225 &625466438
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625466432}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &634674850
 GameObject:
   m_ObjectHideFlags: 0
