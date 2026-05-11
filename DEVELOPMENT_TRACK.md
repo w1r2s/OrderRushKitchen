@@ -180,16 +180,19 @@
 - M6
 
 ### M8. Mobile input и управление
-Статус: `TODO`
+Статус: `DONE`
 
 Цель:
 Перевести input на поддержку мобильного управления без поломки текущего desktop flow.
 
 Задачи:
-- [ ] Зафиксировать целевой mobile input UX.
-- [ ] Разделить input abstraction и конкретные desktop/mobile bindings.
-- [ ] Добавить мобильные controls для движения, interact и alternate interact.
-- [ ] Проверить selection UI, order UI и level UI на мобильном сценарии.
+- [x] Зафиксировать целевой mobile input UX.
+- [x] Развести desktop/mobile bindings и platform-specific UI без полного рефакторинга `InputService`.
+- [x] Добавить мобильные controls для движения, interact и alternate interact.
+- [x] Добавить общую UI-кнопку паузы для desktop/mobile.
+- [x] Скрывать mobile gameplay controls при открытом selection UI.
+- [x] Разделить HUD на Canvas-слои и добавить platform visibility для desktop/mobile UI.
+- [x] Проверить selection UI, order UI и level UI на мобильном сценарии.
 
 Критерий готовности:
 - Игровой цикл можно пройти на мобильном управлении.
@@ -312,10 +315,9 @@
 Статус: `TODO`
 
 Фокус:
-- подготовить переход с M7 на M8: закоммитить tracker и создать ветку под mobile input
-- начать M8 с фиксации целевого mobile input UX и границ поддержки
-- затем разделить input abstraction и конкретные desktop/mobile bindings
-- не начинать content integration pass до закрытия M8
+- M8 закрыт: закоммитить tracker как фиксацию завершения этапа
+- после коммита подготовить переход к M9 `Content integration pass`
+- размеры `OrdersTopBar` и `SelectionUI` не полировать сейчас: точная подгонка уходит в M9/M12 после финальных моделей, камеры, иконок и фонов
 ## Журнал решений
 - 2026-04-11: Текущая архитектура уже частично сервисная, но игровая доменная модель всё ещё построена вокруг старого single-dish цикла.
 - 2026-04-11: Новые фичи не стоит наращивать поверх старых предположений `DeliveryService`.
@@ -350,5 +352,11 @@
 - 2026-05-09: Закрыт подэтап M7.2.2: `CuttingCounter` и `StoveCounter` переведены на новую cooking process модель, runtime больше не использует legacy `RecipeDatabase`.
 - 2026-05-09: Закрыт подэтап M7.3: добавлен `PotCounter`, pot/soup recipe flow, общий composition icons UI для plate/pot/served menu item и `Soup` возвращён в активную прогрессию.
 - 2026-05-09: Этап M7 завершён: duplicate ingredients, новая cooking process основа, миграция текущих process counters и soup flow встроены в gameplay.
+- 2026-05-10: M8 начат. Зафиксирован mobile UX: landscape, fixed joystick слева, две gameplay-кнопки справа снизу (`Interact`/`AlternateInteract`), общая pause-кнопка в HUD, selection UI скрывает gameplay controls.
+- 2026-05-10: Закрыт подэтап M8.1: в `Actions.inputactions` добавлены mobile bindings через virtual gamepad (`leftStick`, `buttonSouth`, `buttonEast`, `start`), собран `MobileControlCanvas` и добавлена общая `PauseButtonUI`.
+- 2026-05-11: Закрыт подэтап M8.2: добавлен `MobileGameplayControlsUI`, который скрывает mobile gameplay controls на время selection flow через `IItemSelectionService` и `CanvasGroup`, оставляя pause button отдельным UI-элементом.
+- 2026-05-11: Закрыт подэтап M8.3: игровой UI разделён на `DynamicHudCanvas`, `StaticHudCanvas`, `MobileHudCanvas` и `ModalCanvas`; `OptionsUI` разделён на common и desktop input секции; добавлен `PlatformUiVisibility` для desktop/mobile UI roots.
+- 2026-05-11: Закрыт подэтап M8.4: mobile/desktop UI flow проверен функционально; `OrdersTopBar` и `SelectionUI` признаны рабочими, но визуально сырыми, финальная подгонка размеров отложена до content/layout pass после финальных моделей, камеры, иконок и фонов.
+- 2026-05-11: Этап M8 завершён: mobile input добавлен через New Input System virtual gamepad, mobile gameplay controls и pause UI подключены, HUD разделён по Canvas-слоям, desktop/mobile UI roots управляются через `PlatformUiVisibility`; полный cleanup `InputService`/rebinding оставлен на архитектурный этап.
 
 
