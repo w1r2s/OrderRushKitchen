@@ -53,13 +53,11 @@ namespace Assets.Scripts.Managers.Input
         {
             OnInteractAction?.Invoke(this, EventArgs.Empty);
         }
-        public Vector2 GetMovementVectorNormalized()
+        public Vector2 GetMovementVector()
         {
             Vector2 inputVector = _actions.Player.Movement.ReadValue<Vector2>();
 
-            inputVector = inputVector.normalized;
-
-            return inputVector;
+            return Vector2.ClampMagnitude(inputVector, 1f);
         }
         public string GetKeyBindingText(InputKeyBinding binding)
         {

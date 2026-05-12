@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1486303797324725614}
   m_Layer: 0
-  m_Name: bread_Visual
+  m_Name: Bread_Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +46,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f9aa491fffc04984a9fac6c227b5b22d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.13375704
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f9aa491fffc04984a9fac6c227b5b22d, type: 3}
       propertyPath: m_LocalPosition.z

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7009968658355330342}
   m_Layer: 0
-  m_Name: chicken_burned_Visual
+  m_Name: Chicken_burned_Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +46,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 23e55cfaee62f76419b083168db7224e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.10117401
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 23e55cfaee62f76419b083168db7224e, type: 3}
       propertyPath: m_LocalPosition.z

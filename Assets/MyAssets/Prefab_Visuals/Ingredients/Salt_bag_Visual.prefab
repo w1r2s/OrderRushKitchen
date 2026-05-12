@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5259320674080790482}
   m_Layer: 0
-  m_Name: salt_bag_Visual
+  m_Name: Salt_bag_Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +46,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 33bf50cef6c0e8847b9ebdc4ba04cc75, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.22524872
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 33bf50cef6c0e8847b9ebdc4ba04cc75, type: 3}
       propertyPath: m_LocalPosition.z

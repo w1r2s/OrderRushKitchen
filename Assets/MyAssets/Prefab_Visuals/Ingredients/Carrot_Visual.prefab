@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1368729328567970678}
   m_Layer: 0
-  m_Name: carrot_Visual
+  m_Name: Carrot_Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +46,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d9f29927ee951834d8331b10a3daa96f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.11750826
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d9f29927ee951834d8331b10a3daa96f, type: 3}
       propertyPath: m_LocalPosition.z

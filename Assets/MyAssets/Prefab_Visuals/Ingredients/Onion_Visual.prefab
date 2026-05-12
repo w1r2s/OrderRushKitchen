@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8653563467369950945}
   m_Layer: 0
-  m_Name: onion_Visual
+  m_Name: Onion_Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +46,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ba71735dd130ffd41870b72f1d2c4eb4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.22444206
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ba71735dd130ffd41870b72f1d2c4eb4, type: 3}
       propertyPath: m_LocalPosition.z
