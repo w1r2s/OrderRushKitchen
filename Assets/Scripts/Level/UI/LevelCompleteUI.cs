@@ -60,8 +60,8 @@ namespace Assets.Scripts.Level
 
         private void LevelFlowService_OnCompletionShown(object sender, LevelCompletionShownEventArgs e)
         {
-            titleText.text = $"Уровень {e.LevelIndex} пройден";
-            statusText.text = $"Заказы: {e.CompletedOrders} / {e.RequiredOrders}";
+            titleText.text = $"Level {e.LevelIndex} completed";
+            statusText.text = $"Orders: {e.CompletedOrders} / {e.RequiredOrders}";
             Show();
         }
 

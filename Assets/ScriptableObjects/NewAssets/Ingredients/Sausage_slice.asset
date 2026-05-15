@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Sausage_slice
   m_EditorClassIdentifier: Assembly-CSharp::KitchenObjectSo
   prefab: {fileID: 6119508498617974939, guid: 9ba0976d237359d41b2d7f8698fdb2f0, type: 3}
-  sprite: {fileID: 21300000, guid: 8907a3ff4daed3e4b94f9481360d09c6, type: 3}
+  sprite: {fileID: 21300000, guid: da150551834215a469ff4e07e25fc9ce, type: 3}
   objectName: Sausage slice

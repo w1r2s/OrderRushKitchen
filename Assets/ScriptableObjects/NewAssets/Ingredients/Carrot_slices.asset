@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Carrot_slices
   m_EditorClassIdentifier: Assembly-CSharp::KitchenObjectSo
   prefab: {fileID: 3743950342941163389, guid: c2a575aa039b14d4da082b079986655c, type: 3}
-  sprite: {fileID: 21300000, guid: 5e1d54a7bf50fba418b74f584c9b8a0c, type: 3}
+  sprite: {fileID: 21300000, guid: ee3a4c5e0cd0db84d9e9829e05417767, type: 3}
   objectName: Carrot_slices

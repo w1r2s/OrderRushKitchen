@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,20 +6,11 @@ namespace Assets.Scripts.Order
     public class OrderItemSectionUI : MonoBehaviour
     {
         [SerializeField] private Image dishIconImage;
-        [SerializeField] private Transform ingredientsRow;
-        [SerializeField] private Image ingredientIconTemplate;
-        [SerializeField] private CanvasGroup sectionCanvasGroup;
 
-        private readonly List<Image> _ingredientIcons = new();
+        [SerializeField] private CanvasGroup sectionCanvasGroup;
 
         public void Bind(OrderItem item)
         {
-            if (ingredientIconTemplate != null)
-            {
-                ingredientIconTemplate.gameObject.SetActive(false);
-            }
-
-            BuildIngredients(item);
             Refresh(item);
         }
 
@@ -38,41 +28,6 @@ namespace Assets.Scripts.Order
             {
                 sectionCanvasGroup.alpha = item.IsCompleted ? 0.65f : 1f;
             }
-        }
-
-        private void BuildIngredients(OrderItem item)
-        {
-            ClearIngredientIcons();
-
-            if (item == null || item.MenuItem == null || ingredientsRow == null || ingredientIconTemplate == null)
-                return;
-
-            var ingredients = item.MenuItem.requiredIngredients;
-            if (ingredients == null || ingredients.Count == 0)
-                return;
-
-            for (int i = 0; i < ingredients.Count; i++)
-            {
-                var ingredient = ingredients[i];
-                if (ingredient == null || ingredient.sprite == null)
-                    continue;
-
-                var icon = Instantiate(ingredientIconTemplate, ingredientsRow, false);
-                icon.gameObject.SetActive(true);
-                icon.sprite = ingredient.sprite;
-                _ingredientIcons.Add(icon);
-            }
-        }
-
-        private void ClearIngredientIcons()
-        {
-            for (int i = 0; i < _ingredientIcons.Count; i++)
-            {
-                if (_ingredientIcons[i] != null)
-                    Destroy(_ingredientIcons[i].gameObject);
-            }
-
-            _ingredientIcons.Clear();
         }
     }
 }

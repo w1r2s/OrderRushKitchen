@@ -15,7 +15,7 @@ MonoBehaviour:
   key: Soup
   displayName: Soup
   category: 0
-  icon: {fileID: 21300000, guid: 8c35518dc558c054cb0b244a54159e8d, type: 3}
+  icon: {fileID: 21300000, guid: 2fb8447f3c6977546a82180724fb24df, type: 3}
   servedVisualPrefab: {fileID: 6738412385480959097, guid: 948cb8e883de84b45a91ca7612d8b4ec, type: 3}
   difficulty: 3
   preparationTime: 80
