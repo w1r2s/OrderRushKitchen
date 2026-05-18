@@ -1,6 +1,6 @@
 ﻿# Трек разработки KitchenChaosLearn
 
-Последнее обновление: 2026-04-25
+Последнее обновление: 2026-05-18
 
 ## Назначение
 Единый рабочий документ для отслеживания дальнейшей разработки.
@@ -204,17 +204,18 @@
 - M6
 
 ### M9. Content integration pass
-Статус: `TODO`
+Статус: `DONE`
 
 Цель:
 Интегрировать финальные модели counters и ключевой presentation-контент после стабилизации cooking flow и mobile constraints.
 
 Задачи:
-- [ ] Заменить временные counter models на итоговые.
-- [ ] Подогнать scale, colliders, interaction points и hold points под новые модели.
-- [ ] Проверить читаемость ингредиентов, тарелок, напитков и заказов с игровой камеры.
-- [ ] Сделать functional layout pass для UI после замены моделей и mobile проверки.
-- [ ] Зафиксировать оставшиеся visual-polish задачи отдельно от gameplay-интеграции.
+- [x] Заменить временные counter models на итоговые.
+- [x] Подогнать scale, colliders, interaction points и hold points под новые модели.
+- [x] Проверить читаемость ингредиентов, тарелок, напитков и заказов с игровой камеры.
+- [x] Сделать functional layout pass для UI после замены моделей и mobile проверки.
+- [x] Перевести основные gameplay/modal UI окна на новый presentation style, иконки и шрифт.
+- [x] Зафиксировать оставшиеся visual-polish задачи отдельно от gameplay-интеграции.
 
 Критерий готовности:
 - Финальные counters не ломают interaction flow, collision, camera readability и mobile layout.
@@ -315,9 +316,9 @@
 Статус: `TODO`
 
 Фокус:
-- M8 закрыт: закоммитить tracker как фиксацию завершения этапа
-- после коммита подготовить переход к M9 `Content integration pass`
-- размеры `OrdersTopBar` и `SelectionUI` не полировать сейчас: точная подгонка уходит в M9/M12 после финальных моделей, камеры, иконок и фонов
+- Подготовить commit закрытия M9, включая tracker, так как это переход между крупными этапами.
+- После commit создать ветку под M10 `MVC cleanup`.
+- Начать M10 с inventory архитектурных долгов: `GameManager`/services, input layer, UI orchestration, counters и остатки legacy API.
 ## Журнал решений
 - 2026-04-11: Текущая архитектура уже частично сервисная, но игровая доменная модель всё ещё построена вокруг старого single-dish цикла.
 - 2026-04-11: Новые фичи не стоит наращивать поверх старых предположений `DeliveryService`.
@@ -358,5 +359,9 @@
 - 2026-05-11: Закрыт подэтап M8.3: игровой UI разделён на `DynamicHudCanvas`, `StaticHudCanvas`, `MobileHudCanvas` и `ModalCanvas`; `OptionsUI` разделён на common и desktop input секции; добавлен `PlatformUiVisibility` для desktop/mobile UI roots.
 - 2026-05-11: Закрыт подэтап M8.4: mobile/desktop UI flow проверен функционально; `OrdersTopBar` и `SelectionUI` признаны рабочими, но визуально сырыми, финальная подгонка размеров отложена до content/layout pass после финальных моделей, камеры, иконок и фонов.
 - 2026-05-11: Этап M8 завершён: mobile input добавлен через New Input System virtual gamepad, mobile gameplay controls и pause UI подключены, HUD разделён по Canvas-слоям, desktop/mobile UI roots управляются через `PlatformUiVisibility`; полный cleanup `InputService`/rebinding оставлен на архитектурный этап.
+- 2026-05-11: M9 начат. Первый шаг: inventory counter prefabs, scene instances и доступных финальных моделей перед заменой визуала и настройкой scale/colliders/hold points.
+- 2026-05-15: Закрыт основной M9 content/UI pass: финальные counter visuals интегрированы в `GameScene`, подогнаны scale/colliders/hold points, обновлены иконки ингредиентов/menu items, selection UI получил разные backgrounds/layout для ingredients/drinks, `OrdersTopBar` упрощён до компактных карточек с popup details по нажатию, добавлен world-space background за пределами кухни.
+- 2026-05-18: Закрыт UI presentation pass внутри M9: `GamePauseUI`, `OptionsUI`, `GameOverUI`, `GameStartCountdownUI`, `LevelProgressUI` и связанные modal/HUD элементы приведены к новому стилю с обновлёнными фонами, иконками, шрифтом и desktop/mobile layout.
+- 2026-05-18: Этап M9 завершён. Content integration, functional UI layout и presentation pass доведены до gameplay-ready состояния; оставшаяся косметическая полировка без gameplay/blocker рисков остаётся в M12.
 
 
