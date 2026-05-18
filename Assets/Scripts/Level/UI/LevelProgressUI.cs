@@ -11,7 +11,9 @@ namespace Assets.Scripts.Level.UI
         private ICurrentLevelProvider _currentLevelProvider;
 
         [SerializeField] private TextMeshProUGUI levelText;
+        [SerializeField] private TextMeshProUGUI levelNumberText;
         [SerializeField] private TextMeshProUGUI statusText;
+        [SerializeField] private TextMeshProUGUI ordersProgressText;
 
         [Inject]
         private void Construct(
@@ -27,7 +29,7 @@ namespace Assets.Scripts.Level.UI
             if (_progressionService == null || _currentLevelProvider == null)
                 return;
 
-            if (levelText == null || statusText == null)
+            if (levelText == null || levelNumberText == null || statusText == null || ordersProgressText == null)
                 return;
 
             _progressionService.OnProgressChanged += ProgressionService_OnProgressChanged;
@@ -57,8 +59,10 @@ namespace Assets.Scripts.Level.UI
 
         private void Refresh()
         {
-            levelText.text = $"Level: {_progressionService.CurrentLevelIndex}";
-            statusText.text = $"Orders: {_progressionService.CompletedOrdersInLevel} / {_progressionService.OrdersToCompleteForCurrentLevel}";
+            levelText.text = "LEVEL";
+            levelNumberText.text = _progressionService.CurrentLevelIndex.ToString();
+            statusText.text = "ORDERS";
+            ordersProgressText.text = $"{_progressionService.CompletedOrdersInLevel} / {_progressionService.OrdersToCompleteForCurrentLevel}";
         }
     }
 }

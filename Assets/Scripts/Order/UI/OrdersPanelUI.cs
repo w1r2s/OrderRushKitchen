@@ -17,6 +17,7 @@ namespace Assets.Scripts.Order
 
         [SerializeField] private Transform ordersArea;
         [SerializeField] private OrderCardUI orderCardTemplate;
+        [SerializeField] private OrderDetailsUI orderDetailsPanel;
 
         [Inject]
         private void Construct(IOrderService orderService)
@@ -42,15 +43,22 @@ namespace Assets.Scripts.Order
 
         private void OnDestroy()
         {
-            if (_orderService == null)
-                return;
+            if (_orderService != null)
+            {
+                _orderService.OnOrderCreated -= OrderService_OnOrderCreated;
+                _orderService.OnOrderUpdated -= OrderService_Refresh;
+                _orderService.OnOrderFailed -= OrderService_Refresh;
+                _orderService.OnOrderRemoved -= OrderService_OnOrderRemoved;
+                _orderService.OnOrderCompleted -= OrderService_Refresh;
+            }
 
-            _orderService.OnOrderCreated -= OrderService_OnOrderCreated;
-            _orderService.OnOrderUpdated -= OrderService_Refresh;
-            _orderService.OnOrderFailed -= OrderService_Refresh;
-            _orderService.OnOrderRemoved -= OrderService_OnOrderRemoved;
-            _orderService.OnOrderCompleted -= OrderService_Refresh;
+            foreach (var binding in _orders.Values)
+            {
+                if (binding?.Card != null)
+                    binding.Card.Clicked -= OrderCard_Clicked;
+            }
         }
+
 
         private void Update()
         {
@@ -89,10 +97,15 @@ namespace Assets.Scripts.Order
             if (e?.Order == null)
                 return;
 
-            if (!_orders.TryGetValue(e.Order.Id, out var binding) || binding.Card == null)
+            if (!_orders.TryGetValue(e.Order.Id, out var binding))
                 return;
 
-            Destroy(binding.Card.gameObject);
+            if (binding.Card != null)
+            {
+                binding.Card.Clicked -= OrderCard_Clicked;
+                Destroy(binding.Card.gameObject);
+            }
+
             _orders.Remove(e.Order.Id);
         }
 
@@ -120,11 +133,21 @@ namespace Assets.Scripts.Order
             newCard.gameObject.SetActive(true);
             newCard.Bind(order);
 
+            newCard.Clicked += OrderCard_Clicked;
             _orders[order.Id] = new CardBinding
             {
                 Order = order,
                 Card = newCard
             };
         }
+
+        private void OrderCard_Clicked(ActiveOrder order)
+        {
+            if (orderDetailsPanel == null)
+                return;
+
+            orderDetailsPanel.Show(order);
+        }
+
     }
 }

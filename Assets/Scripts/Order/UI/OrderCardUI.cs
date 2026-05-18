@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,12 +7,14 @@ namespace Assets.Scripts.Order
 {
     public class OrderCardUI : MonoBehaviour
     {
+        public event Action<ActiveOrder> Clicked; 
+
         [SerializeField] private Slider progressSlider;
         [SerializeField] private Transform itemsSectionsContainer;
         [SerializeField] private OrderItemSectionUI orderItemSectionTemplate;
         [SerializeField] private CanvasGroup cardCanvasGroup;
         [SerializeField] private float finalAlpha = 0.6f;
-
+        [SerializeField] private Button cardButton;
         [SerializeField] private Image cardImage;
         [SerializeField] private Color normalColor;
         [SerializeField] private Color completedColor;
@@ -19,12 +22,34 @@ namespace Assets.Scripts.Order
       
         private readonly List<OrderItemSectionUI> _sections = new();
 
+        private ActiveOrder _order;
+
+        private void OnEnable()
+        {
+            if (cardButton != null)
+                cardButton.onClick.AddListener(Click);
+        }
+
+        private void OnDisable()
+        {
+            if (cardButton != null)
+                cardButton.onClick.RemoveListener(Click);
+        }
+
+        private void Click()
+        {
+            if (_order == null)
+                return;
+
+            Clicked?.Invoke(_order);
+        }
         public void Bind(ActiveOrder order)
         {
             if (orderItemSectionTemplate != null)
             {
                 orderItemSectionTemplate.gameObject.SetActive(false);
             }
+            _order = order;
 
             RebuildSections(order);
             Refresh(order);

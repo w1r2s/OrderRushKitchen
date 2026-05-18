@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1354395173375063160}
   m_Layer: 0
-  m_Name: cucumber_Visual
+  m_Name: Cucumber_Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +46,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: acdac3885c543fd4eae7f2fc2f791de6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.13010298
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: acdac3885c543fd4eae7f2fc2f791de6, type: 3}
       propertyPath: m_LocalPosition.z

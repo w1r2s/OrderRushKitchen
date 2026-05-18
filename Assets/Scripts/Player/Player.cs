@@ -16,14 +16,23 @@ public class Player : ObjectHolder
         public BaseCounter selectedCounter;
     }
 
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float rotationSpeed = 10f;
+    [Header("Movement")]
+    [SerializeField, Min(0.01f)] private float playerRadius = 0.35f;
+    [SerializeField, Min(0.01f)] private float playerHeight = 2f;
+    [SerializeField, Min(0f)] private float moveSpeed = 5f;
+    [SerializeField, Min(0f)] private float rotationSpeed = 10f;
+    [SerializeField] private LayerMask movementCollisionMask;
+
+    [Header("Interaction")]
+    [SerializeField, Min(0f)] private float interactionDistance = 2f;
+    [SerializeField, Min(0f)] private float interactionRayHeight = 0.8f;
     [SerializeField] private LayerMask counterLayerMask;
+
 
     private IGameService _gameService;
     private IInputService _inputService;
     private IAudioService _audioService;
-    IItemSelectionService _selectionService;
+    private IItemSelectionService _selectionService;
 
     private Vector3 lastInteraction;
     private bool isWalking;
@@ -40,6 +49,8 @@ public class Player : ObjectHolder
 
         _inputService.OnInteractAction += OnInteract;
         _inputService.OnInteractAlternateAction += OnInteractAlternate;
+
+        lastInteraction = transform.forward;
     }
 
     private void OnDestroy()
@@ -59,7 +70,7 @@ public class Player : ObjectHolder
         if (_selectionService.IsOpen)
             return;
 
-        Vector2 input = _inputService.GetMovementVectorNormalized();
+        Vector2 input = _inputService.GetMovementVector();
 
         HandleMovement(input);
         HandleInteractions(input);
@@ -88,80 +99,105 @@ public class Player : ObjectHolder
 
     private void HandleInteractions(Vector2 inputVector)
     {
-        Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y);
+        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
 
-        if (moveDir != Vector3.zero)
+        if (moveDir.sqrMagnitude > 0.0001f)
         {
-            lastInteraction = moveDir;
+            lastInteraction = moveDir.normalized;
         }
 
-        float interactionDist = 2f;
+        Vector3 rayOrigin = transform.position + Vector3.up * interactionRayHeight;
 
-        if (Physics.Raycast(transform.position, lastInteraction, out RaycastHit hitInfo, interactionDist, counterLayerMask))
+        if (Physics.Raycast(rayOrigin, lastInteraction, out RaycastHit hitInfo, interactionDistance, counterLayerMask, QueryTriggerInteraction.Ignore))
         {
-            if (hitInfo.transform.TryGetComponent(out BaseCounter baseCounter))
-            {
-                if (baseCounter != selectedCounter)
-                {
-                    SetSelectedCounter(baseCounter);
-                }
-            }
-            else
-            {
-                SetSelectedCounter(null);
-            }
+            BaseCounter baseCounter = hitInfo.transform.GetComponentInParent<BaseCounter>();
+            SetSelectedCounter(baseCounter);
+            return;
         }
-        else
-        {
-            SetSelectedCounter(null);
-        }
+
+        SetSelectedCounter(null);
     }
+
 
     private void HandleMovement(Vector2 inputVector)
     {
-        Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y);
+        Vector3 inputDir = new Vector3(inputVector.x, 0f, inputVector.y);
 
-        float moveDist = moveSpeed * Time.deltaTime;
-        float playerRadius = .7f;
-        float playerHeight = .7f;
-
-        bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDir, moveDist);
-
-        if (!canMove)
+        if (inputDir.sqrMagnitude < 0.0001f)
         {
-            Vector3 moveDirX = new Vector3(moveDir.x, 0, 0).normalized;
+            isWalking = false;
+            return;
+        }
 
-            canMove = moveDir.x != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirX, moveDist);
+        float inputMagnitude = Mathf.Clamp01(inputDir.magnitude);
+        Vector3 moveDir = inputDir.normalized;
+        float moveDistance = moveSpeed * inputMagnitude * Time.deltaTime;
 
-            if (canMove)
+        bool moved = TryMove(moveDir, moveDistance, out RaycastHit hitInfo);
+
+        if (!moved)
+        {
+            Vector3 desiredMove = moveDir * moveDistance;
+            Vector3 slideMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal);
+            slideMove.y = 0f;
+
+            if (slideMove.sqrMagnitude > 0.0001f)
             {
-                moveDir = moveDirX;
-            }
-            else
-            {
-                Vector3 moveDirY = new Vector3(0, 0, moveDir.z).normalized;
+                Vector3 slideDir = slideMove.normalized;
+                float slideDistance = slideMove.magnitude;
 
-                canMove = moveDir.z != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirY, moveDist);
+                moved = TryMove(slideDir, slideDistance, out _);
 
-                if (canMove)
+                if (moved)
                 {
-                    moveDir = moveDirY;
+                    moveDir = slideDir;
+                    moveDistance = slideDistance;
                 }
             }
         }
 
-        if (canMove)
+        if (moved)
         {
-            transform.position += moveDir * moveSpeed * Time.deltaTime;
+            transform.position += moveDir * moveDistance;
         }
 
-        isWalking = moveDir != Vector3.zero;
+        Vector3 lookDir = inputDir.normalized;
+        transform.forward = Vector3.Slerp(transform.forward, lookDir, Time.deltaTime * rotationSpeed);
 
-        if (isWalking)
-        {
-            transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotationSpeed);
-        }
+        isWalking = moved;
     }
+
+    private bool TryMove(Vector3 moveDir, float moveDistance, out RaycastHit hitInfo)
+    {
+        if (moveDistance <= 0f || moveDir.sqrMagnitude < 0.0001f)
+        {
+            hitInfo = default;
+            return false;
+        }
+
+        return !Physics.CapsuleCast(
+            GetCapsuleBottom(),
+            GetCapsuleTop(),
+            playerRadius,
+            moveDir,
+            out hitInfo,
+            moveDistance,
+            movementCollisionMask,
+            QueryTriggerInteraction.Ignore
+        );
+    }
+
+    private Vector3 GetCapsuleBottom()
+    {
+        return transform.position + Vector3.up * playerRadius;
+    }
+
+    private Vector3 GetCapsuleTop()
+    {
+        float topHeight = Mathf.Max(playerRadius, playerHeight - playerRadius);
+        return transform.position + Vector3.up * topHeight;
+    }
+
 
     private void SetSelectedCounter(BaseCounter selectedCounter)
     {

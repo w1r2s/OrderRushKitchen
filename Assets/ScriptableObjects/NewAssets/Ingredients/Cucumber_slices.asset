@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Cucumber_slices
   m_EditorClassIdentifier: Assembly-CSharp::KitchenObjectSo
   prefab: {fileID: 6938816547422026554, guid: a1d7842179d2a564ba6a1b56d4246896, type: 3}
-  sprite: {fileID: 21300000, guid: 82542e8486c8dd248890b65aaa93e21b, type: 3}
+  sprite: {fileID: 21300000, guid: 92b92f351b6bf2440bb961db004329d3, type: 3}
   objectName: Cucumber_slices

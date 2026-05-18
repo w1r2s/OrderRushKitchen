@@ -9,7 +9,7 @@ namespace Assets.Scripts.Managers.Input
         event EventHandler OnInteractAlternateAction;
         event EventHandler OnPauseAction;
 
-        Vector2 GetMovementVectorNormalized();
+        Vector2 GetMovementVector();
 
         string GetKeyBindingText(InputKeyBinding binding);
 

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 341232566696954020}
   m_Layer: 0
-  m_Name: sausage_Visual
+  m_Name: Sausage_Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +46,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e21eae7dccd96724eabbd827711ebb64, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.10518579
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e21eae7dccd96724eabbd827711ebb64, type: 3}
       propertyPath: m_LocalPosition.z

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Salt_bag
   m_EditorClassIdentifier: Assembly-CSharp::KitchenObjectSo
   prefab: {fileID: 6141406442198061029, guid: 7a076750d30d1d049a20ac317f550190, type: 3}
-  sprite: {fileID: 21300000, guid: e288ae7e4934b1943ad9bcff7b3284b0, type: 3}
+  sprite: {fileID: 21300000, guid: 2ec0afffe0e75d34191b173f7e721116, type: 3}
   objectName: Salt_bag

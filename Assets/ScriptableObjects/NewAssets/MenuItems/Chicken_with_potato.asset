@@ -15,7 +15,7 @@ MonoBehaviour:
   key: Chicken_with_potato
   displayName: Chicken_with_potato
   category: 0
-  icon: {fileID: 21300000, guid: ce29bf11b9961104a90113278eb51ac9, type: 3}
+  icon: {fileID: 21300000, guid: fd576da1a466f7a4ca14d264b1b3ca62, type: 3}
   servedVisualPrefab: {fileID: 4107472950895404551, guid: 5689fd57150a4b045b839e22ab485ad5, type: 3}
   difficulty: 2
   preparationTime: 70

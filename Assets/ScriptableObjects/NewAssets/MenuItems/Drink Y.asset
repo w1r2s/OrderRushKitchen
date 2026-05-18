@@ -15,10 +15,10 @@ MonoBehaviour:
   key: Yellow
   displayName: Yellow
   category: 1
-  icon: {fileID: 21300000, guid: 7e6e799900b733c428355ac61ccfe9f4, type: 3}
+  icon: {fileID: 21300000, guid: b9e390ca6100dc840bc199885010fa2a, type: 3}
   servedVisualPrefab: {fileID: 7441510085692298709, guid: 35fb468dcf6cb9d4c83a6694b63b39ee, type: 3}
   difficulty: 1
   preparationTime: 20
-  baseSpawnWeight: 0.6
-  minLevel: 3
+  baseSpawnWeight: 0.7
+  minLevel: 2
   requiredIngredients: []

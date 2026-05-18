@@ -15,7 +15,7 @@ MonoBehaviour:
   key: Fried_potato
   displayName: Fried_potato
   category: 0
-  icon: {fileID: 21300000, guid: a35b25002dd19424585212f4da0e17b7, type: 3}
+  icon: {fileID: 21300000, guid: 07705f4deb6dd0541a0014ea65e101f5, type: 3}
   servedVisualPrefab: {fileID: 6687423001884051811, guid: a4574f8f0467b8c499e2c4d982f00afe, type: 3}
   difficulty: 1
   preparationTime: 45

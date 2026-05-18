@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Onion_pieces
   m_EditorClassIdentifier: Assembly-CSharp::KitchenObjectSo
   prefab: {fileID: 8639627542077140153, guid: 8a72a4fe132e2f3469f0ec256e45b7b9, type: 3}
-  sprite: {fileID: 21300000, guid: bd833263f4dfb6c42a5e69749c788c79, type: 3}
+  sprite: {fileID: 21300000, guid: 3a382f9443917ce428f2a33786aaa09b, type: 3}
   objectName: Onion_pieces
