@@ -4,6 +4,7 @@ using Assets.Scripts.Managers.Game;
 using Assets.Scripts.Managers.Input;
 using Assets.Scripts.Managers.Sound;
 using Assets.Scripts.Order;
+using Assets.Scripts.Order.Runtime;
 using Assets.Scripts.Runtime;
 using Assets.Scripts.ScriptableObjects;
 using Assets.Scripts.Selection;
@@ -81,6 +82,8 @@ namespace Assets.Scripts.Managers.Installer
             Container.Bind<PlateCompositionValidator>().AsSingle();
             Container.Bind<PlateAssemblyService>().AsSingle();
 
+            Container.BindInterfacesTo<GameRuntime>().AsSingle();
+            Container.BindInterfacesTo<OrderRuntime>().AsSingle();
         }
     }
 }
