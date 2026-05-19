@@ -9,12 +9,12 @@ namespace Assets.Scripts.UI
     {
         [SerializeField] private Button pauseButton;
 
-        private IGameService _gameService;
+        private IGamePauseService _pauseService;
 
         [Inject]
-        private void Construct(IGameService gameService)
+        private void Construct(IGamePauseService pauseService)
         {
-            _gameService = gameService;
+            _pauseService = pauseService;
         }
 
         private void Start()
@@ -30,7 +30,7 @@ namespace Assets.Scripts.UI
 
         private void OnPauseClicked()
         {
-            _gameService.TogglePauseGame();
+            _pauseService.ToggleUserPause();
         }
     }
 

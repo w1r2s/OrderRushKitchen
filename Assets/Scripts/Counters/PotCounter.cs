@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Composition;
 using Assets.Scripts.Cooking;
+using Assets.Scripts.Managers.Game;
 using Assets.Scripts.Serving;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace Assets.Scripts.Counters
             Cooking,
             Cooked
         }
+        private IGameClock _clock;
         private IServedMenuItemFactory _menuItemFactory;
         private CookingProcessRecipeResolver _recipesResolver;
         private List<KitchenObjectSo> currentIngredients;
@@ -30,10 +32,11 @@ namespace Assets.Scripts.Counters
         public IReadOnlyList<KitchenObjectSo> Ingredients => currentIngredients;
 
         [Inject]
-        private void Construct(CookingProcessRecipeResolver recipesResolver, IServedMenuItemFactory menuItemFactory)
+        private void Construct(CookingProcessRecipeResolver recipesResolver, IServedMenuItemFactory menuItemFactory, IGameClock clock)
         {
             _recipesResolver = recipesResolver;
             _menuItemFactory = menuItemFactory;
+            _clock = clock;
             currentIngredients = new();
         }
         private void Update()
@@ -128,7 +131,7 @@ namespace Assets.Scripts.Counters
                 return;
             }
 
-            cookingTimer += Time.deltaTime;
+            cookingTimer += _clock.DeltaTime;
 
 
             if (cookingTimer >= _recipe.Duration)

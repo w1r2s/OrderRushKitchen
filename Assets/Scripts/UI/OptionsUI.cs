@@ -9,6 +9,8 @@ using Zenject;
 
 public class OptionsUI : MonoBehaviour
 {
+    public event EventHandler Opened;
+    public event EventHandler Closed;
 
     [SerializeField] private Button soundEffectsButton;
     [SerializeField] private Button musicButton;
@@ -36,15 +38,15 @@ public class OptionsUI : MonoBehaviour
     [SerializeField] private Transform pressToRebindKeyTransform;
 
     private Action onCloseButtonAction;
-    private IGameService _gameService;
+    private IGamePauseService _pauseService;
     private IInputService _inputService;
     private IAudioService _audioService;
     private IMusicService _musicService;
 
     [Inject]
-    private void Construct(IGameService gameService, IInputService inputService, IAudioService audioService,IMusicService musicService)
+    private void Construct(IGamePauseService pauseService, IInputService inputService, IAudioService audioService,IMusicService musicService)
     {
-        _gameService = gameService;
+        _pauseService = pauseService;
         _inputService = inputService;
         _audioService = audioService;
         _musicService = musicService;
@@ -100,15 +102,20 @@ public class OptionsUI : MonoBehaviour
     }
     private void Start()
     {
-        _gameService.OnGameUnpaused += GameManager_OnGameUnpaused;
+        _pauseService.OnPauseChanged += PauseService_OnPauseChanged;
         UpdateVisual();
         Hide();
         HidePressToRebindKey();
     }
-
-    private void GameManager_OnGameUnpaused(object sender, System.EventArgs e)
+    private void OnDestroy()
     {
-        Hide();
+        if (_pauseService != null)
+            _pauseService.OnPauseChanged -= PauseService_OnPauseChanged;
+    }
+    private void PauseService_OnPauseChanged(object sender, EventArgs e)
+    {
+        if (!_pauseService.HasPause(GamePauseReason.UserPause))
+            Hide();
     }
 
     private void UpdateVisual()
@@ -128,13 +135,21 @@ public class OptionsUI : MonoBehaviour
     {
         this.onCloseButtonAction = onCloseButtonAction;
 
+        var wasOpen = gameObject.activeSelf;
 
         gameObject.SetActive(true);
         soundEffectsButton.Select();
+
+        if (!wasOpen)
+            Opened?.Invoke(this, EventArgs.Empty);
     }
     private void Hide()
     {
+        if (!gameObject.activeSelf)
+            return;
+
         gameObject.SetActive(false);
+        Closed?.Invoke(this, EventArgs.Empty);
     }
 
     private void ShowPressToRebindKey()

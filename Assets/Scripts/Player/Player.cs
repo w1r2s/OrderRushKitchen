@@ -1,7 +1,6 @@
 using Assets.Scripts.Managers.Game;
 using Assets.Scripts.Managers.Input;
 using Assets.Scripts.Managers.Sound;
-using Assets.Scripts.Selection;
 using System;
 using UnityEngine;
 using Zenject;
@@ -32,7 +31,8 @@ public class Player : ObjectHolder
     private IGameService _gameService;
     private IInputService _inputService;
     private IAudioService _audioService;
-    private IItemSelectionService _selectionService;
+    private IGamePauseService _pauseService;
+    private IGameClock _clock;
 
     private Vector3 lastInteraction;
     private bool isWalking;
@@ -40,12 +40,13 @@ public class Player : ObjectHolder
     private BaseCounter selectedCounter;
 
     [Inject]
-    private void Construct(IGameService gameService, IInputService inputService, IAudioService audioService, IItemSelectionService selectionService)
+    private void Construct(IGameService gameService, IInputService inputService, IAudioService audioService, IGamePauseService pauseService, IGameClock clock)
     {
         _gameService = gameService;
         _inputService = inputService;
         _audioService = audioService;
-        _selectionService = selectionService;
+        _pauseService = pauseService;
+        _clock = clock;
 
         _inputService.OnInteractAction += OnInteract;
         _inputService.OnInteractAlternateAction += OnInteractAlternate;
@@ -64,11 +65,12 @@ public class Player : ObjectHolder
 
     private void Update()
     {
-        if (!_gameService.IsGamePlaying())
+        if (!CanHandleGameplayInput())
+        {
+            isWalking = false;
+            SetSelectedCounter(null);
             return;
-
-        if (_selectionService.IsOpen)
-            return;
+        }
 
         Vector2 input = _inputService.GetMovementVector();
 
@@ -78,20 +80,15 @@ public class Player : ObjectHolder
 
     private void OnInteract(object sender, EventArgs e)
     {
-        if (!_gameService.IsGamePlaying())
+        if (!CanHandleGameplayInput())
             return;
 
-        if (_selectionService.IsOpen)
-            return;
         selectedCounter?.Interact(this);
     }
 
     private void OnInteractAlternate(object sender, EventArgs e)
     {
-        if (!_gameService.IsGamePlaying())
-            return;
-
-        if (_selectionService.IsOpen)
+        if (!CanHandleGameplayInput())
             return;
 
         selectedCounter?.InteractAlternate(this);
@@ -118,7 +115,6 @@ public class Player : ObjectHolder
         SetSelectedCounter(null);
     }
 
-
     private void HandleMovement(Vector2 inputVector)
     {
         Vector3 inputDir = new Vector3(inputVector.x, 0f, inputVector.y);
@@ -131,7 +127,7 @@ public class Player : ObjectHolder
 
         float inputMagnitude = Mathf.Clamp01(inputDir.magnitude);
         Vector3 moveDir = inputDir.normalized;
-        float moveDistance = moveSpeed * inputMagnitude * Time.deltaTime;
+        float moveDistance = moveSpeed * inputMagnitude * _clock.DeltaTime;
 
         bool moved = TryMove(moveDir, moveDistance, out RaycastHit hitInfo);
 
@@ -162,7 +158,7 @@ public class Player : ObjectHolder
         }
 
         Vector3 lookDir = inputDir.normalized;
-        transform.forward = Vector3.Slerp(transform.forward, lookDir, Time.deltaTime * rotationSpeed);
+        transform.forward = Vector3.Slerp(transform.forward, lookDir, _clock.DeltaTime * rotationSpeed);
 
         isWalking = moved;
     }
@@ -224,4 +220,15 @@ public class Player : ObjectHolder
     }
 
     public bool IsWalking() => isWalking;
+
+    private bool CanHandleGameplayInput()
+    {
+        if (!_gameService.IsGamePlaying())
+            return false;
+
+        if (_pauseService.IsPaused)
+            return false;
+
+        return true;
+    }
 }

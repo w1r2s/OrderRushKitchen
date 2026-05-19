@@ -1,4 +1,5 @@
 using Assets.Scripts.Managers.Game;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -11,21 +12,20 @@ public class GamePauseUI : MonoBehaviour
 
 
     private OptionsUI _optionsUI;
-    private IGameService _gameService;
+    private IGamePauseService _pauseService;
 
     [Inject]
-    private void Construct(IGameService gameService, OptionsUI optionsUI)
+    private void Construct(IGamePauseService pauseService, OptionsUI optionsUI)
     {
-        _gameService = gameService;
+        _pauseService = pauseService;
         _optionsUI = optionsUI;
     }
     private void Start()
     {
-        _gameService.OnGamePaused += GameManager_OnGamePaused;
-        _gameService.OnGameUnpaused += GameManager_OnGameUnpaused;
+        _pauseService.OnPauseChanged += PauseService_OnPauseChanged;
         resumeButton.onClick.AddListener(() =>
         {
-            _gameService.TogglePauseGame();
+            _pauseService.RemovePause(GamePauseReason.UserPause);
         });
         mainMenuButton.onClick.AddListener(() =>
         {
@@ -36,26 +36,27 @@ public class GamePauseUI : MonoBehaviour
             Hide();
             _optionsUI.Show(Show);
         });
-        Hide();
+        RefreshVisibility();
     }
     private void OnDestroy()
     {
-        if (_gameService != null)
+        if (_pauseService != null)
         {
-            _gameService.OnGamePaused -= GameManager_OnGamePaused;
-            _gameService.OnGameUnpaused -= GameManager_OnGameUnpaused;
+            _pauseService.OnPauseChanged -= PauseService_OnPauseChanged;
         }
     }
-    private void GameManager_OnGameUnpaused(object sender, System.EventArgs e)
+    private void PauseService_OnPauseChanged(object sender, EventArgs e)
     {
-        Hide();
+        RefreshVisibility();
     }
 
-    private void GameManager_OnGamePaused(object sender, System.EventArgs e)
+    private void RefreshVisibility()
     {
-        Show();
+        if (_pauseService.HasPause(GamePauseReason.UserPause))
+            Show();
+        else
+            Hide();
     }
-
     private void Show()
     {
         gameObject.SetActive(true);

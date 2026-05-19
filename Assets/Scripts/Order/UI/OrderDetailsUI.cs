@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,6 +7,9 @@ namespace Assets.Scripts.Order
 {
     public class OrderDetailsUI : MonoBehaviour
     {
+        public event EventHandler Opened;
+        public event EventHandler Closed;
+
         [SerializeField] private GameObject dimmer;
         [SerializeField] private GameObject detailsPanel;
         [SerializeField] private Button closeButton;
@@ -46,6 +50,11 @@ namespace Assets.Scripts.Order
         }
         public void Hide()
         {
+            var isOpen = (dimmer != null && dimmer.activeSelf) || (detailsPanel != null && detailsPanel.activeSelf);
+
+            if (!isOpen)
+                return;
+
             if (detailsPanel != null)
                 detailsPanel.SetActive(false);
 
@@ -53,6 +62,7 @@ namespace Assets.Scripts.Order
                 dimmer.SetActive(false);
 
             ClearRows();
+            Closed?.Invoke(this, EventArgs.Empty);
         }
 
         public void Show(ActiveOrder order)
@@ -89,8 +99,13 @@ namespace Assets.Scripts.Order
 
             if (detailsPanel != null && dimmer != null)
             {
+                var wasOpen = dimmer.activeSelf || detailsPanel.activeSelf;
+
                 detailsPanel.SetActive(true);
                 dimmer.SetActive(true);
+
+                if (!wasOpen)
+                    Opened?.Invoke(this, EventArgs.Empty);
             }
         }
 

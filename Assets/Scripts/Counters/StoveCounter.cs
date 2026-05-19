@@ -1,4 +1,5 @@
 using Assets.Scripts.Cooking;
+using Assets.Scripts.Managers.Game;
 using Assets.Scripts.Serving;
 using System;
 using UnityEngine;
@@ -6,6 +7,7 @@ using Zenject;
 
 public class StoveCounter : BaseCounter, IHasProgress
 {
+    private IGameClock _clock;
     private PlateAssemblyService _plateAssemblyService;
     private CookingProcessRecipeResolver _recipesResolver;
 
@@ -33,10 +35,11 @@ public class StoveCounter : BaseCounter, IHasProgress
     }
 
     [Inject]
-    private void Construct(CookingProcessRecipeResolver recipesResolver, PlateAssemblyService plateAssemblyService)
+    private void Construct(CookingProcessRecipeResolver recipesResolver, PlateAssemblyService plateAssemblyService, IGameClock clock)
     {
         _recipesResolver = recipesResolver;
         _plateAssemblyService = plateAssemblyService;
+        _clock = clock;
     }
 
     private void Update()
@@ -119,7 +122,7 @@ public class StoveCounter : BaseCounter, IHasProgress
             return;
         }
 
-        fryingTimer += Time.deltaTime;
+        fryingTimer += _clock.DeltaTime;
 
         if (fryingTimer >= fryingRecipeSo.Duration)
         {
@@ -166,7 +169,7 @@ public class StoveCounter : BaseCounter, IHasProgress
             return;
         }
 
-        burningTimer += Time.deltaTime;
+        burningTimer += _clock.DeltaTime;
 
         if (burningTimer >= burningRecipeSo.Duration)
         {

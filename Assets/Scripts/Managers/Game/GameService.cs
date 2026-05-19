@@ -1,13 +1,10 @@
 ﻿using System;
-using UnityEngine;
 
 namespace Assets.Scripts.Managers.Game
 {
     public class GameService : IGameService
     {
         public event EventHandler OnGameStateChanged;
-        public event EventHandler OnGamePaused;
-        public event EventHandler OnGameUnpaused;
         private enum GameState
         {
             WaitingToStart,
@@ -20,8 +17,6 @@ namespace Assets.Scripts.Managers.Game
         private float countdownToStartTimer = 3f;
         private float gamePlayingTimer;
         private float gamePlayingTimerMax = 300f;
-
-        private bool isPaused = false;
 
         public GameService()
         {
@@ -80,22 +75,7 @@ namespace Assets.Scripts.Managers.Game
         {
             return 1 - gamePlayingTimer / gamePlayingTimerMax;
         }
-        public void TogglePauseGame()
-        {
-            if (isPaused)
-            {
-                Time.timeScale = 1;
-                isPaused = false;
-                OnGameUnpaused?.Invoke(this, EventArgs.Empty);
-            }
-            else
-            {
-                Time.timeScale = 0f;
-                isPaused = true;
-                OnGamePaused?.Invoke(this, EventArgs.Empty);
-            }
-        }
-       public void ResetGamePlayingTimer()
+        public void ResetGamePlayingTimer()
         {
             gamePlayingTimer = gamePlayingTimerMax;
         }

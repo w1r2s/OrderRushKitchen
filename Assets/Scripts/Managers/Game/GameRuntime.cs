@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Managers.Input;
 using System;
-using UnityEngine;
 using Zenject;
 
 namespace Assets.Scripts.Managers.Game
@@ -9,12 +8,16 @@ namespace Assets.Scripts.Managers.Game
     {
         private readonly IGameService _gameService;
         private readonly IInputService _inputService;
+        private readonly IGameClock _clock;
+        private readonly IGamePauseService _pauseService;
 
         [Inject]
-        public GameRuntime(IGameService gameService, IInputService inputService)
+        public GameRuntime(IGameService gameService, IInputService inputService, IGameClock clock, IGamePauseService pauseService)
         {
             _gameService = gameService;
             _inputService = inputService;
+            _clock = clock;
+            _pauseService = pauseService;
         }
         public void Initialize()
         {
@@ -23,12 +26,12 @@ namespace Assets.Scripts.Managers.Game
 
         private void InputService_OnPauseAction(object sender, EventArgs e)
         {
-            _gameService.TogglePauseGame();
+            _pauseService.ToggleUserPause();
         }
 
         public void Tick()
         {
-            _gameService.Tick(Time.deltaTime);
+            _gameService.Tick(_clock.DeltaTime);
         }
         public void Dispose()
         {

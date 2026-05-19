@@ -5,6 +5,7 @@ using Zenject;
 
 public class PlatesCounter : BaseCounter
 {
+    private IGameClock _clock;
     private IGameService _gameService;
     public event EventHandler onPlateSpawned;
     public event EventHandler onPlateRemoved;
@@ -18,13 +19,14 @@ public class PlatesCounter : BaseCounter
     private int platesSpawnedAmountMax = 4;
 
     [Inject]
-    private void Construct(IGameService gameService)
+    private void Construct(IGameService gameService, IGameClock clock)
     {
         _gameService = gameService;
+        _clock = clock;
     }
     private void Update()
     {
-        spawnPlateTimer += Time.deltaTime;
+        spawnPlateTimer += _clock.DeltaTime;
         if (spawnPlateTimer > spawnPlateTimerMax)
         {
             spawnPlateTimer = 0f;
