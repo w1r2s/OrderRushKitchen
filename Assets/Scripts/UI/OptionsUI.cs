@@ -39,15 +39,15 @@ public class OptionsUI : MonoBehaviour
 
     private Action onCloseButtonAction;
     private IGamePauseService _pauseService;
-    private IInputService _inputService;
+    private IInputRebindingService _inputRebindingService;
     private IAudioService _audioService;
     private IMusicService _musicService;
 
     [Inject]
-    private void Construct(IGamePauseService pauseService, IInputService inputService, IAudioService audioService,IMusicService musicService)
+    private void Construct(IGamePauseService pauseService, IInputRebindingService inputService, IAudioService audioService, IMusicService musicService)
     {
         _pauseService = pauseService;
-        _inputService = inputService;
+        _inputRebindingService = inputService;
         _audioService = audioService;
         _musicService = musicService;
     }
@@ -123,13 +123,13 @@ public class OptionsUI : MonoBehaviour
         soundEffectText.text = $"Sound Effects: {Mathf.Round(_audioService.GetVolume() * 10f)}";
         musicText.text = "Music: " + Mathf.Round(_musicService.GetVolume() * 10f);
 
-        moveUpText.text = _inputService.GetKeyBindingText(InputKeyBinding.Move_Up);
-        moveDownText.text = _inputService.GetKeyBindingText(InputKeyBinding.Move_Down);
-        moveLeftText.text = _inputService.GetKeyBindingText(InputKeyBinding.Move_Left);
-        moveRightText.text = _inputService.GetKeyBindingText(InputKeyBinding.Move_Right);
-        interactText.text = _inputService.GetKeyBindingText(InputKeyBinding.Interact);
-        altInteractText.text = _inputService.GetKeyBindingText(InputKeyBinding.Alt_Interact);
-        pauseText.text = _inputService.GetKeyBindingText(InputKeyBinding.Pause);
+        moveUpText.text = _inputRebindingService.GetKeyBindingText(InputKeyBinding.Move_Up);
+        moveDownText.text = _inputRebindingService.GetKeyBindingText(InputKeyBinding.Move_Down);
+        moveLeftText.text = _inputRebindingService.GetKeyBindingText(InputKeyBinding.Move_Left);
+        moveRightText.text = _inputRebindingService.GetKeyBindingText(InputKeyBinding.Move_Right);
+        interactText.text = _inputRebindingService.GetKeyBindingText(InputKeyBinding.Interact);
+        altInteractText.text = _inputRebindingService.GetKeyBindingText(InputKeyBinding.Alt_Interact);
+        pauseText.text = _inputRebindingService.GetKeyBindingText(InputKeyBinding.Pause);
     }
     public void Show(Action onCloseButtonAction)
     {
@@ -163,10 +163,13 @@ public class OptionsUI : MonoBehaviour
     private void RebindBinding(InputKeyBinding binding)
     {
         ShowPressToRebindKey();
-        _inputService.RebindKeyBinding(binding, () =>
+
+        _inputRebindingService.RebindKeyBinding(binding, completed =>
         {
             HidePressToRebindKey();
-            UpdateVisual();
+
+            if (completed)
+                UpdateVisual();
         });
     }
 }

@@ -29,7 +29,7 @@ public class Player : ObjectHolder
 
 
     private IGameService _gameService;
-    private IInputService _inputService;
+    private IGameplayInputService _inputService;
     private IAudioService _audioService;
     private IGamePauseService _pauseService;
     private IGameClock _clock;
@@ -40,7 +40,7 @@ public class Player : ObjectHolder
     private BaseCounter selectedCounter;
 
     [Inject]
-    private void Construct(IGameService gameService, IInputService inputService, IAudioService audioService, IGamePauseService pauseService, IGameClock clock)
+    private void Construct(IGameService gameService, IGameplayInputService inputService, IAudioService audioService, IGamePauseService pauseService, IGameClock clock)
     {
         _gameService = gameService;
         _inputService = inputService;

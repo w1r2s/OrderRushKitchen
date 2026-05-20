@@ -7,12 +7,12 @@ namespace Assets.Scripts.Managers.Game
     public class GameRuntime : ITickable, IInitializable, IDisposable
     {
         private readonly IGameService _gameService;
-        private readonly IInputService _inputService;
+        private readonly IGameplayInputService _inputService;
         private readonly IGameClock _clock;
         private readonly IGamePauseService _pauseService;
 
         [Inject]
-        public GameRuntime(IGameService gameService, IInputService inputService, IGameClock clock, IGamePauseService pauseService)
+        public GameRuntime(IGameService gameService, IGameplayInputService inputService, IGameClock clock, IGamePauseService pauseService)
         {
             _gameService = gameService;
             _inputService = inputService;
