@@ -12,7 +12,7 @@ public class Player : ObjectHolder
 
     public class OnSelectedCounterChangedEventArgs : EventArgs
     {
-        public BaseCounter selectedCounter;
+        public BaseCounter SelectedCounter;
     }
 
     [Header("Movement")]
@@ -25,7 +25,7 @@ public class Player : ObjectHolder
     [Header("Interaction")]
     [SerializeField, Min(0f)] private float interactionDistance = 2f;
     [SerializeField, Min(0f)] private float interactionRayHeight = 0.8f;
-    [SerializeField] private LayerMask counterLayerMask;
+    [SerializeField] private LayerMask interactionLayerMask;
 
 
     private IGameService _gameService;
@@ -34,10 +34,9 @@ public class Player : ObjectHolder
     private IGamePauseService _pauseService;
     private IGameClock _clock;
 
-    private Vector3 lastInteraction;
-    private bool isWalking;
+    private bool _isWalking;
 
-    private BaseCounter selectedCounter;
+    private BaseCounter _selectedCounter;
 
     [Inject]
     private void Construct(IGameService gameService, IGameplayInputService inputService, IAudioService audioService, IGamePauseService pauseService, IGameClock clock)
@@ -50,8 +49,6 @@ public class Player : ObjectHolder
 
         _inputService.OnInteractAction += OnInteract;
         _inputService.OnInteractAlternateAction += OnInteractAlternate;
-
-        lastInteraction = transform.forward;
     }
 
     private void OnDestroy()
@@ -67,7 +64,7 @@ public class Player : ObjectHolder
     {
         if (!CanHandleGameplayInput())
         {
-            isWalking = false;
+            _isWalking = false;
             SetSelectedCounter(null);
             return;
         }
@@ -75,7 +72,7 @@ public class Player : ObjectHolder
         Vector2 input = _inputService.GetMovementVector();
 
         HandleMovement(input);
-        HandleInteractions(input);
+        HandleInteractions();
     }
 
     private void OnInteract(object sender, EventArgs e)
@@ -83,7 +80,7 @@ public class Player : ObjectHolder
         if (!CanHandleGameplayInput())
             return;
 
-        selectedCounter?.Interact(this);
+        _selectedCounter?.Interact(this);
     }
 
     private void OnInteractAlternate(object sender, EventArgs e)
@@ -91,21 +88,14 @@ public class Player : ObjectHolder
         if (!CanHandleGameplayInput())
             return;
 
-        selectedCounter?.InteractAlternate(this);
+        _selectedCounter?.InteractAlternate(this);
     }
 
-    private void HandleInteractions(Vector2 inputVector)
+    private void HandleInteractions()
     {
-        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
-
-        if (moveDir.sqrMagnitude > 0.0001f)
-        {
-            lastInteraction = moveDir.normalized;
-        }
-
         Vector3 rayOrigin = transform.position + Vector3.up * interactionRayHeight;
 
-        if (Physics.Raycast(rayOrigin, lastInteraction, out RaycastHit hitInfo, interactionDistance, counterLayerMask, QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(rayOrigin, transform.forward, out RaycastHit hitInfo, interactionDistance, interactionLayerMask, QueryTriggerInteraction.Ignore))
         {
             BaseCounter baseCounter = hitInfo.transform.GetComponentInParent<BaseCounter>();
             SetSelectedCounter(baseCounter);
@@ -121,7 +111,7 @@ public class Player : ObjectHolder
 
         if (inputDir.sqrMagnitude < 0.0001f)
         {
-            isWalking = false;
+            _isWalking = false;
             return;
         }
 
@@ -160,7 +150,7 @@ public class Player : ObjectHolder
         Vector3 lookDir = inputDir.normalized;
         transform.forward = Vector3.Slerp(transform.forward, lookDir, _clock.DeltaTime * rotationSpeed);
 
-        isWalking = moved;
+        _isWalking = moved;
     }
 
     private bool TryMove(Vector3 moveDir, float moveDistance, out RaycastHit hitInfo)
@@ -197,14 +187,14 @@ public class Player : ObjectHolder
 
     private void SetSelectedCounter(BaseCounter selectedCounter)
     {
-        if (this.selectedCounter == selectedCounter)
+        if (this._selectedCounter == selectedCounter)
             return;
 
-        this.selectedCounter = selectedCounter;
+        this._selectedCounter = selectedCounter;
 
         OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs
         {
-            selectedCounter = selectedCounter
+            SelectedCounter = selectedCounter
         });
     }
 
@@ -219,7 +209,7 @@ public class Player : ObjectHolder
         }
     }
 
-    public bool IsWalking() => isWalking;
+    public bool IsWalking() => _isWalking;
 
     private bool CanHandleGameplayInput()
     {
