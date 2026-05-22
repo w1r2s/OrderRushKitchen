@@ -1,5 +1,8 @@
 using Assets.Scripts.Managers.Game;
+using Assets.Scripts.Navigation;
+using Cysharp.Threading.Tasks;
 using System;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -10,32 +13,27 @@ public class GamePauseUI : MonoBehaviour
     [SerializeField] private Button mainMenuButton;
     [SerializeField] private Button optionsButton;
 
-
     private OptionsUI _optionsUI;
     private IGamePauseService _pauseService;
+    private INavigationService _navigationService;
 
     [Inject]
-    private void Construct(IGamePauseService pauseService, OptionsUI optionsUI)
+    private void Construct(IGamePauseService pauseService, OptionsUI optionsUI, INavigationService navigationService)
     {
         _pauseService = pauseService;
         _optionsUI = optionsUI;
+        _navigationService = navigationService;
     }
     private void Start()
     {
         _pauseService.OnPauseChanged += PauseService_OnPauseChanged;
-        resumeButton.onClick.AddListener(() =>
-        {
-            _pauseService.RemovePause(GamePauseReason.UserPause);
-        });
-        mainMenuButton.onClick.AddListener(() =>
-        {
-            LoadingManager.Load(LoadingManager.Scene.MainMenuScene);
-        });
-        optionsButton.onClick.AddListener(() =>
-        {
-            Hide();
-            _optionsUI.Show(Show);
-        });
+
+        resumeButton.onClick.AddListener(Resume);
+
+        mainMenuButton.onClick.AddListener(ReturnToMenu);
+
+        optionsButton.onClick.AddListener(OpenOptions);
+
         RefreshVisibility();
     }
     private void OnDestroy()
@@ -43,6 +41,18 @@ public class GamePauseUI : MonoBehaviour
         if (_pauseService != null)
         {
             _pauseService.OnPauseChanged -= PauseService_OnPauseChanged;
+        }
+        if (mainMenuButton != null)
+        {
+            mainMenuButton.onClick.RemoveListener(ReturnToMenu);
+        }
+        if (optionsButton != null)
+        {
+            optionsButton.onClick.RemoveListener(OpenOptions);
+        }
+        if (resumeButton != null)
+        {
+            resumeButton.onClick.RemoveListener(Resume);
         }
     }
     private void PauseService_OnPauseChanged(object sender, EventArgs e)
@@ -64,5 +74,19 @@ public class GamePauseUI : MonoBehaviour
     private void Hide()
     {
         gameObject.SetActive(false);
+    }
+    private void Resume()
+    {
+        _pauseService.RemovePause(GamePauseReason.UserPause);
+    }
+
+    private void OpenOptions()
+    {
+        Hide();
+        _optionsUI.Show(Show);
+    }
+    private void ReturnToMenu()
+    {
+        _navigationService.LoadMainMenuAsync(CancellationToken.None).Forget(Debug.LogException);
     }
 }
