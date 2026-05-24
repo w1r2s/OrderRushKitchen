@@ -1,12 +1,12 @@
+using Assets.Scripts.Audio;
 using Assets.Scripts.Cooking;
-using Assets.Scripts.Managers.Sound;
 using Assets.Scripts.Serving;
 using System;
 using Zenject;
 
 public class CuttingCounter : BaseCounter, IHasProgress
 {
-    private IAudioService _audioService;
+    private IGameplayAudioEventService _audioService;
     private CookingProcessRecipeResolver _recipesResolver;
     private PlateAssemblyService _plateAssemblyService;
 
@@ -18,7 +18,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
     private ActionCookingProcessRecipeSo cutRecipe;
 
     [Inject]
-    private void Construct(IAudioService audioService, CookingProcessRecipeResolver recipesResolver, PlateAssemblyService plateAssemblyService)
+    private void Construct(IGameplayAudioEventService audioService, CookingProcessRecipeResolver recipesResolver, PlateAssemblyService plateAssemblyService)
     {
         _audioService = audioService;
         _recipesResolver = recipesResolver;
@@ -76,7 +76,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
 
         cuttingProgress++;
         OnCut?.Invoke(this, EventArgs.Empty);
-        _audioService.PlayCut(transform.position);
+        _audioService.Play(GameplayAudioEvent.CuttingAction,transform.position);
         UpdateProgress(cutRecipe);
 
         if (cuttingProgress >= cutRecipe.RequiredActions)

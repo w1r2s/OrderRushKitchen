@@ -1,12 +1,12 @@
-using Assets.Scripts.Managers.Sound;
+using Assets.Scripts.Audio;
 using Zenject;
 
 public class TrashCounter : BaseCounter
 {
-    private IAudioService _audioService;
+    private IGameplayAudioEventService _audioService;
 
     [Inject]
-    private void Construct(IAudioService audioService)
+    private void Construct(IGameplayAudioEventService audioService)
     {
         _audioService = audioService;
     }
@@ -20,7 +20,7 @@ public class TrashCounter : BaseCounter
         var obj = player.RemoveObject();
         Destroy(obj.gameObject);
 
-        _audioService.PlayTrash(transform.position);
+        _audioService.Play(GameplayAudioEvent.TrashItem, transform.position);
 
     }
 }

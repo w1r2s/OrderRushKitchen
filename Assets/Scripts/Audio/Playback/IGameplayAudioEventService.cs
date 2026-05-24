@@ -1,0 +1,9 @@
+﻿using UnityEngine;
+
+namespace Assets.Scripts.Audio
+{
+    public interface IGameplayAudioEventService
+    {
+        void Play(GameplayAudioEvent audioEvent, Vector3 position, float volumeMultiplier = 1f);
+    }
+}

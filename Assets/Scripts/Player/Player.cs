@@ -1,6 +1,6 @@
+using Assets.Scripts.Audio;
 using Assets.Scripts.Managers.Game;
 using Assets.Scripts.Managers.Input;
-using Assets.Scripts.Managers.Sound;
 using System;
 using UnityEngine;
 using Zenject;
@@ -30,7 +30,7 @@ public class Player : ObjectHolder
 
     private IGameService _gameService;
     private IGameplayInputService _inputService;
-    private IAudioService _audioService;
+    private IGameplayAudioEventService _audioService;
     private IGamePauseService _pauseService;
     private IGameClock _clock;
 
@@ -39,7 +39,7 @@ public class Player : ObjectHolder
     private BaseCounter _selectedCounter;
 
     [Inject]
-    private void Construct(IGameService gameService, IGameplayInputService inputService, IAudioService audioService, IGamePauseService pauseService, IGameClock clock)
+    private void Construct(IGameService gameService, IGameplayInputService inputService, IGameplayAudioEventService audioService, IGamePauseService pauseService, IGameClock clock)
     {
         _gameService = gameService;
         _inputService = inputService;
@@ -205,7 +205,7 @@ public class Player : ObjectHolder
         if (obj != null)
         {
             OnPickedSomething?.Invoke(this, EventArgs.Empty);
-            _audioService.PlayPickUp(transform.position);
+            _audioService.Play(GameplayAudioEvent.PickupGeneric, transform.position);
         }
     }
 

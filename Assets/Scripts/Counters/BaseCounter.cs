@@ -1,12 +1,12 @@
-using Assets.Scripts.Managers.Sound;
+using Assets.Scripts.Audio;
 using Zenject;
 
 public abstract class BaseCounter : ObjectHolder
 {
-    private IAudioService _audioService;
+    private IGameplayAudioEventService _audioService;
 
     [Inject]
-    protected void ConstructBase(IAudioService audioService)
+    protected void ConstructBase(IGameplayAudioEventService audioService)
     {
         _audioService = audioService;
     }
@@ -18,6 +18,6 @@ public abstract class BaseCounter : ObjectHolder
     {
         var kitchenObject = player.RemoveObject();
         SetObject(kitchenObject);
-        _audioService.PlayDrop(transform.position);
+        _audioService.Play(GameplayAudioEvent.DropGeneric,transform.position);
     }
 }

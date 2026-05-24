@@ -1,6 +1,6 @@
+using Assets.Scripts.Audio;
 using Assets.Scripts.Managers.Game;
 using Assets.Scripts.Managers.Input;
-using Assets.Scripts.Managers.Sound;
 using System;
 using TMPro;
 using UnityEngine;
@@ -40,29 +40,27 @@ public class OptionsUI : MonoBehaviour
     private Action onCloseButtonAction;
     private IGamePauseService _pauseService;
     private IInputRebindingService _inputRebindingService;
-    private IAudioService _audioService;
-    private IMusicService _musicService;
+    private IAudioSettingsService _audioSettings;
 
     [Inject]
-    private void Construct(IGamePauseService pauseService, IInputRebindingService inputService, IAudioService audioService, IMusicService musicService)
+    private void Construct(IGamePauseService pauseService, IInputRebindingService inputService, IAudioSettingsService audioSettings)
     {
         _pauseService = pauseService;
         _inputRebindingService = inputService;
-        _audioService = audioService;
-        _musicService = musicService;
+        _audioSettings = audioSettings;
     }
     private void Awake()
     {
 
         soundEffectsButton.onClick.AddListener(() =>
         {
-            _audioService.ChangeVolume();
+            _audioSettings.StepSfxVolume();
             UpdateVisual();
         });
 
         musicButton.onClick.AddListener(() =>
         {
-            _musicService.ChangeVolume();
+            _audioSettings.StepMusicVolume();
             UpdateVisual();
         });
         closeButton.onClick.AddListener(() =>
@@ -120,8 +118,8 @@ public class OptionsUI : MonoBehaviour
 
     private void UpdateVisual()
     {
-        soundEffectText.text = $"Sound Effects: {Mathf.Round(_audioService.GetVolume() * 10f)}";
-        musicText.text = "Music: " + Mathf.Round(_musicService.GetVolume() * 10f);
+        soundEffectText.text = $"Sound Effects: {Mathf.Round(_audioSettings.SfxVolume * 10f)}";
+        musicText.text = "Music: " + Mathf.Round(_audioSettings.MusicVolume * 10f);
 
         moveUpText.text = _inputRebindingService.GetKeyBindingText(InputKeyBinding.Move_Up);
         moveDownText.text = _inputRebindingService.GetKeyBindingText(InputKeyBinding.Move_Down);

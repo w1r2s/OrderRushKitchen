@@ -1,8 +1,8 @@
-﻿using Assets.Scripts.Cooking;
+﻿using Assets.Scripts.Audio;
+using Assets.Scripts.Cooking;
 using Assets.Scripts.Level;
 using Assets.Scripts.Managers.Game;
 using Assets.Scripts.Managers.Input;
-using Assets.Scripts.Managers.Sound;
 using Assets.Scripts.Order;
 using Assets.Scripts.Order.Runtime;
 using Assets.Scripts.Runtime;
@@ -17,8 +17,8 @@ namespace Assets.Scripts.Managers.Installer
     public class GameInstaller : MonoInstaller
     {
         [Header("Audio")]
-        [SerializeField] private AudioClipRefsSo audioClipRefsSo;
-        [SerializeField] private MusicManager musicManager;
+        [SerializeField] private GameplayAudioLibrarySo audioClipsSo;
+
 
         [Header("Cooking area")]
         [SerializeField] private MenuItemDefinitionListSo menuDefinitionListSo;
@@ -32,8 +32,7 @@ namespace Assets.Scripts.Managers.Installer
         public override void InstallBindings()
         {
 
-            Container.BindInstance(audioClipRefsSo);
-            Container.BindInstance(musicManager);
+            Container.BindInstance(audioClipsSo);
 
             Container.Bind<IGameService>().To<GameService>().AsSingle();
 
@@ -43,13 +42,6 @@ namespace Assets.Scripts.Managers.Installer
             Container.Bind<IInputStorage>().To<PlayerPrefsInputStorage>().AsSingle();
 
             Container.BindInterfacesAndSelfTo<InputService>().AsSingle().NonLazy();
-
-            Container.Bind<IAudioStorage>().To<PlayerPrefsAudioStorage>().AsSingle();
-            Container.Bind<IAudioService>().To<AudioService>().AsSingle();
-
-            Container.Bind<IMusicStorage>().To<PlayerPrefsMusicStorage>().AsSingle();
-            Container.Bind<IMusicService>().To<MusicService>().AsSingle().NonLazy();
-            Container.BindInterfacesTo<MusicInitializer>().AsSingle();
 
             Container.Bind<OptionsUI>().FromComponentInHierarchy().AsSingle();
 
@@ -88,6 +80,15 @@ namespace Assets.Scripts.Managers.Installer
             Container.Bind<OrderDetailsUI>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesTo<ModalPauseController>().AsSingle();
             Container.BindInterfacesTo<LevelRunPauseController>().AsSingle();
+
+            Container.Bind<IAudioSettingsStorage>().To<PlayerPrefsAudioSettingsStorage>().AsSingle();
+            Container.Bind<IAudioSettingsService>().To<AudioSettingsService>().AsSingle();
+
+            Container.Bind<IOneShotAudioPlayer>().To<GameplayOneShotAudioPlayer>().FromComponentInHierarchy().AsSingle();
+            Container.Bind<IGameplayAudioEventService>().To<GameplayAudioEventService>().AsSingle();
+
+            Container.Bind<IMusicPlayer>().To<MusicPlayer>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesTo<MusicVolumeController>().AsSingle();
         }
     }
 }

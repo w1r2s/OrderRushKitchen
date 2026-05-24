@@ -1,20 +1,24 @@
-using Assets.Scripts.Managers.Sound;
+using Assets.Scripts.Audio;
+using Assets.Scripts.Managers.Game;
 using UnityEngine;
 using Zenject;
 
+[RequireComponent(typeof(Player))]
 public class PlayerSounds : MonoBehaviour
 {
     private Player _player;
-    private IAudioService _audioService;
+    private IGameplayAudioEventService _audioService;
+    private IGameClock _gameClock;
 
     private float footstepTimer;
     [SerializeField] private float footstepTimerMax = 0.3f;
+    [SerializeField] private float footstepVolumeMultiplier = 0.5f;
 
     [Inject]
-    private void Construct(Player player, IAudioService audioService)
+    private void Construct(IGameplayAudioEventService audioService, IGameClock gameClock)
     {
-        _player = player;
         _audioService = audioService;
+        _gameClock = gameClock;
     }
     private void Awake()
     {
@@ -22,16 +26,17 @@ public class PlayerSounds : MonoBehaviour
     }
     private void Update()
     {
-        footstepTimer -= Time.deltaTime;
-        if (footstepTimer < 0)
+        if (!_player.IsWalking())
         {
-            footstepTimer = footstepTimerMax;
-            if (_player.IsWalking())
-            {
-                float volume = 1;
-                _audioService.PlayFootstep(_player.transform.position, volume);
-            }
+            footstepTimer = 0f;
+            return;
         }
-    }
 
+        footstepTimer -= _gameClock.DeltaTime;
+        if (footstepTimer > 0f)
+            return;
+
+        footstepTimer = footstepTimerMax;
+        _audioService.Play(GameplayAudioEvent.PlayerFootstep, transform.position, footstepVolumeMultiplier);
+    }
 }

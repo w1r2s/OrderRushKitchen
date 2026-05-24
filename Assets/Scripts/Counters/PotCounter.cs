@@ -11,8 +11,20 @@ namespace Assets.Scripts.Counters
 {
     public class PotCounter : BaseCounter, IHasProgress, IIngredientCompositionSource
     {
+        public class OnStateChangedEventArgs : EventArgs
+        {
+            public State State { get; }
+
+            public OnStateChangedEventArgs(State state)
+            {
+                State = state;
+            }
+        }
+        public event EventHandler<OnStateChangedEventArgs> OnStateChanged;
         public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
         public event EventHandler OnIngredientsChanged;
+        public event EventHandler OnIngredientAdded;
+        public event EventHandler OnCleared;
         public enum State
         {
             Idle,
@@ -63,18 +75,19 @@ namespace Assets.Scripts.Counters
                 if (!_recipesResolver.CanAddInput(CookingProcessType.PotCooking, playerObjSo, currentIngredients))
                     return;
                 currentIngredients.Add(playerObjSo);
-               OnIngredientsChanged?.Invoke(this, EventArgs.Empty);
+                OnIngredientAdded?.Invoke(this, EventArgs.Empty);
+                OnIngredientsChanged?.Invoke(this, EventArgs.Empty);
 
                 RemoveAndDestroy(player);
 
                 if (_recipesResolver.TryResolveExact(CookingProcessType.PotCooking, currentIngredients, out _recipe))
                 {
                     cookingTimer = 0;
-                    state = State.Cooking;
+                    SetState(State.Cooking);
                 }
                 else
                 {
-                    state = State.Completing;
+                    SetState(State.Completing);
                 }
             }
             else if (state == State.Cooked)
@@ -122,6 +135,7 @@ namespace Assets.Scripts.Counters
                 return;
 
             ResetCookingState();
+            OnCleared?.Invoke(this, EventArgs.Empty);
         }
         private void HandleCooking()
         {
@@ -152,9 +166,8 @@ namespace Assets.Scripts.Counters
                 ResetCookingState();
                 return;
             }
-            // UI\audio completion effect
 
-            state = State.Cooked;
+            SetState(State.Cooked);
             EmitProgress(0f);
         }
 
@@ -168,7 +181,7 @@ namespace Assets.Scripts.Counters
             cookingTimer = 0f;
             _recipe = null;
             currentIngredients.Clear();
-            state = State.Idle;
+            SetState(State.Idle);
 
             OnIngredientsChanged?.Invoke(this, EventArgs.Empty);
             EmitProgress(0f);
@@ -186,6 +199,15 @@ namespace Assets.Scripts.Counters
         public IReadOnlyList<KitchenObjectSo> GetIngredients()
         {
             return currentIngredients;
+        }
+
+        private void SetState(State newState)
+        {
+            if (state == newState)
+                return;
+
+            state = newState;
+            OnStateChanged?.Invoke(this, new OnStateChangedEventArgs(state));
         }
     }
 }
