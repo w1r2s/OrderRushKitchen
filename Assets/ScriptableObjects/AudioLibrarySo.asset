@@ -48,9 +48,6 @@ MonoBehaviour:
   - EventType: 7
     Clips:
     - {fileID: 8300000, guid: d114f4ce2846afd41b2cdd195959d999, type: 3}
-  - EventType: 9
-    Clips:
-    - {fileID: 8300000, guid: 4b58040305c345b46824a79c9d38db60, type: 3}
   - EventType: 10
     Clips:
     - {fileID: 8300000, guid: 8f9768062e9c7ed41a2f1a005723719c, type: 3}
@@ -61,6 +58,14 @@ MonoBehaviour:
   - EventType: 12
     Clips:
     - {fileID: 8300000, guid: f4058a2b70b67484199c4df12ddce0da, type: 3}
+  - EventType: 8
+    Clips:
+    - {fileID: 8300000, guid: 9c88983fa5906dc41944ec5a43b6b5c7, type: 3}
+    - {fileID: 8300000, guid: 331b82ab2c0e2b74d805124d11372c85, type: 3}
+    - {fileID: 8300000, guid: 961379cce253f794abff0d24df806b68, type: 3}
+  - EventType: 9
+    Clips:
+    - {fileID: 8300000, guid: 4b58040305c345b46824a79c9d38db60, type: 3}
   loopClips:
   - LoopType: 0
     Clip: {fileID: 8300000, guid: 511c1cbfb8b48b64083aec78fe17115f, type: 3}

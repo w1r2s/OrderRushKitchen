@@ -445,6 +445,51 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &6688730044319136497
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 263865082432306915}
+  - component: {fileID: 4481990266935740195}
+  m_Layer: 0
+  m_Name: Sound
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &263865082432306915
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6688730044319136497}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3211684960664414597}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4481990266935740195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6688730044319136497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f34fa6591214d94e9a243b44bd1843e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Serving.PlateKitchenObjectAudio
+  plate: {fileID: 2943442294953514494}
 --- !u!1 &8196373358719144314
 GameObject:
   m_ObjectHideFlags: 0
@@ -455,6 +500,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3211684960664414597}
   - component: {fileID: 2943442294953514494}
+  - component: {fileID: 7331077671286011847}
   m_Layer: 0
   m_Name: Plate
   m_TagString: Untagged
@@ -480,6 +526,7 @@ Transform:
   - {fileID: 2544430154603443256}
   - {fileID: 6557154987949566159}
   - {fileID: 6046643582174451444}
+  - {fileID: 263865082432306915}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2943442294953514494
@@ -507,6 +554,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c986f65e69a03c84b989d18641965835, type: 2}
   - {fileID: 11400000, guid: 26afe75b93580cf428ea8dfebad4a0c8, type: 2}
   - {fileID: 11400000, guid: bed95b172b1847c4a8056b9913a816f0, type: 2}
+--- !u!114 &7331077671286011847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8196373358719144314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 717a02054ef2699498e6bd4234fd7995, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Zenject::Zenject.ZenAutoInjecter
+  _containerSource: 0
 --- !u!1 &8406472179229886530
 GameObject:
   m_ObjectHideFlags: 0

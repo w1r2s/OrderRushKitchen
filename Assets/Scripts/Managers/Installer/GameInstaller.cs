@@ -89,6 +89,7 @@ namespace Assets.Scripts.Managers.Installer
 
             Container.Bind<IMusicPlayer>().To<MusicPlayer>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesTo<MusicVolumeController>().AsSingle();
+            Container.BindInterfacesTo<OrderAudioController>().AsSingle();
         }
     }
 }

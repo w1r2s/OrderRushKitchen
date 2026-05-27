@@ -9,6 +9,7 @@ namespace Assets.Scripts.Audio
     {
         [SerializeField] private GameplayAudioLoop loopType;
         [SerializeField] private AudioSource audioSource;
+        [SerializeField, Range(0f, 1f)] private float volumeMultiplier = 1f;
 
         private GameplayAudioLibrarySo _audioLibrary;
         private IAudioSettingsService _audioSettings;
@@ -49,7 +50,7 @@ namespace Assets.Scripts.Audio
                 return;
             }
             audioSource.clip = clip;
-            audioSource.volume = _audioSettings.SfxVolume;
+            audioSource.volume = Mathf.Clamp01(_audioSettings.SfxVolume * volumeMultiplier);
 
             _audioSettings.OnSettingsChanged += AudioSettings_OnSettingsChanged;
             _pauseService.OnPauseChanged += PauseService_OnPauseChanged;
@@ -94,7 +95,7 @@ namespace Assets.Scripts.Audio
         }
         private void ApplyVolume()
         {
-            audioSource.volume = _audioSettings.SfxVolume;
+            audioSource.volume = Mathf.Clamp01(_audioSettings.SfxVolume * volumeMultiplier);
         }
 
         private void AudioSettings_OnSettingsChanged(object sender, EventArgs e)

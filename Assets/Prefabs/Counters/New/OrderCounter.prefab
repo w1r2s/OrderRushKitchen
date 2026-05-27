@@ -209,6 +209,51 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &5945212799953309788
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4011557522878063539}
+  - component: {fileID: 4932302151212381710}
+  m_Layer: 0
+  m_Name: Sound
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4011557522878063539
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5945212799953309788}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6070345160192438622}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4932302151212381710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5945212799953309788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64b0fbefc37274c43bcf7bd680da517d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Counters.OrderCounterAudio
+  counter: {fileID: 5746203406296310562}
 --- !u!1001 &131152355642813343
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -273,6 +318,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6192379796299946689, guid: 044e5187d0d54dc429a0dd90d30a9a6e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3563031686968514553}
+    - targetCorrespondingSourceObject: {fileID: 6192379796299946689, guid: 044e5187d0d54dc429a0dd90d30a9a6e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4011557522878063539}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6317755255560354497, guid: 044e5187d0d54dc429a0dd90d30a9a6e, type: 3}
       insertIndex: -1

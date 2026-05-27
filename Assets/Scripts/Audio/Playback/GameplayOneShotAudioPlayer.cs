@@ -7,6 +7,7 @@ namespace Assets.Scripts.Audio
     {
         [SerializeField, Min(1)] private int initialPoolSize = 16;
         [SerializeField, Min(1)] private int maxPoolSize = 32;
+        [SerializeField, Range(0f, 1f)] private float positionalSpatialBlend = 0.25f;
         [SerializeField] private AudioSource sourceTemplate;
 
         private readonly List<AudioSource> _sources = new();
@@ -36,6 +37,7 @@ namespace Assets.Scripts.Audio
                 return;
 
             var source = GetAvailableSource();
+            source.spatialBlend = positionalSpatialBlend;
             source.transform.position = position;
             source.clip = clip;
             source.volume = Mathf.Clamp01(volume);
@@ -43,6 +45,19 @@ namespace Assets.Scripts.Audio
             source.Play();
         }
 
+        public void PlayGlobal(AudioClip clip, float volume)
+        {
+            if (clip == null)
+                return;
+
+            var source = GetAvailableSource();
+            source.spatialBlend = 0f;
+            source.transform.localPosition = Vector3.zero;
+            source.clip = clip;
+            source.volume = Mathf.Clamp01(volume);
+            source.gameObject.SetActive(true);
+            source.Play();
+        }
         private AudioSource GetAvailableSource()
         {
             for (int i = 0; i < _sources.Count; i++)

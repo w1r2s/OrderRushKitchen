@@ -1302,6 +1302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSounds
   footstepTimerMax: 0.3
+  footstepVolumeMultiplier: 0.5
 --- !u!1 &187917805
 GameObject:
   m_ObjectHideFlags: 0
@@ -9050,6 +9051,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Audio.GameplayOneShotAudioPlayer
   initialPoolSize: 5
   maxPoolSize: 10
+  positionalSpatialBlend: 0.25
   sourceTemplate: {fileID: 475471606}
 --- !u!4 &1155058782
 Transform:
@@ -14939,6 +14941,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 634674851}
     m_Modifications:
+    - target: {fileID: 3894520223505330566, guid: 505b4eaf68e208b44b9c6b400bbdd523, type: 3}
+      propertyPath: volumeMultiplier
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3977973032840953169, guid: 505b4eaf68e208b44b9c6b400bbdd523, type: 3}
       propertyPath: m_Name
       value: Stove_with_pan

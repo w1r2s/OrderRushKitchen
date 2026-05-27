@@ -1,10 +1,13 @@
 using Assets.Scripts.Order;
 using Assets.Scripts.Serving;
-using UnityEngine;
+using System;
 using Zenject;
 
 public class DeliveryCounter : BaseCounter
 {
+    public event EventHandler OnDeliverySuccess;
+    public event EventHandler OnDeliveryFail;
+
     private IOrderSubmissionService _submissionService;
 
     [Inject]
@@ -27,11 +30,11 @@ public class DeliveryCounter : BaseCounter
 
         if (!_submissionService.TrySubmit(menuItem, out var submitFailReason))
         {
-            Debug.Log($"{submitFailReason}");
+            OnDeliveryFail?.Invoke(this, EventArgs.Empty);
             return;
         }
         var removed = player.RemoveObject();
         Destroy(removed.gameObject);
-        Debug.Log($"order delivered");
+        OnDeliverySuccess?.Invoke(this, EventArgs.Empty);
     }
 }

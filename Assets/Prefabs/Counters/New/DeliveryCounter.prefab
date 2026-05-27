@@ -1,5 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &436327814877604073
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9211320226164977338}
+  - component: {fileID: 6897411261564521537}
+  m_Layer: 0
+  m_Name: Sound
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9211320226164977338
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 436327814877604073}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4139793258209424794}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6897411261564521537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 436327814877604073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc9a59e35ade45e47ac7ee25d74abfcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Counters.DeliveryCounterAudio
+  counter: {fileID: 135459481957057556}
 --- !u!1001 &815825758105054792
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -316,6 +361,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6192379796299946689, guid: 044e5187d0d54dc429a0dd90d30a9a6e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2371502047213052652}
+    - targetCorrespondingSourceObject: {fileID: 6192379796299946689, guid: 044e5187d0d54dc429a0dd90d30a9a6e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9211320226164977338}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6317755255560354497, guid: 044e5187d0d54dc429a0dd90d30a9a6e, type: 3}
       insertIndex: -1

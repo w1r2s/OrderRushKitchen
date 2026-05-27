@@ -18,19 +18,39 @@ namespace Assets.Scripts.Audio
         }
         public void Play(GameplayAudioEvent audioEvent, Vector3 position, float volumeMultiplier = 1f)
         {
+            if (TryResolveClip(audioEvent, volumeMultiplier, out var clip, out var volume))
+            {
+                _oneShotAudioPlayer.Play(clip, position, volume);
+            }
+        }
+
+        public void PlayGlobal(GameplayAudioEvent audioEvent, float volumeMultiplier = 1)
+        {
+            if (TryResolveClip(audioEvent, volumeMultiplier, out var clip, out var volume))
+            {
+                _oneShotAudioPlayer.PlayGlobal(clip, volume);
+            }
+        }
+
+        private bool TryResolveClip(GameplayAudioEvent audioEvent, float volumeMultiplier, out AudioClip clip, out float volume)
+        {
+            clip = null;
+            volume = 0f;
+
             if (!_audioLibrarySo.TryGetEventClips(audioEvent, out var clips))
-                return;
+                return false;
 
             if (clips == null || clips.Count == 0)
-                return;
+                return false;
 
-            var volume = Mathf.Clamp01(_audioSettingsService.SfxVolume * volumeMultiplier);
-            var clip = clips[Random.Range(0, clips.Count)];
+            volume = Mathf.Clamp01(_audioSettingsService.SfxVolume * volumeMultiplier);
+            clip = clips[Random.Range(0, clips.Count)];
 
             if (clip == null)
-                return;
+                return false;
 
-            _oneShotAudioPlayer.Play(clip, position, volume);
+            return true;
+
         }
     }
 }
