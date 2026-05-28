@@ -81,15 +81,11 @@ namespace Assets.Scripts.Managers.Installer
             Container.BindInterfacesTo<ModalPauseController>().AsSingle();
             Container.BindInterfacesTo<LevelRunPauseController>().AsSingle();
 
-            Container.Bind<IAudioSettingsStorage>().To<PlayerPrefsAudioSettingsStorage>().AsSingle();
-            Container.Bind<IAudioSettingsService>().To<AudioSettingsService>().AsSingle();
-
             Container.Bind<IOneShotAudioPlayer>().To<GameplayOneShotAudioPlayer>().FromComponentInHierarchy().AsSingle();
             Container.Bind<IGameplayAudioEventService>().To<GameplayAudioEventService>().AsSingle();
 
-            Container.Bind<IMusicPlayer>().To<MusicPlayer>().FromComponentInHierarchy().AsSingle();
-            Container.BindInterfacesTo<MusicVolumeController>().AsSingle();
             Container.BindInterfacesTo<OrderAudioController>().AsSingle();
+            Container.BindInterfacesTo<GameplayMusicStarter>().AsSingle();
         }
     }
 }

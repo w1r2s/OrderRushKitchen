@@ -1,4 +1,5 @@
-﻿using Zenject;
+﻿using Assets.Scripts.Audio;
+using Zenject;
 
 namespace Assets.Scripts.Managers.Installer
 {
@@ -6,6 +7,7 @@ namespace Assets.Scripts.Managers.Installer
     {
         public override void InstallBindings()
         {
+            Container.BindInterfacesTo<MainMenuMusicStarter>().AsSingle();
         }
     }
 }
