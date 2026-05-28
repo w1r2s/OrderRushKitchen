@@ -30,6 +30,7 @@ namespace Assets.Scripts.Counters
             potCounter.OnStateChanged += PotCounter_OnStateChanged;
             potCounter.OnIngredientAdded += PotCounter_OnIngredientAdded;
             potCounter.OnCleared += PotCounter_OnCleared;
+            potCounter.OnInvalidAction += PotCounter_OnInvalidAction;
         }
 
         private void OnDestroy()
@@ -40,6 +41,7 @@ namespace Assets.Scripts.Counters
             potCounter.OnStateChanged -= PotCounter_OnStateChanged;
             potCounter.OnIngredientAdded -= PotCounter_OnIngredientAdded;
             potCounter.OnCleared -= PotCounter_OnCleared;
+            potCounter.OnInvalidAction -= PotCounter_OnInvalidAction;
         }
 
         private void PotCounter_OnStateChanged(object sender, PotCounter.OnStateChangedEventArgs e)
@@ -60,6 +62,10 @@ namespace Assets.Scripts.Counters
         private void PotCounter_OnCleared(object sender, EventArgs e)
         {
             _audioEventService.Play(GameplayAudioEvent.TrashItem, potCounter.transform.position);
+        }
+        private void PotCounter_OnInvalidAction(object sender, EventArgs e)
+        {
+            _audioEventService.Play(GameplayAudioEvent.InvalidAction, potCounter.transform.position);
         }
     }
 }

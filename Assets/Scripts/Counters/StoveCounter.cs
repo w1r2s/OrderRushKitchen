@@ -20,6 +20,7 @@ public class StoveCounter : BaseCounter, IHasProgress
 
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
     public event EventHandler<OnStateChangedEventArgs> OnStateChanged;
+    public event EventHandler OnInvalidAction;
 
     public class OnStateChangedEventArgs : EventArgs
     {
@@ -86,6 +87,7 @@ public class StoveCounter : BaseCounter, IHasProgress
 
         if (!_recipesResolver.TryGetSingleInputRecipe<TimedCookingProcessRecipeSo>(CookingProcessType.Frying, playerObject.KitchenObjectSo, out var recipe))
         {
+            OnInvalidAction?.Invoke(this, EventArgs.Empty);
             return;
         }
 
@@ -108,7 +110,10 @@ public class StoveCounter : BaseCounter, IHasProgress
             return;
 
         if (!_plateAssemblyService.TryAddIngredient(plate, counterObject.KitchenObjectSo))
+        {
+            OnInvalidAction?.Invoke(this, EventArgs.Empty);
             return;
+        }
 
         RemoveAndDestroyCurrentObject();
         ResetCookingState();

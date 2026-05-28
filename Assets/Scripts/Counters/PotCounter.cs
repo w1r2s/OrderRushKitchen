@@ -25,6 +25,7 @@ namespace Assets.Scripts.Counters
         public event EventHandler OnIngredientsChanged;
         public event EventHandler OnIngredientAdded;
         public event EventHandler OnCleared;
+        public event EventHandler OnInvalidAction;
         public enum State
         {
             Idle,
@@ -73,7 +74,11 @@ namespace Assets.Scripts.Counters
                 var playerObjSo = player.GetObject().KitchenObjectSo;
 
                 if (!_recipesResolver.CanAddInput(CookingProcessType.PotCooking, playerObjSo, currentIngredients))
+                {
+                    OnInvalidAction?.Invoke(this, EventArgs.Empty);
                     return;
+                }
+
                 currentIngredients.Add(playerObjSo);
                 OnIngredientAdded?.Invoke(this, EventArgs.Empty);
                 OnIngredientsChanged?.Invoke(this, EventArgs.Empty);

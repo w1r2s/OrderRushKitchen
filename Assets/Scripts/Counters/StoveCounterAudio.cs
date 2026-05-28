@@ -30,6 +30,7 @@ namespace Assets.Scripts.Counters
         {
             stoveCounter.OnStateChanged += StoveCounter_OnStateChanged;
             stoveCounter.OnProgressChanged += StoveCounter_OnProgressChanged;
+            stoveCounter.OnInvalidAction += StoveCounter_OnInvalidAction;
         }
 
         private void OnDestroy()
@@ -39,6 +40,7 @@ namespace Assets.Scripts.Counters
 
             stoveCounter.OnStateChanged -= StoveCounter_OnStateChanged;
             stoveCounter.OnProgressChanged -= StoveCounter_OnProgressChanged;
+            stoveCounter.OnInvalidAction -= StoveCounter_OnInvalidAction;
         }
 
         private void StoveCounter_OnProgressChanged(object sender, IHasProgress.OnProgressChangedEventArgs e)
@@ -56,6 +58,10 @@ namespace Assets.Scripts.Counters
                 playWarningSound = false;
                 warningSoundTimer = 0f;
             }
+        }
+        private void StoveCounter_OnInvalidAction(object sender, System.EventArgs e)
+        {
+            _audioEventService.Play(GameplayAudioEvent.InvalidAction, stoveCounter.transform.position);
         }
 
         private void Update()

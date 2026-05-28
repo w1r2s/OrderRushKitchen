@@ -1,9 +1,11 @@
 using Assets.Scripts.Order;
 using Assets.Scripts.Serving;
+using System;
 using Zenject;
 
 public class ClearCounter : BaseCounter
 {
+    public event EventHandler OnInvalidAction;
     private IMenuItemResolver _menuItemResolver;
     private PlateAssemblyService _plateAssemblyService;
 
@@ -40,7 +42,10 @@ public class ClearCounter : BaseCounter
         if (player.TryGetObjectAs<PlateKitchenObject>(out var playerPlate))
         {
             if (!_plateAssemblyService.TryAddIngredient(playerPlate, counterObjectOnCounter.KitchenObjectSo))
+            {
+                OnInvalidAction?.Invoke(this, EventArgs.Empty);
                 return;
+            }
 
             KitchenObject removedObject = RemoveObject();
             Destroy(removedObject.gameObject);
@@ -50,7 +55,10 @@ public class ClearCounter : BaseCounter
         if (TryGetObjectAs<PlateKitchenObject>(out var counterPlate))
         {
             if (!_plateAssemblyService.TryAddIngredient(counterPlate, playerObjectInHand.KitchenObjectSo))
+            {
+                OnInvalidAction?.Invoke(this, EventArgs.Empty);
                 return;
+            }
 
             KitchenObject removedObject = player.RemoveObject();
             Destroy(removedObject.gameObject);
@@ -70,14 +78,12 @@ public class ClearCounter : BaseCounter
             var menuItem = _menuItemResolver.TryResolveMenuItem(counterPlate.Ingredients);
             if (menuItem == null)
             {
-                // TODO(M5): replace with UI/audio feedback
-                // Debug.Log($"serve resolve failed");
+                OnInvalidAction?.Invoke(this, EventArgs.Empty);
                 return;
             }
             if (!counterPlate.TryServe(menuItem))
             {
-                // TODO(M5): replace with UI/audio feedback
-                // Debug.Log($"serve failed.");
+                OnInvalidAction?.Invoke(this, EventArgs.Empty);
             }
         }
     }

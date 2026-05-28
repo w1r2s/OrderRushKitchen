@@ -23,10 +23,16 @@ public class DeliveryCounter : BaseCounter
         var obj = player.GetObject();
 
         if (obj is not ISubmittableMenuItemSource source)
+        {
+            OnDeliveryFail?.Invoke(this, EventArgs.Empty);
             return;
+        }
 
         if (!source.TryGetMenuItemForSubmit(out var menuItem) || menuItem == null)
+        {
+            OnDeliveryFail?.Invoke(this, EventArgs.Empty);
             return;
+        }
 
         if (!_submissionService.TrySubmit(menuItem, out var submitFailReason))
         {

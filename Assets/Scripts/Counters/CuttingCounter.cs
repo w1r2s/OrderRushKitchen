@@ -1,4 +1,3 @@
-using Assets.Scripts.Audio;
 using Assets.Scripts.Cooking;
 using Assets.Scripts.Serving;
 using System;
@@ -6,7 +5,6 @@ using Zenject;
 
 public class CuttingCounter : BaseCounter, IHasProgress
 {
-    private IGameplayAudioEventService _audioService;
     private CookingProcessRecipeResolver _recipesResolver;
     private PlateAssemblyService _plateAssemblyService;
 
@@ -14,13 +12,13 @@ public class CuttingCounter : BaseCounter, IHasProgress
 
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
     public event EventHandler OnCut;
+    public event EventHandler OnInvalidAction;
 
     private ActionCookingProcessRecipeSo cutRecipe;
 
     [Inject]
-    private void Construct(IGameplayAudioEventService audioService, CookingProcessRecipeResolver recipesResolver, PlateAssemblyService plateAssemblyService)
+    private void Construct(CookingProcessRecipeResolver recipesResolver, PlateAssemblyService plateAssemblyService)
     {
-        _audioService = audioService;
         _recipesResolver = recipesResolver;
         _plateAssemblyService = plateAssemblyService;
 
@@ -35,7 +33,10 @@ public class CuttingCounter : BaseCounter, IHasProgress
             var playerObject = player.GetObject();
 
             if (!_recipesResolver.TryGetSingleInputRecipe<ActionCookingProcessRecipeSo>(CookingProcessType.Cutting, playerObject.KitchenObjectSo, out var recipe))
+            {
+                OnInvalidAction?.Invoke(this, EventArgs.Empty);
                 return;
+            }
 
             PlaceObjectFromPlayer(player);
 
@@ -63,9 +64,13 @@ public class CuttingCounter : BaseCounter, IHasProgress
                 RemoveAndDestroy();
                 ResetCuttingState();
             }
+            else
+            {
+                OnInvalidAction?.Invoke(this, EventArgs.Empty);
+            }
         }
-
     }
+
     public override void InteractAlternate(Player player)
     {
         if (!HasObject)
@@ -76,7 +81,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
 
         cuttingProgress++;
         OnCut?.Invoke(this, EventArgs.Empty);
-        _audioService.Play(GameplayAudioEvent.CuttingAction,transform.position);
+
         UpdateProgress(cutRecipe);
 
         if (cuttingProgress >= cutRecipe.RequiredActions)
