@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Audio;
 using Assets.Scripts.Navigation;
+using Assets.Scripts.Progress;
 using UnityEngine;
 using Zenject;
 
@@ -23,6 +24,10 @@ namespace Assets.Scripts.Managers.Installer
             Container.BindInterfacesTo<MusicVolumeController>().AsSingle();
 
             Container.Bind<IMusicService>().To<MusicService>().AsSingle();
+
+            Container.Bind<IUserProgressStorage>().To<PlayerPrefsUserProgressStorage>().AsSingle();
+            Container.BindInterfacesTo<UserProgressService>().AsSingle();
+
         }
     }
 }

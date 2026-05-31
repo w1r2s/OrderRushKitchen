@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Progress;
+using System;
 using System.Linq;
 using Zenject;
 
@@ -8,15 +9,16 @@ namespace Assets.Scripts.Level
     {
         private readonly ICurrentLevelProvider _currentLevelProvider;
         private readonly LevelDatabase _levelDatabase;
-        private const int DefaultStartLevel = 1;
-        public LevelStartupInitializer(ICurrentLevelProvider currentLevelProvider, LevelDatabase levelDatabase)
+        private readonly IUserProgressService _userProgressService;
+        public LevelStartupInitializer(ICurrentLevelProvider currentLevelProvider, LevelDatabase levelDatabase, IUserProgressService userProgressService)
         {
             _currentLevelProvider = currentLevelProvider;
             _levelDatabase = levelDatabase;
+            _userProgressService = userProgressService;
         }
         public void Initialize()
         {
-            if (!_currentLevelProvider.TrySetCurrentLevel(DefaultStartLevel))
+            if (!_currentLevelProvider.TrySetCurrentLevel(_userProgressService.CurrentLevel))
             {
 
                 var firstLevel = _levelDatabase.GetAll()

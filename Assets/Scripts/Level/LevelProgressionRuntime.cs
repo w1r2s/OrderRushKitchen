@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Order;
+using Assets.Scripts.Progress;
 using System;
 using Zenject;
 
@@ -6,23 +7,25 @@ namespace Assets.Scripts.Level
 {
     public class LevelProgressionRuntime : IInitializable, IDisposable
     {
-        private ILevelProgressionService _levelProgressionService;
-        private IOrderService _orderService;
+        private readonly ILevelProgressionService _levelProgressionService;
+        private readonly IOrderService _orderService;
+        private readonly IUserProgressService _userProgressService;
+        private readonly ICurrentLevelProvider _currentLevelProvider;
 
         [Inject]
-        public LevelProgressionRuntime(ILevelProgressionService levelProgressionService, IOrderService orderService)
+        public LevelProgressionRuntime(ILevelProgressionService levelProgressionService, IOrderService orderService, IUserProgressService userProgressService, ICurrentLevelProvider currentLevelProvider)
         {
             _levelProgressionService = levelProgressionService;
             _orderService = orderService;
-        }
-        private void OrderService_OnOrderCompleted(object sender, OrderServiceEventArgs e)
-        {
-            _levelProgressionService.RegisterOrderCompleted();
+            _userProgressService = userProgressService;
+            _currentLevelProvider = currentLevelProvider;
         }
 
         public void Initialize()
         {
             _orderService.OnOrderCompleted += OrderService_OnOrderCompleted;
+            _levelProgressionService.OnLevelCompleted += LevelProgressionService_OnLevelCompleted;
+            _currentLevelProvider.OnCurrentLevelChanged += CurrentLevelProvider_OnCurrentLevelChanged;
         }
 
         public void Dispose()
@@ -30,6 +33,25 @@ namespace Assets.Scripts.Level
             if (_orderService != null)
                 _orderService.OnOrderCompleted -= OrderService_OnOrderCompleted;
 
+            if (_levelProgressionService != null)
+                _levelProgressionService.OnLevelCompleted -= LevelProgressionService_OnLevelCompleted;
+
+            if (_currentLevelProvider != null)
+                _currentLevelProvider.OnCurrentLevelChanged -= CurrentLevelProvider_OnCurrentLevelChanged;
+        }
+
+        private void OrderService_OnOrderCompleted(object sender, OrderServiceEventArgs e)
+        {
+            _levelProgressionService.RegisterOrderCompleted();
+        }
+
+        private void LevelProgressionService_OnLevelCompleted(object sender, EventArgs e)
+        {
+            _userProgressService.CompleteLevel(_levelProgressionService.CurrentLevelIndex);
+        }
+        private void CurrentLevelProvider_OnCurrentLevelChanged(object sender, EventArgs e)
+        {
+            _userProgressService.SetCurrentLevel(_currentLevelProvider.CurrentLevel.levelNumber);
         }
     }
 }
