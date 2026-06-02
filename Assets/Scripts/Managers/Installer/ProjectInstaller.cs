@@ -1,6 +1,8 @@
 ﻿using Assets.Scripts.Audio;
+using Assets.Scripts.Level;
 using Assets.Scripts.Navigation;
 using Assets.Scripts.Progress;
+using Assets.Scripts.ScriptableObjects;
 using UnityEngine;
 using Zenject;
 
@@ -8,6 +10,10 @@ namespace Assets.Scripts.Managers.Installer
 {
     public class ProjectInstaller : MonoInstaller
     {
+        [Header("Levels config")]
+        [SerializeField] private LevelDefinitionListSo levelDefinitionListSo;
+
+        [Header("Music")]
         [SerializeField] private MusicTrackLibrarySo musicTrackLibrary;
         public override void InstallBindings()
         {
@@ -28,6 +34,7 @@ namespace Assets.Scripts.Managers.Installer
             Container.Bind<IUserProgressStorage>().To<PlayerPrefsUserProgressStorage>().AsSingle();
             Container.BindInterfacesTo<UserProgressService>().AsSingle();
 
+            Container.Bind<LevelDatabase>().AsSingle().WithArguments(levelDefinitionListSo.levels);
         }
     }
 }

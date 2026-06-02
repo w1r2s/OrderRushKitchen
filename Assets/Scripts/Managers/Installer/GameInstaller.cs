@@ -25,10 +25,6 @@ namespace Assets.Scripts.Managers.Installer
         [SerializeField] private CookingProcessRecipeListSo processRecipes;
         [SerializeField] private KitchenObjectSo servedMenuItemContainerSo;
 
-        [Header("Levels config")]
-        [SerializeField] private LevelDefinitionListSo levelDefinitionListSo;
-
-
         public override void InstallBindings()
         {
 
@@ -49,8 +45,6 @@ namespace Assets.Scripts.Managers.Installer
             Container.Bind<CookingProcessRecipeResolver>().AsSingle().WithArguments(processRecipes.Recipes);
 
             Container.Bind<MenuItemDatabase>().AsSingle().WithArguments(menuDefinitionListSo.items);
-
-            Container.Bind<LevelDatabase>().AsSingle().WithArguments(levelDefinitionListSo.levels);
             Container.Bind<ICurrentLevelProvider>().To<CurrentLevelProvider>().AsSingle();
 
             // order system

@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df8de362fb55604dbe00a455668cedc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Managers.Installer.ProjectInstaller
+  levelDefinitionListSo: {fileID: 11400000, guid: 143e3858423b9014d9fd855041d8e810, type: 2}
   musicTrackLibrary: {fileID: 11400000, guid: 051295c6841d73e4da9e5158322472f0, type: 2}
 --- !u!1 &1435644111983928258
 GameObject:
