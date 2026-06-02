@@ -1,8 +1,5 @@
 using Assets.Scripts.Managers.Game;
-using Assets.Scripts.Navigation;
-using Cysharp.Threading.Tasks;
 using System;
-using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +8,6 @@ using Zenject;
 public class GameOverUI : MonoBehaviour
 {
     private IGameService _gameService;
-    private INavigationService _navigationService;
 
     [Header("Stats")]
     [SerializeField] private TextMeshProUGUI ordersDeliveredText;
@@ -24,11 +20,13 @@ public class GameOverUI : MonoBehaviour
     [SerializeField] private Button mainMenuButton;
     [SerializeField] private Button continueAfterAdButton;
 
+    public event EventHandler RetryRequested;
+    public event EventHandler MainMenuRequested;
+
     [Inject]
-    private void Construct(IGameService gameService, INavigationService navigationService)
+    private void Construct(IGameService gameService)
     {
         _gameService = gameService;
-        _navigationService = navigationService;
     }
 
     private void Start()
@@ -119,11 +117,11 @@ public class GameOverUI : MonoBehaviour
 
     private void Retry()
     {
-        _navigationService.ReloadGameAsync(CancellationToken.None).Forget(Debug.LogException);
+        RetryRequested?.Invoke(this, EventArgs.Empty);
     }
 
     private void ReturnToMainMenu()
     {
-        _navigationService.LoadMainMenuAsync(CancellationToken.None).Forget(Debug.LogException);
+        MainMenuRequested?.Invoke(this, EventArgs.Empty);
     }
 }

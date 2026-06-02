@@ -2255,7 +2255,6 @@ MonoBehaviour:
   menuDefinitionListSo: {fileID: 11400000, guid: ebf0d52a252c69e4faa03fdf22d963f2, type: 2}
   processRecipes: {fileID: 11400000, guid: 1e37c03ed69e47e40b6d44b44f47d211, type: 2}
   servedMenuItemContainerSo: {fileID: 11400000, guid: a0a3c525c6c594344bd522768eb121da, type: 2}
-  levelDefinitionListSo: {fileID: 11400000, guid: 143e3858423b9014d9fd855041d8e810, type: 2}
 --- !u!4 &281345973
 Transform:
   m_ObjectHideFlags: 0
@@ -13570,7 +13569,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

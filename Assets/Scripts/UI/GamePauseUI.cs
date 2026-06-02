@@ -1,8 +1,5 @@
 using Assets.Scripts.Managers.Game;
-using Assets.Scripts.Navigation;
-using Cysharp.Threading.Tasks;
 using System;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -13,17 +10,20 @@ public class GamePauseUI : MonoBehaviour
     [SerializeField] private Button mainMenuButton;
     [SerializeField] private Button optionsButton;
 
-    private OptionsUI _optionsUI;
     private IGamePauseService _pauseService;
-    private INavigationService _navigationService;
+
+    public event EventHandler ResumeRequested;
+    public event EventHandler MainMenuRequested;
+    public event EventHandler OptionsRequested;
+
+    private bool _isSuppressed;
 
     [Inject]
-    private void Construct(IGamePauseService pauseService, OptionsUI optionsUI, INavigationService navigationService)
+    private void Construct(IGamePauseService pauseService)
     {
         _pauseService = pauseService;
-        _optionsUI = optionsUI;
-        _navigationService = navigationService;
     }
+
     private void Start()
     {
         _pauseService.OnPauseChanged += PauseService_OnPauseChanged;
@@ -36,6 +36,7 @@ public class GamePauseUI : MonoBehaviour
 
         RefreshVisibility();
     }
+
     private void OnDestroy()
     {
         if (_pauseService != null)
@@ -60,33 +61,34 @@ public class GamePauseUI : MonoBehaviour
         RefreshVisibility();
     }
 
+    public void SetSuppressed(bool suppressed)
+    {
+        _isSuppressed = suppressed;
+        RefreshVisibility();
+    }
+
+    private void SetVisible(bool visible)
+    {
+        gameObject.SetActive(visible);
+    }
+
     private void RefreshVisibility()
     {
-        if (_pauseService.HasPause(GamePauseReason.UserPause))
-            Show();
-        else
-            Hide();
+        SetVisible(_pauseService.HasPause(GamePauseReason.UserPause) && !_isSuppressed);
     }
-    private void Show()
-    {
-        gameObject.SetActive(true);
-    }
-    private void Hide()
-    {
-        gameObject.SetActive(false);
-    }
+
     private void Resume()
     {
-        _pauseService.RemovePause(GamePauseReason.UserPause);
+        ResumeRequested?.Invoke(this, EventArgs.Empty);
     }
 
     private void OpenOptions()
     {
-        Hide();
-        _optionsUI.Show(Show);
+        OptionsRequested?.Invoke(this, EventArgs.Empty);
     }
+
     private void ReturnToMenu()
     {
-        _navigationService.LoadMainMenuAsync(CancellationToken.None).Forget(Debug.LogException);
+        MainMenuRequested?.Invoke(this, EventArgs.Empty);
     }
 }

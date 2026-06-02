@@ -80,6 +80,11 @@ namespace Assets.Scripts.Managers.Installer
 
             Container.BindInterfacesTo<OrderAudioController>().AsSingle();
             Container.BindInterfacesTo<GameplayMusicStarter>().AsSingle();
+            Container.BindInterfacesTo<LevelCompletionNavigationController>().AsSingle();
+            Container.Bind<GameOverUI>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesTo<GameOverNavigationController>().AsSingle();
+            Container.Bind<GamePauseUI>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesTo<GamePauseActionsController>().AsSingle();
         }
     }
 }

@@ -37,7 +37,6 @@ public class OptionsUI : MonoBehaviour
 
     [SerializeField] private Transform pressToRebindKeyTransform;
 
-    private Action onCloseButtonAction;
     private IGamePauseService _pauseService;
     private IInputRebindingService _inputRebindingService;
     private IAudioSettingsService _audioSettings;
@@ -63,11 +62,7 @@ public class OptionsUI : MonoBehaviour
             _audioSettings.StepMusicVolume();
             UpdateVisual();
         });
-        closeButton.onClick.AddListener(() =>
-        {
-            Hide();
-            onCloseButtonAction();
-        });
+        closeButton.onClick.AddListener(Hide);
 
         moveUpButton.onClick.AddListener(() =>
         {
@@ -109,6 +104,9 @@ public class OptionsUI : MonoBehaviour
     {
         if (_pauseService != null)
             _pauseService.OnPauseChanged -= PauseService_OnPauseChanged;
+
+        if (closeButton != null)
+            closeButton.onClick.RemoveListener(Hide);
     }
     private void PauseService_OnPauseChanged(object sender, EventArgs e)
     {
@@ -129,10 +127,8 @@ public class OptionsUI : MonoBehaviour
         altInteractText.text = _inputRebindingService.GetKeyBindingText(InputKeyBinding.Alt_Interact);
         pauseText.text = _inputRebindingService.GetKeyBindingText(InputKeyBinding.Pause);
     }
-    public void Show(Action onCloseButtonAction)
+    public void Show()
     {
-        this.onCloseButtonAction = onCloseButtonAction;
-
         var wasOpen = gameObject.activeSelf;
 
         gameObject.SetActive(true);
@@ -141,6 +137,7 @@ public class OptionsUI : MonoBehaviour
         if (!wasOpen)
             Opened?.Invoke(this, EventArgs.Empty);
     }
+
     private void Hide()
     {
         if (!gameObject.activeSelf)
