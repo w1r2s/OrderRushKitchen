@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Navigation;
+using Assets.Scripts.Navigation;
+using Assets.Scripts.UI;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
@@ -24,6 +25,7 @@ namespace Assets.Scripts.Managers.Game
             _navigationService = navigationService;
             _gamePauseService = gamePauseService;
         }
+
         public void Initialize()
         {
             _gamePauseUI.ResumeRequested += GamePauseUI_ResumeRequested;
@@ -31,6 +33,7 @@ namespace Assets.Scripts.Managers.Game
             _gamePauseUI.OptionsRequested += GamePauseUI_OptionsRequested;
             _optionsUI.Closed += OptionsUI_Closed;
         }
+
         public void Dispose()
         {
             _gamePauseUI.ResumeRequested -= GamePauseUI_ResumeRequested;
@@ -46,7 +49,7 @@ namespace Assets.Scripts.Managers.Game
 
         private void GamePauseUI_MainMenuRequested(object sender, EventArgs e)
         {
-           _navigationService.LoadMainMenuAsync(CancellationToken.None).Forget(HandleLoadException);
+            _navigationService.LoadMainMenuAsync(CancellationToken.None).Forget(HandleLoadException);
         }
 
         private void GamePauseUI_OptionsRequested(object sender, EventArgs e)

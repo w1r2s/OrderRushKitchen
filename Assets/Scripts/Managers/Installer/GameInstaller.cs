@@ -9,6 +9,7 @@ using Assets.Scripts.Runtime;
 using Assets.Scripts.ScriptableObjects;
 using Assets.Scripts.Selection;
 using Assets.Scripts.Serving;
+using Assets.Scripts.UI;
 using UnityEngine;
 using Zenject;
 
@@ -34,12 +35,10 @@ namespace Assets.Scripts.Managers.Installer
 
             Container.Bind<Player>().FromComponentInHierarchy().AsSingle();
 
-            Container.Bind<Actions>().AsSingle();
-            Container.Bind<IInputStorage>().To<PlayerPrefsInputStorage>().AsSingle();
-
             Container.BindInterfacesAndSelfTo<InputService>().AsSingle().NonLazy();
 
             Container.Bind<OptionsUI>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesTo<OptionsUIController>().AsSingle();
 
             // Process recipes
             Container.Bind<CookingProcessRecipeResolver>().AsSingle().WithArguments(processRecipes.Recipes);
@@ -73,6 +72,7 @@ namespace Assets.Scripts.Managers.Installer
             Container.BindInterfacesTo<GamePauseService>().AsSingle();
             Container.Bind<OrderDetailsUI>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesTo<ModalPauseController>().AsSingle();
+            Container.BindInterfacesTo<GameOptionsPauseController>().AsSingle();
             Container.BindInterfacesTo<LevelRunPauseController>().AsSingle();
 
             Container.Bind<IOneShotAudioPlayer>().To<GameplayOneShotAudioPlayer>().FromComponentInHierarchy().AsSingle();

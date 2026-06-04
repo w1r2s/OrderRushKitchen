@@ -1,5 +1,6 @@
-﻿using Assets.Scripts.Order;
+using Assets.Scripts.Order;
 using Assets.Scripts.Selection;
+using Assets.Scripts.UI;
 using System;
 using Zenject;
 
@@ -20,6 +21,7 @@ namespace Assets.Scripts.Managers.Game
             _optionsUI = optionsUI;
             _orderDetailsUI = orderDetailsUI;
         }
+
         public void Initialize()
         {
             _itemSelectionService.OnSelectionOpened += Modal_Opened;
@@ -29,17 +31,6 @@ namespace Assets.Scripts.Managers.Game
             _itemSelectionService.OnSelectionClosed += Modal_Closed;
             _optionsUI.Closed += Modal_Closed;
             _orderDetailsUI.Closed += Modal_Closed;
-
-        }
-
-        private void Modal_Opened(object sender, EventArgs e)
-        {
-            _pauseService.AddPause(GamePauseReason.Modal);
-        }
-
-        private void Modal_Closed(object sender, EventArgs e)
-        {
-            _pauseService.RemovePause(GamePauseReason.Modal);
         }
 
         public void Dispose()
@@ -51,6 +42,16 @@ namespace Assets.Scripts.Managers.Game
             _itemSelectionService.OnSelectionClosed -= Modal_Closed;
             _optionsUI.Closed -= Modal_Closed;
             _orderDetailsUI.Closed -= Modal_Closed;
+        }
+
+        private void Modal_Opened(object sender, EventArgs e)
+        {
+            _pauseService.AddPause(GamePauseReason.Modal);
+        }
+
+        private void Modal_Closed(object sender, EventArgs e)
+        {
+            _pauseService.RemovePause(GamePauseReason.Modal);
         }
     }
 }

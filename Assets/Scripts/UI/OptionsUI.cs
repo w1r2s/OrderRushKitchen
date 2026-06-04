@@ -1,170 +1,182 @@
-using Assets.Scripts.Audio;
-using Assets.Scripts.Managers.Game;
 using Assets.Scripts.Managers.Input;
 using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
-public class OptionsUI : MonoBehaviour
+namespace Assets.Scripts.UI
 {
-    public event EventHandler Opened;
-    public event EventHandler Closed;
-
-    [SerializeField] private Button soundEffectsButton;
-    [SerializeField] private Button musicButton;
-    [SerializeField] private Button closeButton;
-
-    [SerializeField] private Button moveUpButton;
-    [SerializeField] private Button moveDownButton;
-    [SerializeField] private Button moveLeftButton;
-    [SerializeField] private Button moveRightButton;
-    [SerializeField] private Button interactButton;
-    [SerializeField] private Button altInteractButton;
-    [SerializeField] private Button pauseButton;
-
-    [SerializeField] private TextMeshProUGUI soundEffectText;
-    [SerializeField] private TextMeshProUGUI musicText;
-
-    [SerializeField] private TextMeshProUGUI moveUpText;
-    [SerializeField] private TextMeshProUGUI moveDownText;
-    [SerializeField] private TextMeshProUGUI moveLeftText;
-    [SerializeField] private TextMeshProUGUI moveRightText;
-    [SerializeField] private TextMeshProUGUI interactText;
-    [SerializeField] private TextMeshProUGUI altInteractText;
-    [SerializeField] private TextMeshProUGUI pauseText;
-
-    [SerializeField] private Transform pressToRebindKeyTransform;
-
-    private IGamePauseService _pauseService;
-    private IInputRebindingService _inputRebindingService;
-    private IAudioSettingsService _audioSettings;
-
-    [Inject]
-    private void Construct(IGamePauseService pauseService, IInputRebindingService inputService, IAudioSettingsService audioSettings)
+    public class OptionsUI : MonoBehaviour
     {
-        _pauseService = pauseService;
-        _inputRebindingService = inputService;
-        _audioSettings = audioSettings;
-    }
-    private void Awake()
-    {
+        public event EventHandler Opened;
+        public event EventHandler Closed;
+        public event EventHandler SfxVolumeRequested;
+        public event EventHandler MusicVolumeRequested;
+        public event EventHandler CloseRequested;
+        public event EventHandler<OptionsRebindRequestedEventArgs> RebindRequested;
 
-        soundEffectsButton.onClick.AddListener(() =>
+        [Header("Panels")]
+        [SerializeField] private GameObject panelRoot;
+        [SerializeField] private GameObject dimmer;
+
+        [Header("Common Buttons")]
+        [SerializeField] private Button soundEffectsButton;
+        [SerializeField] private Button musicButton;
+        [SerializeField] private Button closeButton;
+
+        [Header("Rebind buttons")]
+        [SerializeField] private Button moveUpButton;
+        [SerializeField] private Button moveDownButton;
+        [SerializeField] private Button moveLeftButton;
+        [SerializeField] private Button moveRightButton;
+        [SerializeField] private Button interactButton;
+        [SerializeField] private Button altInteractButton;
+        [SerializeField] private Button pauseButton;
+
+        [Header("Common text")]
+        [SerializeField] private TextMeshProUGUI soundEffectText;
+        [SerializeField] private TextMeshProUGUI musicText;
+
+        [Header("Rebind text")]
+        [SerializeField] private TextMeshProUGUI moveUpText;
+        [SerializeField] private TextMeshProUGUI moveDownText;
+        [SerializeField] private TextMeshProUGUI moveLeftText;
+        [SerializeField] private TextMeshProUGUI moveRightText;
+        [SerializeField] private TextMeshProUGUI interactText;
+        [SerializeField] private TextMeshProUGUI altInteractText;
+        [SerializeField] private TextMeshProUGUI pauseText;
+
+        [Header("Rebind dimmer")]
+        [SerializeField] private Transform pressToRebindKeyTransform;
+
+        public bool IsOpen => panelRoot.activeSelf;
+
+        private void Awake()
         {
-            _audioSettings.StepSfxVolume();
-            UpdateVisual();
-        });
+            soundEffectsButton.onClick.AddListener(OnSoundEffectsClicked);
+            musicButton.onClick.AddListener(OnMusicClicked);
+            closeButton.onClick.AddListener(OnCloseClicked);
 
-        musicButton.onClick.AddListener(() =>
+            moveUpButton.onClick.AddListener(OnMoveUpClicked);
+            moveDownButton.onClick.AddListener(OnMoveDownClicked);
+            moveLeftButton.onClick.AddListener(OnMoveLeftClicked);
+            moveRightButton.onClick.AddListener(OnMoveRightClicked);
+            interactButton.onClick.AddListener(OnInteractClicked);
+            altInteractButton.onClick.AddListener(OnAltInteractClicked);
+            pauseButton.onClick.AddListener(OnPauseClicked);
+        }
+
+        private void OnDestroy()
         {
-            _audioSettings.StepMusicVolume();
-            UpdateVisual();
-        });
-        closeButton.onClick.AddListener(Hide);
+            soundEffectsButton.onClick.RemoveListener(OnSoundEffectsClicked);
+            musicButton.onClick.RemoveListener(OnMusicClicked);
+            closeButton.onClick.RemoveListener(OnCloseClicked);
 
-        moveUpButton.onClick.AddListener(() =>
+            moveUpButton.onClick.RemoveListener(OnMoveUpClicked);
+            moveDownButton.onClick.RemoveListener(OnMoveDownClicked);
+            moveLeftButton.onClick.RemoveListener(OnMoveLeftClicked);
+            moveRightButton.onClick.RemoveListener(OnMoveRightClicked);
+            interactButton.onClick.RemoveListener(OnInteractClicked);
+            altInteractButton.onClick.RemoveListener(OnAltInteractClicked);
+            pauseButton.onClick.RemoveListener(OnPauseClicked);
+        }
+
+        public void InitializeHidden()
         {
-            RebindBinding(InputKeyBinding.Move_Up);
-        });
-        moveDownButton.onClick.AddListener(() =>
+            SetRebindOverlayVisible(false);
+            panelRoot.SetActive(false);
+            dimmer.SetActive(false);
+        }
+
+        public void Show()
         {
-            RebindBinding(InputKeyBinding.Move_Down);
-        });
-        moveLeftButton.onClick.AddListener(() =>
+            var wasOpen = IsOpen;
+
+            panelRoot.SetActive(true);
+            dimmer.SetActive(true);
+            soundEffectsButton.Select();
+
+            if (!wasOpen)
+                Opened?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void Hide()
         {
-            RebindBinding(InputKeyBinding.Move_Left);
-        });
-        moveRightButton.onClick.AddListener(() =>
+            if (!IsOpen)
+                return;
+
+            panelRoot.SetActive(false);
+            dimmer.SetActive(false);
+            Closed?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void SetAudioVolumes(float sfxVolume, float musicVolume)
         {
-            RebindBinding(InputKeyBinding.Move_Right);
-        });
-        interactButton.onClick.AddListener(() =>
+            soundEffectText.text = $"Sound Effects: {Mathf.Round(sfxVolume * 10f)}";
+            musicText.text = $"Music: {Mathf.Round(musicVolume * 10f)}";
+        }
+
+        public void SetBindingText(InputKeyBinding binding, string text)
         {
-            RebindBinding(InputKeyBinding.Interact);
-        });
-        altInteractButton.onClick.AddListener(() =>
+            GetBindingText(binding).text = text;
+        }
+
+        public void SetRebindOverlayVisible(bool visible)
         {
-            RebindBinding(InputKeyBinding.Alt_Interact);
-        });
-        pauseButton.onClick.AddListener(() =>
+            pressToRebindKeyTransform.gameObject.SetActive(visible);
+        }
+
+        private TextMeshProUGUI GetBindingText(InputKeyBinding binding)
         {
-            RebindBinding(InputKeyBinding.Pause);
-        });
-    }
-    private void Start()
-    {
-        _pauseService.OnPauseChanged += PauseService_OnPauseChanged;
-        UpdateVisual();
-        Hide();
-        HidePressToRebindKey();
-    }
-    private void OnDestroy()
-    {
-        if (_pauseService != null)
-            _pauseService.OnPauseChanged -= PauseService_OnPauseChanged;
+            return binding switch
+            {
+                InputKeyBinding.Move_Up => moveUpText,
+                InputKeyBinding.Move_Down => moveDownText,
+                InputKeyBinding.Move_Left => moveLeftText,
+                InputKeyBinding.Move_Right => moveRightText,
+                InputKeyBinding.Interact => interactText,
+                InputKeyBinding.Alt_Interact => altInteractText,
+                InputKeyBinding.Pause => pauseText,
+                _ => throw new ArgumentOutOfRangeException(nameof(binding), binding, null)
+            };
+        }
 
-        if (closeButton != null)
-            closeButton.onClick.RemoveListener(Hide);
-    }
-    private void PauseService_OnPauseChanged(object sender, EventArgs e)
-    {
-        if (!_pauseService.HasPause(GamePauseReason.UserPause))
-            Hide();
-    }
-
-    private void UpdateVisual()
-    {
-        soundEffectText.text = $"Sound Effects: {Mathf.Round(_audioSettings.SfxVolume * 10f)}";
-        musicText.text = "Music: " + Mathf.Round(_audioSettings.MusicVolume * 10f);
-
-        moveUpText.text = _inputRebindingService.GetKeyBindingText(InputKeyBinding.Move_Up);
-        moveDownText.text = _inputRebindingService.GetKeyBindingText(InputKeyBinding.Move_Down);
-        moveLeftText.text = _inputRebindingService.GetKeyBindingText(InputKeyBinding.Move_Left);
-        moveRightText.text = _inputRebindingService.GetKeyBindingText(InputKeyBinding.Move_Right);
-        interactText.text = _inputRebindingService.GetKeyBindingText(InputKeyBinding.Interact);
-        altInteractText.text = _inputRebindingService.GetKeyBindingText(InputKeyBinding.Alt_Interact);
-        pauseText.text = _inputRebindingService.GetKeyBindingText(InputKeyBinding.Pause);
-    }
-    public void Show()
-    {
-        var wasOpen = gameObject.activeSelf;
-
-        gameObject.SetActive(true);
-        soundEffectsButton.Select();
-
-        if (!wasOpen)
-            Opened?.Invoke(this, EventArgs.Empty);
-    }
-
-    private void Hide()
-    {
-        if (!gameObject.activeSelf)
-            return;
-
-        gameObject.SetActive(false);
-        Closed?.Invoke(this, EventArgs.Empty);
-    }
-
-    private void ShowPressToRebindKey()
-    {
-        pressToRebindKeyTransform.gameObject.SetActive(true);
-    }
-    private void HidePressToRebindKey()
-    {
-        pressToRebindKeyTransform.gameObject.SetActive(false);
-    }
-    private void RebindBinding(InputKeyBinding binding)
-    {
-        ShowPressToRebindKey();
-
-        _inputRebindingService.RebindKeyBinding(binding, completed =>
+        private void OnSoundEffectsClicked()
         {
-            HidePressToRebindKey();
+            SfxVolumeRequested?.Invoke(this, EventArgs.Empty);
+        }
 
-            if (completed)
-                UpdateVisual();
-        });
+        private void OnMusicClicked()
+        {
+            MusicVolumeRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnCloseClicked()
+        {
+            CloseRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnMoveUpClicked() => RequestRebind(InputKeyBinding.Move_Up);
+        private void OnMoveDownClicked() => RequestRebind(InputKeyBinding.Move_Down);
+        private void OnMoveLeftClicked() => RequestRebind(InputKeyBinding.Move_Left);
+        private void OnMoveRightClicked() => RequestRebind(InputKeyBinding.Move_Right);
+        private void OnInteractClicked() => RequestRebind(InputKeyBinding.Interact);
+        private void OnAltInteractClicked() => RequestRebind(InputKeyBinding.Alt_Interact);
+        private void OnPauseClicked() => RequestRebind(InputKeyBinding.Pause);
+
+        private void RequestRebind(InputKeyBinding binding)
+        {
+            RebindRequested?.Invoke(this, new OptionsRebindRequestedEventArgs(binding));
+        }
+    }
+
+    public class OptionsRebindRequestedEventArgs : EventArgs
+    {
+        public InputKeyBinding Binding { get; }
+
+        public OptionsRebindRequestedEventArgs(InputKeyBinding binding)
+        {
+            Binding = binding;
+        }
     }
 }

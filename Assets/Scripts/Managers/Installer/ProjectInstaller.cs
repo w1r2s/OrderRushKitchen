@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Audio;
 using Assets.Scripts.Level;
+using Assets.Scripts.Managers.Input;
 using Assets.Scripts.Navigation;
 using Assets.Scripts.Progress;
 using Assets.Scripts.ScriptableObjects;
@@ -22,6 +23,10 @@ namespace Assets.Scripts.Managers.Installer
             Container.Bind<ISceneLoader>().To<UnitySceneLoader>().AsSingle();
             Container.Bind<INavigationService>().To<NavigationService>().AsSingle();
             Container.Bind<ILoadingScreen>().FromComponentInHierarchy().AsSingle();
+
+            Container.Bind<Actions>().AsSingle();
+            Container.Bind<IInputStorage>().To<PlayerPrefsInputStorage>().AsSingle();
+            Container.BindInterfacesTo<InputRebindingService>().AsSingle();
 
             Container.Bind<IAudioSettingsStorage>().To<PlayerPrefsAudioSettingsStorage>().AsSingle();
             Container.Bind<IAudioSettingsService>().To<AudioSettingsService>().AsSingle();

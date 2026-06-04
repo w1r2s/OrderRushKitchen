@@ -9,26 +9,35 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] private GameObject mainMenuPanel;
     [SerializeField] private GameObject gameLabel;
     [SerializeField] private LevelSelectionUI levelSelectionUI;
+    [SerializeField] private OptionsUI optionsUI;
     [Header("Buttons")]
     [SerializeField] private Button playButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private Button optionsButton;
 
 
     private void Start()
     {
         playButton.onClick.AddListener(PlayClick);
         quitButton.onClick.AddListener(QuitClick);
+        optionsButton.onClick.AddListener(OptionsClick);
 
         levelSelectionUI.Closed += LevelSelectionUI_Closed;
+        optionsUI.Closed += OptionsUI_Closed;
     }
+
 
     private void OnDestroy()
     {
         playButton.onClick.RemoveListener(PlayClick);
         quitButton.onClick.RemoveListener(QuitClick);
+        optionsButton.onClick.RemoveListener(OptionsClick);
 
         if (levelSelectionUI != null)
             levelSelectionUI.Closed -= LevelSelectionUI_Closed;
+
+        if (optionsUI != null)
+            optionsUI.Closed -= OptionsUI_Closed;
     }
 
     private void PlayClick()
@@ -38,6 +47,17 @@ public class MainMenuUI : MonoBehaviour
     }
 
     private void LevelSelectionUI_Closed(object sender, EventArgs e)
+    {
+        SetMainMenuVisible(true);
+    }
+
+    private void OptionsClick()
+    {
+        SetMainMenuVisible(false);
+        optionsUI.Show();
+    }
+
+    private void OptionsUI_Closed(object sender, EventArgs e)
     {
         SetMainMenuVisible(true);
     }
