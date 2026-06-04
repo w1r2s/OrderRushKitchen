@@ -1,62 +1,64 @@
 ﻿using Assets.Scripts.ScriptableObjects;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Scripts.Selection.UI
+namespace Assets.Scripts.Selection
 {
     public class ItemSelectionButtonUI : MonoBehaviour
     {
-
         [SerializeField] private Button button;
         [SerializeField] private Image iconImage;
-        private IItemSelectionService _selectionService;
+
         private KitchenObjectSo _ingredient;
-        private MenuItemDefinitionSo _menuItem;
+        private MenuItemDefinitionSo _drink;
+        private Action<KitchenObjectSo> _ingredientSelected;
+        private Action<MenuItemDefinitionSo> _drinkSelected;
+
+        private void Awake()
+        {
+            if (button != null)
+                button.onClick.AddListener(OnClicked);
+        }
 
         private void OnDestroy()
         {
-            button.onClick.RemoveListener(OnClick);
+            if (button != null)
+                button.onClick.RemoveListener(OnClicked);
         }
-        public void SetupIngredient(KitchenObjectSo ingredient, IItemSelectionService selectionService)
+
+        public void SetupIngredient(KitchenObjectSo ingredient, Action<KitchenObjectSo> selected)
         {
-            if (ingredient == null || selectionService == null)
-                return;
-
-            button.onClick.RemoveListener(OnClick);
-            _ingredient = null;
-            _menuItem = null;
-
             _ingredient = ingredient;
-            _selectionService = selectionService;
+            _drink = null;
+            _ingredientSelected = selected;
+            _drinkSelected = null;
 
-            iconImage.sprite = _ingredient.sprite;
-            button.onClick.AddListener(OnClick);
+            if (iconImage != null)
+                iconImage.sprite = ingredient != null ? ingredient.sprite : null;
         }
-        public void SetupDrink(MenuItemDefinitionSo menuItem, IItemSelectionService selectionService)
+
+        public void SetupDrink(MenuItemDefinitionSo drink, Action<MenuItemDefinitionSo> selected)
         {
-            if (menuItem == null || selectionService == null)
-                return;
-
-            button.onClick.RemoveListener(OnClick);
             _ingredient = null;
-            _menuItem = null;
+            _drink = drink;
+            _ingredientSelected = null;
+            _drinkSelected = selected;
 
-            _menuItem = menuItem;
-            _selectionService = selectionService;
-
-            iconImage.sprite = menuItem.icon;
-            button.onClick.AddListener(OnClick);
+            if (iconImage != null)
+                iconImage.sprite = drink != null ? drink.icon : null;
         }
-        private void OnClick()
+
+        private void OnClicked()
         {
             if (_ingredient != null)
             {
-                _selectionService.TryConfirmSelection(_ingredient);
+                _ingredientSelected?.Invoke(_ingredient);
+                return;
             }
-            else if (_menuItem != null)
-            {
-                _selectionService.TryConfirmSelection(_menuItem);
-            }
+
+            if (_drink != null)
+                _drinkSelected?.Invoke(_drink);
         }
     }
 }
