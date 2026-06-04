@@ -70,7 +70,9 @@ namespace Assets.Scripts.Managers.Installer
             Container.BindInterfacesTo<GameRuntime>().AsSingle();
             Container.BindInterfacesTo<OrderRuntime>().AsSingle();
             Container.BindInterfacesTo<GamePauseService>().AsSingle();
+            Container.Bind<OrdersPanelUI>().FromComponentInHierarchy().AsSingle();
             Container.Bind<OrderDetailsUI>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesTo<OrdersPanelUIController>().AsSingle();
             Container.BindInterfacesTo<ModalPauseController>().AsSingle();
             Container.BindInterfacesTo<GameOptionsPauseController>().AsSingle();
             Container.BindInterfacesTo<LevelRunPauseController>().AsSingle();
