@@ -230,15 +230,10 @@ public class Player : ObjectHolder
         return transform.position + Vector3.up * topHeight;
     }
 
-    public override void SetObject(KitchenObject obj)
+    protected override void OnObjectReceived(KitchenObject obj)
     {
-        base.SetObject(obj);
-
-        if (obj != null)
-        {
-            OnPickedSomething?.Invoke(this, EventArgs.Empty);
-            _audioService.Play(GameplayAudioEvent.PickupGeneric, transform.position);
-        }
+        OnPickedSomething?.Invoke(this, EventArgs.Empty);
+        _audioService.Play(GameplayAudioEvent.PickupGeneric, transform.position);
     }
 
     public bool IsWalking() => _isWalking;

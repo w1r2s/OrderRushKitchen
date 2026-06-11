@@ -1,6 +1,7 @@
 using Assets.Scripts.Order;
 using Assets.Scripts.Serving;
 using System;
+using UnityEngine;
 using Zenject;
 
 public class DeliveryCounter : BaseCounter
@@ -39,8 +40,12 @@ public class DeliveryCounter : BaseCounter
             OnDeliveryFail?.Invoke(this, EventArgs.Empty);
             return;
         }
-        var removed = player.RemoveObject();
-        Destroy(removed.gameObject);
+
+        if (!player.TryRemoveAndDestroyObject())
+        {
+            Debug.LogError($"{name}: submitted object could not be removed from player");
+        }
+
         OnDeliverySuccess?.Invoke(this, EventArgs.Empty);
     }
 }

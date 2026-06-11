@@ -69,9 +69,10 @@ public class StoveCounter : BaseCounter, IHasProgress
 
         if (!player.HasObject)
         {
-            var obj = RemoveObject();
-            player.SetObject(obj);
-            ResetCookingState();
+            if (TryTransferObjectTo(player))
+            {
+                ResetCookingState();
+            }
             return;
         }
 
@@ -91,10 +92,11 @@ public class StoveCounter : BaseCounter, IHasProgress
             return;
         }
 
+        if (!TryPlaceObjectFromPlayer(player))
+            return;
+
         fryingRecipeSo = recipe;
         fryingTimer = 0f;
-
-        PlaceObjectFromPlayer(player);
 
         SetState(State.Frying);
         EmitProgress(0f);
@@ -105,17 +107,12 @@ public class StoveCounter : BaseCounter, IHasProgress
         if (!player.TryGetObjectAs<PlateKitchenObject>(out var plate))
             return;
 
-        var counterObject = GetObject();
-        if (counterObject == null)
-            return;
-
-        if (!_plateAssemblyService.TryAddIngredient(plate, counterObject.KitchenObjectSo))
+        if (!_plateAssemblyService.TryAddIngredientFrom(plate, this))
         {
             OnInvalidAction?.Invoke(this, EventArgs.Empty);
             return;
         }
 
-        RemoveAndDestroyCurrentObject();
         ResetCookingState();
     }
 
@@ -143,13 +140,21 @@ public class StoveCounter : BaseCounter, IHasProgress
         var friedOutput = fryingRecipeSo.OutputKitchenObject;
         if (friedOutput == null || friedOutput.prefab == null)
         {
-            RemoveAndDestroyCurrentObject();
-            ResetCookingState();
+            if (TryRemoveAndDestroyObject())
+            {
+                ResetCookingState();
+            }
             return;
         }
 
-        RemoveAndDestroyCurrentObject();
-        SpawnAndSet(friedOutput.prefab);
+        if (!TryRemoveAndDestroyObject())
+            return;
+
+        if (!TrySpawnAndSet(friedOutput.prefab, out _))
+        {
+            ResetCookingState();
+            return;
+        }
 
         fryingTimer = 0f;
         burningTimer = 0f;
@@ -190,13 +195,21 @@ public class StoveCounter : BaseCounter, IHasProgress
         var burnedOutput = burningRecipeSo.OutputKitchenObject;
         if (burnedOutput == null || burnedOutput.prefab == null)
         {
-            RemoveAndDestroyCurrentObject();
-            ResetCookingState();
+            if (TryRemoveAndDestroyObject())
+            {
+                ResetCookingState();
+            }
             return;
         }
 
-        RemoveAndDestroyCurrentObject();
-        SpawnAndSet(burnedOutput.prefab);
+        if (!TryRemoveAndDestroyObject())
+            return;
+
+        if (!TrySpawnAndSet(burnedOutput.prefab, out _))
+        {
+            ResetCookingState();
+            return;
+        }
 
         SetState(State.Burned);
         EmitProgress(0f);
@@ -212,16 +225,6 @@ public class StoveCounter : BaseCounter, IHasProgress
         base.ResetForLevelTransition();
         ResetCookingState();
     }
-
-    private void RemoveAndDestroyCurrentObject()
-    {
-        var obj = RemoveObject();
-        if (obj != null)
-        {
-            Destroy(obj.gameObject);
-        }
-    }
-
     private void ResetCookingState()
     {
         fryingTimer = 0f;
@@ -235,7 +238,11 @@ public class StoveCounter : BaseCounter, IHasProgress
 
     private void SetState(State newState)
     {
+        if (state == newState)
+            return;
+
         state = newState;
+
         OnStateChanged?.Invoke(this, new OnStateChangedEventArgs
         {
             state = state

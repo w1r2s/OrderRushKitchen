@@ -1,6 +1,7 @@
 using Assets.Scripts.Cooking;
 using Assets.Scripts.Serving;
 using System;
+using UnityEngine;
 using Zenject;
 
 public class CuttingCounter : BaseCounter, IHasProgress
@@ -9,123 +10,59 @@ public class CuttingCounter : BaseCounter, IHasProgress
     private PlateAssemblyService _plateAssemblyService;
 
     private int cuttingProgress;
+    private ActionCookingProcessRecipeSo cutRecipe;
 
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
     public event EventHandler OnCut;
     public event EventHandler OnInvalidAction;
 
-    private ActionCookingProcessRecipeSo cutRecipe;
-
     [Inject]
-    private void Construct(CookingProcessRecipeResolver recipesResolver, PlateAssemblyService plateAssemblyService)
+    private void Construct(
+        CookingProcessRecipeResolver recipesResolver,
+        PlateAssemblyService plateAssemblyService)
     {
         _recipesResolver = recipesResolver;
         _plateAssemblyService = plateAssemblyService;
-
     }
+
     public override void Interact(Player player)
     {
         if (!HasObject)
         {
-            if (!player.HasObject)
-                return;
-
-            var playerObject = player.GetObject();
-
-            if (!_recipesResolver.TryGetSingleInputRecipe<ActionCookingProcessRecipeSo>(CookingProcessType.Cutting, playerObject.KitchenObjectSo, out var recipe))
-            {
-                OnInvalidAction?.Invoke(this, EventArgs.Empty);
-                return;
-            }
-
-            PlaceObjectFromPlayer(player);
-
-            cuttingProgress = 0;
-            cutRecipe = recipe;
-            UpdateProgress(cutRecipe);
+            TryPlaceCuttableObject(player);
             return;
-
         }
 
         if (!player.HasObject)
         {
-            var obj = RemoveObject();
-            player.SetObject(obj);
-            ResetCuttingState();
+            if (TryTransferObjectTo(player))
+            {
+                ResetCuttingState();
+            }
+
             return;
         }
 
-        var counterObj = GetObject();
-
-        if (player.TryGetObjectAs<PlateKitchenObject>(out var plate))
-        {
-            if (_plateAssemblyService.TryAddIngredient(plate, counterObj.KitchenObjectSo))
-            {
-                RemoveAndDestroy();
-                ResetCuttingState();
-            }
-            else
-            {
-                OnInvalidAction?.Invoke(this, EventArgs.Empty);
-            }
-        }
+        TryAddObjectToPlate(player);
     }
 
     public override void InteractAlternate(Player player)
     {
-        if (!HasObject)
-            return;
-
-        if (cutRecipe == null)
+        if (!HasObject || cutRecipe == null)
             return;
 
         cuttingProgress++;
         OnCut?.Invoke(this, EventArgs.Empty);
 
-        UpdateProgress(cutRecipe);
+        if (cutRecipe.RequiredActions > 0)
+        {
+            EmitProgress((float)cuttingProgress / cutRecipe.RequiredActions);
+        }
 
         if (cuttingProgress >= cutRecipe.RequiredActions)
         {
             CompleteCut(cutRecipe);
         }
-    }
-
-    private void UpdateProgress(ActionCookingProcessRecipeSo recipe)
-    {
-        if (recipe == null || recipe.RequiredActions <= 0)
-            return;
-
-        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
-        {
-            progressNormalized = (float)cuttingProgress / recipe.RequiredActions
-        });
-    }
-    private void RemoveAndDestroy()
-    {
-        var obj = RemoveObject();
-        if (obj != null)
-        {
-            Destroy(obj.gameObject);
-        }
-    }
-    private void CompleteCut(ActionCookingProcessRecipeSo recipe)
-    {
-        RemoveAndDestroy();
-
-        KitchenObject newObj = Instantiate(recipe.OutputKitchenObject.prefab);
-        SetObject(newObj);
-
-        ResetCuttingState();
-    }
-
-    private void ResetCuttingState()
-    {
-        cuttingProgress = 0;
-        cutRecipe = null;
-        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
-        {
-            progressNormalized = 0f
-        });
     }
 
     public override void ResetForLevelTransition()
@@ -134,4 +71,79 @@ public class CuttingCounter : BaseCounter, IHasProgress
         ResetCuttingState();
     }
 
+    private void TryPlaceCuttableObject(Player player)
+    {
+        if (!player.HasObject)
+            return;
+
+        KitchenObject playerObject = player.GetObject();
+
+        if (!_recipesResolver.TryGetSingleInputRecipe<ActionCookingProcessRecipeSo>(CookingProcessType.Cutting, playerObject.KitchenObjectSo, out var recipe))
+        {
+            OnInvalidAction?.Invoke(this, EventArgs.Empty);
+            return;
+        }
+
+        if (!TryPlaceObjectFromPlayer(player))
+            return;
+
+        cuttingProgress = 0;
+        cutRecipe = recipe;
+        EmitProgress(0f);
+    }
+
+    private void TryAddObjectToPlate(Player player)
+    {
+        if (!player.TryGetObjectAs<PlateKitchenObject>(out var plate))
+            return;
+
+        if (!_plateAssemblyService.TryAddIngredientFrom(plate, this))
+        {
+            OnInvalidAction?.Invoke(this, EventArgs.Empty);
+            return;
+        }
+
+        ResetCuttingState();
+    }
+
+    private void CompleteCut(ActionCookingProcessRecipeSo recipe)
+    {
+        if (recipe == null ||
+            recipe.OutputKitchenObject == null ||
+            recipe.OutputKitchenObject.prefab == null)
+        {
+            if (TryRemoveAndDestroyObject())
+            {
+                ResetCuttingState();
+            }
+
+            return;
+        }
+
+        if (!TryRemoveAndDestroyObject())
+            return;
+
+        if (!TrySpawnAndSet(recipe.OutputKitchenObject.prefab, out _))
+        {
+            ResetCuttingState();
+            return;
+        }
+
+        ResetCuttingState();
+    }
+
+    private void ResetCuttingState()
+    {
+        cuttingProgress = 0;
+        cutRecipe = null;
+        EmitProgress(0f);
+    }
+
+    private void EmitProgress(float progressNormalized)
+    {
+        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+        {
+            progressNormalized = Mathf.Clamp01(progressNormalized)
+        });
+    }
 }

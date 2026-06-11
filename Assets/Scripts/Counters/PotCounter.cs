@@ -20,12 +20,7 @@ namespace Assets.Scripts.Counters
                 State = state;
             }
         }
-        public event EventHandler<OnStateChangedEventArgs> OnStateChanged;
-        public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
-        public event EventHandler OnIngredientsChanged;
-        public event EventHandler OnIngredientAdded;
-        public event EventHandler OnCleared;
-        public event EventHandler OnInvalidAction;
+
         public enum State
         {
             Idle,
@@ -33,14 +28,23 @@ namespace Assets.Scripts.Counters
             Cooking,
             Cooked
         }
+
         private IGameClock _clock;
         private IServedMenuItemFactory _menuItemFactory;
         private CookingProcessRecipeResolver _recipesResolver;
+
         private List<KitchenObjectSo> currentIngredients;
         private TimedCookingProcessRecipeSo _recipe;
 
         private State state = State.Idle;
         private float cookingTimer;
+
+        public event EventHandler<OnStateChangedEventArgs> OnStateChanged;
+        public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
+        public event EventHandler OnIngredientsChanged;
+        public event EventHandler OnIngredientAdded;
+        public event EventHandler OnCleared;
+        public event EventHandler OnInvalidAction;
 
         public IReadOnlyList<KitchenObjectSo> Ingredients => currentIngredients;
 
@@ -50,17 +54,15 @@ namespace Assets.Scripts.Counters
             _recipesResolver = recipesResolver;
             _menuItemFactory = menuItemFactory;
             _clock = clock;
-            currentIngredients = new();
+
+            currentIngredients = new List<KitchenObjectSo>();
         }
+
         private void Update()
         {
-            switch (state)
+            if (state == State.Cooking)
             {
-                case State.Cooking:
-                    HandleCooking();
-                    break;
-                default:
-                    break;
+                HandleCooking();
             }
         }
 
@@ -68,69 +70,13 @@ namespace Assets.Scripts.Counters
         {
             if (state == State.Idle || state == State.Completing)
             {
-                if (!player.HasObject)
-                    return;
-
-                var playerObjSo = player.GetObject().KitchenObjectSo;
-
-                if (!_recipesResolver.CanAddInput(CookingProcessType.PotCooking, playerObjSo, currentIngredients))
-                {
-                    OnInvalidAction?.Invoke(this, EventArgs.Empty);
-                    return;
-                }
-
-                currentIngredients.Add(playerObjSo);
-                OnIngredientAdded?.Invoke(this, EventArgs.Empty);
-                OnIngredientsChanged?.Invoke(this, EventArgs.Empty);
-
-                RemoveAndDestroy(player);
-
-                if (_recipesResolver.TryResolveExact(CookingProcessType.PotCooking, currentIngredients, out _recipe))
-                {
-                    cookingTimer = 0;
-                    SetState(State.Cooking);
-                }
-                else
-                {
-                    SetState(State.Completing);
-                }
-            }
-            else if (state == State.Cooked)
-            {
-                if (player.HasObject)
-                    return;
-
-                HandleCooked(player);
-            }
-
-        }
-
-        private void HandleCooked(Player player)
-        {
-            if (_recipe == null || _recipe.OutputMenuItem == null)
+                TryAddIngredient(player);
                 return;
-
-            if (_menuItemFactory.TryCreate(_recipe.OutputMenuItem, player, out _))
-            {
-                ResetCookingState();
-            }
-        }
-
-        private void RemoveAndDestroy(ObjectHolder holder = null)
-        {
-            KitchenObject obj = null;
-            if (holder != null)
-            {
-                obj = holder.RemoveObject();
-            }
-            else
-            {
-                obj = RemoveObject();
             }
 
-            if (obj != null)
+            if (state == State.Cooked)
             {
-                Destroy(obj.gameObject);
+                TryTakeCookedItem(player);
             }
         }
 
@@ -142,6 +88,71 @@ namespace Assets.Scripts.Counters
             ResetCookingState();
             OnCleared?.Invoke(this, EventArgs.Empty);
         }
+
+        public override void ResetForLevelTransition()
+        {
+            base.ResetForLevelTransition();
+            ResetCookingState();
+        }
+
+        public IReadOnlyList<KitchenObjectSo> GetIngredients()
+        {
+            return currentIngredients;
+        }
+
+        private void TryAddIngredient(Player player)
+        {
+            if (!player.HasObject)
+                return;
+
+            KitchenObject playerObject = player.GetObject();
+            KitchenObjectSo ingredient = playerObject.KitchenObjectSo;
+
+            if (!_recipesResolver.CanAddInput(
+                    CookingProcessType.PotCooking,
+                    ingredient,
+                    currentIngredients))
+            {
+                OnInvalidAction?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
+            if (!player.TryRemoveAndDestroyObject())
+                return;
+
+            currentIngredients.Add(ingredient);
+
+            OnIngredientAdded?.Invoke(this, EventArgs.Empty);
+            OnIngredientsChanged?.Invoke(this, EventArgs.Empty);
+
+            if (_recipesResolver.TryResolveExact(
+                    CookingProcessType.PotCooking,
+                    currentIngredients,
+                    out _recipe))
+            {
+                cookingTimer = 0f;
+                SetState(State.Cooking);
+                EmitProgress(0f);
+                return;
+            }
+
+            SetState(State.Completing);
+        }
+
+        private void TryTakeCookedItem(Player player)
+        {
+            if (player.HasObject)
+                return;
+
+            if (_recipe == null || _recipe.OutputMenuItem == null)
+                return;
+
+            if (_menuItemFactory.TryCreate(_recipe.OutputMenuItem, player, out _))
+            {
+                ResetCookingState();
+            }
+        }
+
         private void HandleCooking()
         {
             if (_recipe == null || _recipe.Duration <= 0f)
@@ -151,7 +162,6 @@ namespace Assets.Scripts.Counters
             }
 
             cookingTimer += _clock.DeltaTime;
-
 
             if (cookingTimer >= _recipe.Duration)
             {
@@ -164,10 +174,10 @@ namespace Assets.Scripts.Counters
 
         private void CompleteCooking()
         {
-            var cookedOut = _recipe.OutputMenuItem;
-            if (cookedOut == null || cookedOut.servedVisualPrefab == null)
+            var cookedOutput = _recipe.OutputMenuItem;
+
+            if (cookedOutput == null || cookedOutput.servedVisualPrefab == null)
             {
-                RemoveAndDestroy();
                 ResetCookingState();
                 return;
             }
@@ -176,34 +186,15 @@ namespace Assets.Scripts.Counters
             EmitProgress(0f);
         }
 
-        public override void ResetForLevelTransition()
-        {
-            base.ResetForLevelTransition();
-            ResetCookingState();
-        }
         private void ResetCookingState()
         {
             cookingTimer = 0f;
             _recipe = null;
             currentIngredients.Clear();
-            SetState(State.Idle);
 
+            SetState(State.Idle);
             OnIngredientsChanged?.Invoke(this, EventArgs.Empty);
             EmitProgress(0f);
-
-        }
-
-        private void EmitProgress(float progressNormalized)
-        {
-            OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
-            {
-                progressNormalized = Mathf.Clamp01(progressNormalized)
-            });
-        }
-
-        public IReadOnlyList<KitchenObjectSo> GetIngredients()
-        {
-            return currentIngredients;
         }
 
         private void SetState(State newState)
@@ -213,6 +204,14 @@ namespace Assets.Scripts.Counters
 
             state = newState;
             OnStateChanged?.Invoke(this, new OnStateChangedEventArgs(state));
+        }
+
+        private void EmitProgress(float progressNormalized)
+        {
+            OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+            {
+                progressNormalized = Mathf.Clamp01(progressNormalized)
+            });
         }
     }
 }

@@ -85,7 +85,8 @@ namespace Assets.Scripts.Selection
                 return false;
 
 
-            CurrentTargetHolder.SpawnAndSet(kitchenObjectSo.prefab);
+            if (!CurrentTargetHolder.TrySpawnAndSet(kitchenObjectSo.prefab, out _))
+                return false;
 
             CloseSelection();
             return true;

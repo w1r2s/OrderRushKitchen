@@ -35,7 +35,12 @@ namespace Assets.Scripts.Serving
                 return false;
             }
 
-            holder.SetObject(servedItem);
+            if (!holder.TrySetObject(servedItem))
+            {
+                Object.Destroy(servedItem.gameObject);
+                return false;
+            }
+
             createdItem = servedItem;
             return true;
         }

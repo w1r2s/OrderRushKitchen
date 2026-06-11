@@ -23,45 +23,32 @@ public class ClearCounter : BaseCounter
             if (!player.HasObject)
                 return;
 
-            PlaceObjectFromPlayer(player);
+            TryPlaceObjectFromPlayer(player);
             return;
         }
 
         // На стойке есть предмет, у игрока пусто -> забираем предмет со стойки
         if (!player.HasObject)
         {
-            KitchenObject counterObject = RemoveObject();
-            player.SetObject(counterObject);
+            TryTransferObjectTo(player);
             return;
         }
 
-        // И у игрока, и у стойки есть предметы -> пробуем объединить с тарелкой
-        KitchenObject playerObjectInHand = player.GetObject();
-        KitchenObject counterObjectOnCounter = GetObject();
-
         if (player.TryGetObjectAs<PlateKitchenObject>(out var playerPlate))
         {
-            if (!_plateAssemblyService.TryAddIngredient(playerPlate, counterObjectOnCounter.KitchenObjectSo))
+            if (!_plateAssemblyService.TryAddIngredientFrom(playerPlate, this))
             {
                 OnInvalidAction?.Invoke(this, EventArgs.Empty);
-                return;
             }
-
-            KitchenObject removedObject = RemoveObject();
-            Destroy(removedObject.gameObject);
             return;
         }
 
         if (TryGetObjectAs<PlateKitchenObject>(out var counterPlate))
         {
-            if (!_plateAssemblyService.TryAddIngredient(counterPlate, playerObjectInHand.KitchenObjectSo))
+            if (!_plateAssemblyService.TryAddIngredientFrom(counterPlate, player))
             {
                 OnInvalidAction?.Invoke(this, EventArgs.Empty);
-                return;
             }
-
-            KitchenObject removedObject = player.RemoveObject();
-            Destroy(removedObject.gameObject);
         }
 
     }

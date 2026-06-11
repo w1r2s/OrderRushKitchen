@@ -44,11 +44,11 @@ public class PlatesCounter : BaseCounter
         {
             if (platesSpawnedAmount > 0)
             {
-                platesSpawnedAmount--;
-
-                player.SpawnAndSet(plateKitchenObjectSo.prefab);
-
-                onPlateRemoved?.Invoke(this, EventArgs.Empty);
+                if (player.TrySpawnAndSet(plateKitchenObjectSo.prefab, out _))
+                {
+                    platesSpawnedAmount--;
+                    onPlateRemoved?.Invoke(this, EventArgs.Empty);
+                }
             }
         }
 
