@@ -10,7 +10,7 @@ namespace Assets.Scripts.Managers.Game
         float GetCountdownToStartTimer();
         bool IsGameOver();
         float GetGamePlayingTimerNormalized();
-        void ResetGamePlayingTimer();
+        void RestartLevelRun();
 
         event EventHandler OnGameStateChanged;
     }

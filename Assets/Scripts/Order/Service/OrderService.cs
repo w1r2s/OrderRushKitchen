@@ -129,6 +129,8 @@ namespace Assets.Scripts.Order
                 OnOrderRemoved?.Invoke(this, new OrderServiceEventArgs(order));
 
             }
+
+            needsCleanup = false;
         }
     }
 }

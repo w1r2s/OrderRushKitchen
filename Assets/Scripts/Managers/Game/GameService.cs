@@ -75,9 +75,14 @@ namespace Assets.Scripts.Managers.Game
         {
             return 1 - gamePlayingTimer / gamePlayingTimerMax;
         }
-        public void ResetGamePlayingTimer()
+        public void RestartLevelRun()
         {
+            waitingToStartTimer = 1f;
+            countdownToStartTimer = 3f;
             gamePlayingTimer = gamePlayingTimerMax;
+            state = GameState.WaitingToStart;
+
+            OnGameStateChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -44,6 +44,10 @@ public class Player : ObjectHolder
 
     private IPlayerInteractable _selectedInteractable;
 
+    private Vector3 _initialPosition;
+    private Quaternion _initialRotation;
+
+
     [Inject]
     private void Construct(IGameService gameService, IGameplayInputService inputService, IGameplayAudioEventService audioService, IGamePauseService pauseService, IGameClock clock)
     {
@@ -55,6 +59,11 @@ public class Player : ObjectHolder
 
         _inputService.OnInteractAction += OnInteract;
         _inputService.OnInteractAlternateAction += OnInteractAlternate;
+    }
+    private void Awake()
+    {
+        _initialPosition = transform.position;
+        _initialRotation = transform.rotation;
     }
 
     private void OnDestroy()
@@ -247,5 +256,14 @@ public class Player : ObjectHolder
             return false;
 
         return true;
+    }
+    public override void ResetForLevelTransition()
+    {
+        base.ResetForLevelTransition();
+
+        _isWalking = false;
+        SetSelectedInteractable(null);
+
+        transform.SetPositionAndRotation(_initialPosition, _initialRotation);
     }
 }

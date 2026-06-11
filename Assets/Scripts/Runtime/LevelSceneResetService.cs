@@ -22,7 +22,7 @@ namespace Assets.Scripts.Runtime
                 resettable.ResetForLevelTransition();
             }
 
-            _gameService.ResetGamePlayingTimer();
+            _gameService.RestartLevelRun();
         }
     }
 }
