@@ -15,37 +15,31 @@ public class SelectedCounterVisual : MonoBehaviour
     }
     private void Start()
     {
-        _player.OnSelectedCounterChanged += Player_OnSelectedCounterChanged;
+        _player.OnSelectedInteractableChanged += Player_OnSelectedInteractableChanged;
     }
     private void OnDestroy()
     {
         if (_player != null)
         {
-            _player.OnSelectedCounterChanged -= Player_OnSelectedCounterChanged;
+            _player.OnSelectedInteractableChanged -= Player_OnSelectedInteractableChanged;
         }
     }
 
-    private void Player_OnSelectedCounterChanged(object sender, Player.OnSelectedCounterChangedEventArgs e)
+    private void Player_OnSelectedInteractableChanged(object sender, Player.SelectedInteractableChangedEventArgs e)
     {
-        if (e.SelectedCounter == baseCounter)
-            Show();
-        else
-            Hide();
+        bool isSelected = baseCounter != null && ReferenceEquals(e.SelectedInteractable, baseCounter);
+
+        SetVisible(isSelected);
 
     }
-    private void Show()
+    private void SetVisible(bool isVisible)
     {
-        foreach (var item in visualGameObjectArray)
+        foreach (GameObject visual in visualGameObjectArray)
         {
-            item.SetActive(true);
-        }
-
-    }
-    private void Hide()
-    {
-        foreach (var item in visualGameObjectArray)
-        {
-            item.SetActive(false);
+            if (visual != null)
+            {
+                visual.SetActive(isVisible);
+            }
         }
     }
 }

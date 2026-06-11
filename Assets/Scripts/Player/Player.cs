@@ -1,4 +1,5 @@
 using Assets.Scripts.Audio;
+using Assets.Scripts.Interaction;
 using Assets.Scripts.Managers.Game;
 using Assets.Scripts.Managers.Input;
 using System;
@@ -8,11 +9,16 @@ using Zenject;
 public class Player : ObjectHolder
 {
     public event EventHandler OnPickedSomething;
-    public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
+    public event EventHandler<SelectedInteractableChangedEventArgs> OnSelectedInteractableChanged;
 
-    public class OnSelectedCounterChangedEventArgs : EventArgs
+    public sealed class SelectedInteractableChangedEventArgs : EventArgs
     {
-        public BaseCounter SelectedCounter;
+        public IPlayerInteractable SelectedInteractable { get; }
+
+        public SelectedInteractableChangedEventArgs(IPlayerInteractable selectedInteractable)
+        {
+            SelectedInteractable = selectedInteractable;
+        }
     }
 
     [Header("Movement")]
@@ -36,7 +42,7 @@ public class Player : ObjectHolder
 
     private bool _isWalking;
 
-    private BaseCounter _selectedCounter;
+    private IPlayerInteractable _selectedInteractable;
 
     [Inject]
     private void Construct(IGameService gameService, IGameplayInputService inputService, IGameplayAudioEventService audioService, IGamePauseService pauseService, IGameClock clock)
@@ -65,7 +71,7 @@ public class Player : ObjectHolder
         if (!CanHandleGameplayInput())
         {
             _isWalking = false;
-            SetSelectedCounter(null);
+            SetSelectedInteractable(null);
             return;
         }
 
@@ -80,7 +86,10 @@ public class Player : ObjectHolder
         if (!CanHandleGameplayInput())
             return;
 
-        _selectedCounter?.Interact(this);
+        if (TryGetSelectedInteractable(out var interactable))
+        {
+            interactable.Interact(this);
+        }
     }
 
     private void OnInteractAlternate(object sender, EventArgs e)
@@ -88,7 +97,10 @@ public class Player : ObjectHolder
         if (!CanHandleGameplayInput())
             return;
 
-        _selectedCounter?.InteractAlternate(this);
+        if (TryGetSelectedInteractable(out var interactable))
+        {
+            interactable.InteractAlternate(this);
+        }
     }
 
     private void HandleInteractions()
@@ -97,12 +109,46 @@ public class Player : ObjectHolder
 
         if (Physics.Raycast(rayOrigin, transform.forward, out RaycastHit hitInfo, interactionDistance, interactionLayerMask, QueryTriggerInteraction.Ignore))
         {
-            BaseCounter baseCounter = hitInfo.transform.GetComponentInParent<BaseCounter>();
-            SetSelectedCounter(baseCounter);
+            var interactable = hitInfo.transform.GetComponentInParent<IPlayerInteractable>();
+            SetSelectedInteractable(interactable);
             return;
         }
 
-        SetSelectedCounter(null);
+        SetSelectedInteractable(null);
+    }
+    private void SetSelectedInteractable(IPlayerInteractable interactable)
+    {
+        if (!IsAlive(interactable))
+        {
+            interactable = null;
+        }
+
+        if (ReferenceEquals(_selectedInteractable, interactable))
+            return;
+
+        _selectedInteractable = interactable;
+
+        OnSelectedInteractableChanged?.Invoke(this, new SelectedInteractableChangedEventArgs(interactable));
+    }
+
+    private bool TryGetSelectedInteractable(
+        out IPlayerInteractable interactable)
+    {
+        if (IsAlive(_selectedInteractable))
+        {
+            interactable = _selectedInteractable;
+            return true;
+        }
+
+        SetSelectedInteractable(null);
+
+        interactable = null;
+        return false;
+    }
+
+    private static bool IsAlive(IPlayerInteractable interactable)
+    {
+        return interactable is Component component && component != null;
     }
 
     private void HandleMovement(Vector2 inputVector)
@@ -182,20 +228,6 @@ public class Player : ObjectHolder
     {
         float topHeight = Mathf.Max(playerRadius, playerHeight - playerRadius);
         return transform.position + Vector3.up * topHeight;
-    }
-
-
-    private void SetSelectedCounter(BaseCounter selectedCounter)
-    {
-        if (this._selectedCounter == selectedCounter)
-            return;
-
-        this._selectedCounter = selectedCounter;
-
-        OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs
-        {
-            SelectedCounter = selectedCounter
-        });
     }
 
     public override void SetObject(KitchenObject obj)

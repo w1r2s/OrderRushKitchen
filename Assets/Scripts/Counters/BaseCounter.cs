@@ -1,7 +1,8 @@
 using Assets.Scripts.Audio;
+using Assets.Scripts.Interaction;
 using Zenject;
 
-public abstract class BaseCounter : ObjectHolder
+public abstract class BaseCounter : ObjectHolder, IPlayerInteractable
 {
     private IGameplayAudioEventService _audioService;
 
