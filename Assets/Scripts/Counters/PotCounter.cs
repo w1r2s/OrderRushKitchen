@@ -80,13 +80,14 @@ namespace Assets.Scripts.Counters
             }
         }
 
-        public override void InteractAlternate(Player player)
+        public override bool TryInteractAlternate(Player player)
         {
             if (state == State.Idle)
-                return;
+                return false;
 
             ResetCookingState();
             OnCleared?.Invoke(this, EventArgs.Empty);
+            return true;
         }
 
         public override void ResetForLevelTransition()

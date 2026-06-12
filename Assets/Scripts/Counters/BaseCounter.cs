@@ -13,7 +13,10 @@ public abstract class BaseCounter : ObjectHolder, IPlayerInteractable
     }
 
     public abstract void Interact(Player player);
-    public virtual void InteractAlternate(Player player) { }
+    public virtual bool TryInteractAlternate(Player player)
+    {
+        return false;
+    }
 
     protected bool TryPlaceObjectFromPlayer(Player player)
     {

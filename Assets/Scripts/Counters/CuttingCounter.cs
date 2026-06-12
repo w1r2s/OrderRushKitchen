@@ -46,10 +46,10 @@ public class CuttingCounter : BaseCounter, IHasProgress
         TryAddObjectToPlate(player);
     }
 
-    public override void InteractAlternate(Player player)
+    public override bool TryInteractAlternate(Player player)
     {
         if (!HasObject || cutRecipe == null)
-            return;
+            return false;
 
         cuttingProgress++;
         OnCut?.Invoke(this, EventArgs.Empty);
@@ -63,6 +63,8 @@ public class CuttingCounter : BaseCounter, IHasProgress
         {
             CompleteCut(cutRecipe);
         }
+
+        return true;
     }
 
     public override void ResetForLevelTransition()

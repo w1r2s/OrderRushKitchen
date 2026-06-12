@@ -1,4 +1,3 @@
-using Assets.Scripts.Order;
 using Assets.Scripts.Serving;
 using System;
 using Zenject;
@@ -6,15 +5,17 @@ using Zenject;
 public class ClearCounter : BaseCounter
 {
     public event EventHandler OnInvalidAction;
-    private IMenuItemResolver _menuItemResolver;
+
     private PlateAssemblyService _plateAssemblyService;
+    private PlateServingService _plateServingService;
 
     [Inject]
-    private void Construct(IMenuItemResolver menuItemResolver, PlateAssemblyService plateAssemblyService)
+    private void Construct(PlateAssemblyService plateAssemblyService, PlateServingService plateServingService)
     {
-        _menuItemResolver = menuItemResolver;
         _plateAssemblyService = plateAssemblyService;
+        _plateServingService = plateServingService;
     }
+
     public override void Interact(Player player)
     {
         // На стойке пусто -> кладём предмет игрока
@@ -52,26 +53,18 @@ public class ClearCounter : BaseCounter
         }
 
     }
-    public override void InteractAlternate(Player player)
+
+    public override bool TryInteractAlternate(Player player)
     {
-        if (!HasObject)
-            return;
+        if (!TryGetObjectAs<PlateKitchenObject>(out var plate))
+            return false;
 
-        if (TryGetObjectAs<PlateKitchenObject>(out var counterPlate))
+        if (plate.State == PlateState.Assembly &&
+            !_plateServingService.TryServe(plate))
         {
-            if (counterPlate.State != PlateState.Assembly)
-                return;
-
-            var menuItem = _menuItemResolver.TryResolveMenuItem(counterPlate.Ingredients);
-            if (menuItem == null)
-            {
-                OnInvalidAction?.Invoke(this, EventArgs.Empty);
-                return;
-            }
-            if (!counterPlate.TryServe(menuItem))
-            {
-                OnInvalidAction?.Invoke(this, EventArgs.Empty);
-            }
+            OnInvalidAction?.Invoke(this, EventArgs.Empty);
         }
+
+        return true;
     }
 }

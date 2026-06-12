@@ -2,6 +2,7 @@ using Assets.Scripts.Audio;
 using Assets.Scripts.Interaction;
 using Assets.Scripts.Managers.Game;
 using Assets.Scripts.Managers.Input;
+using Assets.Scripts.Serving;
 using System;
 using UnityEngine;
 using Zenject;
@@ -39,6 +40,7 @@ public class Player : ObjectHolder
     private IGameplayAudioEventService _audioService;
     private IGamePauseService _pauseService;
     private IGameClock _clock;
+    private PlateServingService _plateServingService;
 
     private bool _isWalking;
 
@@ -49,13 +51,18 @@ public class Player : ObjectHolder
 
 
     [Inject]
-    private void Construct(IGameService gameService, IGameplayInputService inputService, IGameplayAudioEventService audioService, IGamePauseService pauseService, IGameClock clock)
+    private void Construct(IGameService gameService,
+        IGameplayInputService inputService,
+        IGameplayAudioEventService audioService,
+        IGamePauseService pauseService, IGameClock clock,
+        PlateServingService plateServingService)
     {
         _gameService = gameService;
         _inputService = inputService;
         _audioService = audioService;
         _pauseService = pauseService;
         _clock = clock;
+        _plateServingService = plateServingService;
 
         _inputService.OnInteractAction += OnInteract;
         _inputService.OnInteractAlternateAction += OnInteractAlternate;
@@ -106,9 +113,25 @@ public class Player : ObjectHolder
         if (!CanHandleGameplayInput())
             return;
 
-        if (TryGetSelectedInteractable(out var interactable))
+        if (TryGetSelectedInteractable(out var interactable) && interactable.TryInteractAlternate(this))
         {
-            interactable.InteractAlternate(this);
+            return;
+        }
+
+        TryServeHeldPlate();
+    }
+
+    private void TryServeHeldPlate()
+    {
+        if (!TryGetObjectAs<PlateKitchenObject>(out var plate))
+            return;
+
+        if (plate.State != PlateState.Assembly)
+            return;
+
+        if (!_plateServingService.TryServe(plate))
+        {
+            _audioService.Play(GameplayAudioEvent.InvalidAction, transform.position);
         }
     }
 

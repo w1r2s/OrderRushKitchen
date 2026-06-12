@@ -89,6 +89,8 @@ namespace Assets.Scripts.Managers.Installer
             Container.BindInterfacesTo<GameOverNavigationController>().AsSingle();
             Container.Bind<GamePauseUI>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesTo<GamePauseActionsController>().AsSingle();
+
+            Container.Bind<PlateServingService>().AsSingle();
         }
     }
 }
