@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ce1869e02e2ae7439954a5625ee3a8c, type: 3}
   m_Name: Chicken_burned
-  m_EditorClassIdentifier: Assembly-CSharp::KitchenObjectSo
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.KitchenObjects.KitchenObjectSo
   prefab: {fileID: -4356105870342616791, guid: 6808c09c04cac944dae4b08fa0790c94, type: 3}
   sprite: {fileID: 21300000, guid: 950035af3eb1d5a43a0230a8d2794c4f, type: 3}
   objectName: Burned_chicken

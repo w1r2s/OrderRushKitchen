@@ -1,7 +1,7 @@
-﻿using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using System.Threading;
 
-namespace Assets.Scripts.Navigation
+namespace OrderRushKitchen.Navigation
 {
     public interface ISceneLoader
     {

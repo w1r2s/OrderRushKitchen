@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-namespace Assets.Scripts.Navigation
+namespace OrderRushKitchen.Navigation
 {
     public class LoadingScreenUI : MonoBehaviour, ILoadingScreen
     {

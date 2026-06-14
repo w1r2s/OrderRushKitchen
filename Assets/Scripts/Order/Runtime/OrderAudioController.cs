@@ -1,8 +1,8 @@
-﻿using Assets.Scripts.Audio;
+using OrderRushKitchen.Audio;
 using System;
 using Zenject;
 
-namespace Assets.Scripts.Order.Runtime
+namespace OrderRushKitchen.Order
 {
     public class OrderAudioController : IInitializable, IDisposable
     {

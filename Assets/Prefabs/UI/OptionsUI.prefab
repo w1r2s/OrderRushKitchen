@@ -4554,7 +4554,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: adba418637f97274fb528b852b4c3fd3, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OptionsUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Settings.OptionsUI
   panelRoot: {fileID: 7772625028300096026}
   dimmer: {fileID: 3010523869083759868}
   soundEffectsButton: {fileID: 6292094515513451328}

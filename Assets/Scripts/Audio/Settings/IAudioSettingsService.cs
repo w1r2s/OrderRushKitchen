@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Assets.Scripts.Audio
+namespace OrderRushKitchen.Audio
 {
     public interface IAudioSettingsService
     {

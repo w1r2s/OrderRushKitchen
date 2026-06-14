@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Zenject;
 
-namespace Assets.Scripts.Audio
+namespace OrderRushKitchen.Audio
 {
     public class MusicService : IMusicService
     {

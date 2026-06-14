@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using Zenject;
 
-namespace Assets.Scripts.Selection
+namespace OrderRushKitchen.Selection
 {
     public class ItemSelectionUIController : IInitializable, IDisposable
     {

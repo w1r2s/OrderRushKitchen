@@ -1,9 +1,10 @@
-﻿using Assets.Scripts.Composition;
-using Assets.Scripts.Level;
-using Assets.Scripts.ScriptableObjects;
+using OrderRushKitchen.Composition;
+using OrderRushKitchen.KitchenObjects;
+using OrderRushKitchen.Level;
+using OrderRushKitchen.Menu;
 using System.Collections.Generic;
 
-namespace Assets.Scripts.Order
+namespace OrderRushKitchen.Order
 {
     public class MenuItemResolver : IMenuItemResolver
     {

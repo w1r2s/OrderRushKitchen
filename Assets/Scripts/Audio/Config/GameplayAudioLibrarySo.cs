@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Audio
+namespace OrderRushKitchen.Audio
 {
     [CreateAssetMenu(menuName = "Kitchen/Gameplay Audio Library")]
     public class GameplayAudioLibrarySo : ScriptableObject

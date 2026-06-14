@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-namespace Assets.Scripts.Audio
+namespace OrderRushKitchen.Audio
 {
     [RequireComponent(typeof(AudioSource))]
     public class MusicPlayer : MonoBehaviour, IMusicPlayer

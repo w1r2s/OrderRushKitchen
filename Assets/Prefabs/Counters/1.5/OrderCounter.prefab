@@ -115,7 +115,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba5c2eb2f4af5e14ba05d6f0baa5b694, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Order.OrderCounterResultUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Order.OrderCounterResultUI
   resultImage: {fileID: 6719290661723554198}
   orderCounter: {fileID: 5936204462145461467}
   successSprite: {fileID: 21300000, guid: 6c562ac6d3e47ff4794df31886c6d864, type: 3}
@@ -132,7 +132,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e351d15047962784ab0c0e5bff64e797, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LookAtCamera
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Presentation.LookAtCamera
   mode: 2
 --- !u!1 &4389716537478709925
 GameObject:
@@ -444,7 +444,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5bbf1fc1b851e9349a546b8225b16a4f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Counters.OrderCounter
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.OrderCounter
   holdPoint: {fileID: 919891597909508518}
 --- !u!4 &8657621684832030172 stripped
 Transform:
@@ -543,7 +543,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b15cc5368a61304babba073e2af040b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SelectedCounterVisual
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.SelectedCounterVisual
   baseCounter: {fileID: 5936204462145461467}
   visualGameObjectArray:
   - {fileID: 2382162288712882025}

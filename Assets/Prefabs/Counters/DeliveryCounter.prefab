@@ -43,7 +43,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc9a59e35ade45e47ac7ee25d74abfcc, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Counters.DeliveryCounterAudio
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.DeliveryCounterAudio
   counter: {fileID: 135459481957057556}
 --- !u!1001 &815825758105054792
 PrefabInstance:
@@ -137,7 +137,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b15cc5368a61304babba073e2af040b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SelectedCounterVisual
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.SelectedCounterVisual
   baseCounter: {fileID: 135459481957057556}
   visualGameObjectArray:
   - {fileID: 5140232351729452238}
@@ -395,7 +395,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d57626ac3f60f404fb2e2ae8aace59dd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DeliveryCounter
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.DeliveryCounter
   holdPoint: {fileID: 3461920495730239829}
 --- !u!1001 &8653646847822044910
 PrefabInstance:

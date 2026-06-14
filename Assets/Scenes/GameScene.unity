@@ -1001,7 +1001,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 460e62bd3adc76e4d89600d436a2007a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Player
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.PlayerControl.Player
   holdPoint: {fileID: 2139224515}
   playerRadius: 0.45
   playerHeight: 2
@@ -1026,7 +1026,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: de7835ea28e39cf41ac4b3fc987d1277, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerSounds
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.PlayerControl.PlayerSounds
   footstepTimerMax: 0.3
   footstepVolumeMultiplier: 0.5
 --- !u!1001 &201904271
@@ -1140,7 +1140,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1cbc74cb8a626544c9eff5f3c781ec13, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GamePlayingClockUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Game.GamePlayingClockUI
   timerImage: {fileID: 528940884}
 --- !u!1 &221275611
 GameObject:
@@ -1633,7 +1633,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d8b77032960f29447b7f90ab99d12fea, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Managers.Installer.GameInstaller
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Installers.GameInstaller
   audioClipsSo: {fileID: 11400000, guid: 68dbf24e3206f67458f3bd68ef5b68ba, type: 2}
   menuDefinitionListSo: {fileID: 11400000, guid: ebf0d52a252c69e4faa03fdf22d963f2, type: 2}
   processRecipes: {fileID: 11400000, guid: 1e37c03ed69e47e40b6d44b44f47d211, type: 2}
@@ -1701,7 +1701,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e5b9c1c53e20fe944bc866fc146fc48e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Level.UI.LevelProgressUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Level.LevelProgressUI
   levelText: {fileID: 547721175}
   levelNumberText: {fileID: 1900000104}
   statusText: {fileID: 38853913}
@@ -3784,7 +3784,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b40b9756ec0c00a43a162c8a92f240c7, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.UI.MobileGameplayControlsUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Input.MobileGameplayControlsUI
 --- !u!225 &625466438
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4791,7 +4791,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dad0b828ca78aac4d9c96b0c217b11de, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameOverUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Game.GameOverUI
   ordersDeliveredText: {fileID: 1500314719}
   ordersDeliveredValueText: {fileID: 1900000314}
   ordersFailedText: {fileID: 1833947712}
@@ -5206,7 +5206,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7923ed8791198140b510dfa2f66f4bb, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Selection.UI.ItemSelectionButtonUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Selection.ItemSelectionButtonUI
   button: {fileID: 1015796639}
   iconImage: {fileID: 1015796640}
 --- !u!114 &1015796638
@@ -6166,7 +6166,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f2b4d3d26aeb6944a5f046a7e350f9f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Audio.GameplayOneShotAudioPlayer
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Audio.GameplayOneShotAudioPlayer
   initialPoolSize: 5
   maxPoolSize: 10
   positionalSpatialBlend: 0.25
@@ -6467,7 +6467,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e1d9f81adefcac148954f42979e4661b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.UI.PlatformUiVisibility
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Presentation.PlatformUiVisibility
   mode: 0
   desktopOnlyRoots:
   - {fileID: 1318893905}
@@ -7387,7 +7387,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4613431c5ac7ef24dac7119b2b1995ff, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Level.LevelCompleteUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Level.LevelCompleteUI
   panel: {fileID: 221275611}
   dimmer: {fileID: 1025323582}
   titleText: {fileID: 19725597}
@@ -7590,7 +7590,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd72c605a36a88a4980d819d09485f69, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Order.OrderDetailsUI
   dimmer: {fileID: 1839760514}
   detailsPanel: {fileID: 1327317366}
   closeButton: {fileID: 428193179}
@@ -8101,7 +8101,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7923ed8791198140b510dfa2f66f4bb, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Selection.UI.ItemSelectionButtonUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Selection.ItemSelectionButtonUI
   button: {fileID: 1495311297}
   iconImage: {fileID: 1495311298}
 --- !u!114 &1495311296
@@ -8474,7 +8474,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 191b99ae327e09946a67df7401e338a1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.UI.PauseButtonUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Game.PauseButtonUI
   pauseButton: {fileID: 1075451351}
 --- !u!1 &1548806641
 GameObject:
@@ -8914,7 +8914,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a3a2d197574b12d478746943d236400c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GamePauseUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Game.GamePauseUI
   resumeButton: {fileID: 834814634}
   mainMenuButton: {fileID: 1081985089}
   optionsButton: {fileID: 498090203}
@@ -9281,7 +9281,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 846ebde7cb3ae6941b9b1c6735973940, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameStartCountdownUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Game.GameStartCountdownUI
   CountdownText: {fileID: 1773661234}
 --- !u!1001 &1721224655
 PrefabInstance:
@@ -10203,7 +10203,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2b2c69a721fb554db87d92ccbae9e95, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Order.OrderRecipeRowUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Order.OrderRecipeRowUI
   dishIconImage: {fileID: 42882945}
   ingredientsRow: {fileID: 739094404}
   ingredientIconTemplate: {fileID: 1437111046}
@@ -11508,7 +11508,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d313303e703059c4fb47e6c86c0d8b3e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Selection.UI.ItemSelectionUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Selection.ItemSelectionUI
   selectionPanel: {fileID: 578107142}
   dimmer: {fileID: 485733239}
   selectionPanelImage: {fileID: 1829723319}

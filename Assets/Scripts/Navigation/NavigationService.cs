@@ -1,8 +1,8 @@
-﻿using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using System.Threading;
 using Zenject;
 
-namespace Assets.Scripts.Navigation
+namespace OrderRushKitchen.Navigation
 {
     public class NavigationService : INavigationService
     {

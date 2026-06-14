@@ -1,8 +1,9 @@
-﻿using Assets.Scripts.Composition;
-using System;
+using OrderRushKitchen.Composition;
+using OrderRushKitchen.KitchenObjects;
 using System.Collections.Generic;
+using System;
 
-namespace Assets.Scripts.Cooking
+namespace OrderRushKitchen.Cooking
 {
     public class CookingProcessRecipeResolver
     {

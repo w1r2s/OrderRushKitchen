@@ -339,7 +339,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d313303e703059c4fb47e6c86c0d8b3e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Selection.UI.ItemSelectionUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Selection.ItemSelectionUI
   selectionPanel: {fileID: 2538301346847817909}
   dimmer: {fileID: 4532358636830526905}
   shelvesArea: {fileID: 3751460827342959554}
@@ -659,7 +659,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7923ed8791198140b510dfa2f66f4bb, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Selection.UI.ItemSelectionButtonUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Selection.ItemSelectionButtonUI
   button: {fileID: 1370698368952501385}
   iconImage: {fileID: 5386795395002403599}
 --- !u!1 &9098989023157115171

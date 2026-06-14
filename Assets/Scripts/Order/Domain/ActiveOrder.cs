@@ -1,8 +1,10 @@
-﻿using Assets.Scripts.ScriptableObjects;
+using OrderRushKitchen.KitchenObjects;
+using OrderRushKitchen.Level;
+using OrderRushKitchen.Menu;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Assets.Scripts.Order
+namespace OrderRushKitchen.Order
 {
     public class ActiveOrder
     {

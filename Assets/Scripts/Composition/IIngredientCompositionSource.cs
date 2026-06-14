@@ -1,7 +1,8 @@
-﻿using System;
+using OrderRushKitchen.KitchenObjects;
 using System.Collections.Generic;
+using System;
 
-namespace Assets.Scripts.Composition
+namespace OrderRushKitchen.Composition
 {
     public interface IIngredientCompositionSource
     {

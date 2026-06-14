@@ -99,7 +99,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 177adc0708ff3ad429be5a95994b5f15, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ContainerCounter
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.ContainerCounter
   holdPoint: {fileID: 1073910217062519964}
   ingredientOptions: []
 --- !u!1001 &3438573583778282846
@@ -264,7 +264,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b15cc5368a61304babba073e2af040b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SelectedCounterVisual
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.SelectedCounterVisual
   baseCounter: {fileID: 129475935543946092}
   visualGameObjectArray:
   - {fileID: 4835052160352455314}

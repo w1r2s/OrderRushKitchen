@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-namespace Assets.Scripts.Order
+namespace OrderRushKitchen.Order
 {
     public class OrdersPanelUI : MonoBehaviour
     {

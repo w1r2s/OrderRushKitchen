@@ -1,4 +1,4 @@
-﻿namespace Assets.Scripts.Order
+namespace OrderRushKitchen.Order
 {
     public enum OrderSubmissionFailureReason
     {

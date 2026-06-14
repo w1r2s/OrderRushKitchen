@@ -1274,7 +1274,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e1d9f81adefcac148954f42979e4661b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.UI.PlatformUiVisibility
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Presentation.PlatformUiVisibility
   mode: 0
   desktopOnlyRoots:
   - {fileID: 353255120}
@@ -2767,7 +2767,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0f6540d64858aba499205146433961c6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Managers.Installer.MainMenuInstaller
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Installers.MainMenuInstaller
 --- !u!4 &1152070641
 Transform:
   m_ObjectHideFlags: 0
@@ -2831,7 +2831,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef5c65b7e6684b241a401701d2b5b94a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.UI.LevelSelectionUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.MainMenu.LevelSelectionUI
   selectionPanel: {fileID: 2045970626}
   closeButton: {fileID: 1301061019}
   levelButtonTemplate: {fileID: 1893326019}
@@ -3297,7 +3297,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4c365edeebd96254ca663592e31eb9db, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MainMenuUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.MainMenu.MainMenuUI
   mainMenuPanel: {fileID: 1715375905}
   gameLabel: {fileID: 1533792743}
   levelSelectionUI: {fileID: 1206978430}
@@ -4453,7 +4453,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: adba418637f97274fb528b852b4c3fd3, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OptionsUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Settings.OptionsUI
 --- !u!1 &1625447525
 GameObject:
   m_ObjectHideFlags: 0
@@ -5566,7 +5566,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9552bd0a3332a9a4b8ff89fe8c30ffd3, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.UI.LevelSelectionButtonUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.MainMenu.LevelSelectionButtonUI
   button: {fileID: 1893326014}
   levelText: {fileID: 1661627472}
   lockedRoot: {fileID: 1802703155}

@@ -1,4 +1,4 @@
-﻿namespace Assets.Scripts.Selection
+namespace OrderRushKitchen.Selection
 {
     public enum ItemSelectionMode
     {

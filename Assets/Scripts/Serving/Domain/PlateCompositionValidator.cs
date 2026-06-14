@@ -1,9 +1,11 @@
-﻿using Assets.Scripts.Composition;
-using Assets.Scripts.Level;
+using OrderRushKitchen.Composition;
+using OrderRushKitchen.KitchenObjects;
+using OrderRushKitchen.Level;
+using OrderRushKitchen.Menu;
 using System.Collections.Generic;
 using Zenject;
 
-namespace Assets.Scripts.Serving
+namespace OrderRushKitchen.Serving
 {
     public class PlateCompositionValidator
     {

@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ce1869e02e2ae7439954a5625ee3a8c, type: 3}
   m_Name: Sausage
-  m_EditorClassIdentifier: Assembly-CSharp::KitchenObjectSo
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.KitchenObjects.KitchenObjectSo
   prefab: {fileID: 5331657169881446263, guid: 8e6a10cc7fcc4034e869213aa0c6c3d2, type: 3}
   sprite: {fileID: 21300000, guid: 7df7f29a703633846825e0a5758c1949, type: 3}
   objectName: Sausage

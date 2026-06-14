@@ -300,7 +300,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b15cc5368a61304babba073e2af040b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SelectedCounterVisual
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.SelectedCounterVisual
   baseCounter: {fileID: 7704688338424665598}
   visualGameObjectArray:
   - {fileID: 381090841061888815}
@@ -393,7 +393,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 58eecfede22d77d44909a08ef35e8731, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CuttingCounterVisual
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.CuttingCounterVisual
   cuttingCounter: {fileID: 7704688338424665598}
 --- !u!4 &5628564025687988355 stripped
 Transform:
@@ -640,7 +640,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 44f6d8593c4681544b64a1c2936ea4e4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CuttingCounter
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.CuttingCounter
   holdPoint: {fileID: 2760148530103891229}
 --- !u!1001 &9074494584544628860
 PrefabInstance:

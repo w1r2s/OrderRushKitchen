@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ce1869e02e2ae7439954a5625ee3a8c, type: 3}
   m_Name: Herbs_bag
-  m_EditorClassIdentifier: Assembly-CSharp::KitchenObjectSo
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.KitchenObjects.KitchenObjectSo
   prefab: {fileID: 1195389294008613536, guid: 47fbb66ed5679e8499f0cd5a1f9d9577, type: 3}
   sprite: {fileID: 21300000, guid: a0f4a2f3338349a43bc786d25bf1b24e, type: 3}
   objectName: Herbs_bag

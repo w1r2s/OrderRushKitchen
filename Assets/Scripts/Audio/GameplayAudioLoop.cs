@@ -1,4 +1,4 @@
-﻿namespace Assets.Scripts.Audio
+namespace OrderRushKitchen.Audio
 {
     public enum GameplayAudioLoop
     {

@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: KitchenChaosLearn
+  productName: Order Rush Kitchen
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -847,14 +847,14 @@ PlayerSettings:
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: KitchenChaosLearn
+  metroPackageName: OrderRushKitchen
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: KitchenChaosLearn
+  metroApplicationDescription: Order Rush Kitchen
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -928,7 +928,7 @@ PlayerSettings:
   cloudProjectId: 8f0056c4-ffd9-4964-b0b3-89af9e35fa37
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: KitchenChaosLearn
+  projectName: Order Rush Kitchen
   organizationId: wirtus0077
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0

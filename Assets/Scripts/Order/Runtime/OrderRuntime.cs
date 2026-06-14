@@ -1,7 +1,7 @@
-﻿using Assets.Scripts.Managers.Game;
+using OrderRushKitchen.Game;
 using Zenject;
 
-namespace Assets.Scripts.Order.Runtime
+namespace OrderRushKitchen.Order
 {
     internal class OrderRuntime : ITickable
     {

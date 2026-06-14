@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43caa3962937c564e839ce5f0bc52e8d, type: 3}
   m_Name: _ProcessRecipes
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Cooking.CookingProcessRecipeListSo
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Cooking.CookingProcessRecipeListSo
   cookingProcessRecipes:
   - {fileID: 11400000, guid: 43e1d4264eedf4f448cd0e56a2f09a4d, type: 2}
   - {fileID: 11400000, guid: 6a1b301c2e8600e479db0cda718b3bbc, type: 2}

@@ -1,9 +1,9 @@
-﻿using Assets.Scripts.Managers.Game;
+using OrderRushKitchen.Game;
 using System;
 using UnityEngine;
 using Zenject;
 
-namespace Assets.Scripts.Audio
+namespace OrderRushKitchen.Audio
 {
     public class GameplayAudioLoopPlayer : MonoBehaviour
     {

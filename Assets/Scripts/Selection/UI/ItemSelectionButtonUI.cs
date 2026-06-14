@@ -1,9 +1,11 @@
-﻿using Assets.Scripts.ScriptableObjects;
+using OrderRushKitchen.KitchenObjects;
+using OrderRushKitchen.Level;
+using OrderRushKitchen.Menu;
 using System;
-using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine;
 
-namespace Assets.Scripts.Selection
+namespace OrderRushKitchen.Selection
 {
     public class ItemSelectionButtonUI : MonoBehaviour
     {

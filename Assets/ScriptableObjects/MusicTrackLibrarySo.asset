@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7b05b537bc1ebad48aa9148db1b4213a, type: 3}
   m_Name: MusicTrackLibrarySo
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Audio.MusicTrackLibrarySo
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Audio.MusicTrackLibrarySo
   tracks:
   - TrackId: 0
     Clip: {fileID: 8300000, guid: d089a9bc637fe3b4eb8d2b053afda7f3, type: 3}

@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ce1869e02e2ae7439954a5625ee3a8c, type: 3}
   m_Name: Onion
-  m_EditorClassIdentifier: Assembly-CSharp::KitchenObjectSo
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.KitchenObjects.KitchenObjectSo
   prefab: {fileID: 5592042058237645457, guid: 8de31359715605e4383f851072be73bc, type: 3}
   sprite: {fileID: 21300000, guid: 28b055068bb25ce4d9fe9c37b368a4da, type: 3}
   objectName: Onion

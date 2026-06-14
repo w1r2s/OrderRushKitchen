@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7327baf98976589419993501f35e67ed, type: 3}
   m_Name: Level 2
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.ScriptableObjects.LevelDefinitionSo
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Level.LevelDefinitionSo
   levelNumber: 2
   requiredCompletedOrders: 4
   multiItemOrderChance: 0.15

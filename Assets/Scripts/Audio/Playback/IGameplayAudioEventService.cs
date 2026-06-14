@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-namespace Assets.Scripts.Audio
+namespace OrderRushKitchen.Audio
 {
     public interface IGameplayAudioEventService
     {

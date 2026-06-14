@@ -1,13 +1,15 @@
-﻿using Assets.Scripts.Composition;
-using Assets.Scripts.Cooking;
-using Assets.Scripts.Managers.Game;
-using Assets.Scripts.Serving;
-using System;
+using OrderRushKitchen.Composition;
+using OrderRushKitchen.Cooking;
+using OrderRushKitchen.Game;
+using OrderRushKitchen.KitchenObjects;
+using OrderRushKitchen.PlayerControl;
+using OrderRushKitchen.Serving;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using Zenject;
 
-namespace Assets.Scripts.Counters
+namespace OrderRushKitchen.Counters
 {
     public class PotCounter : BaseCounter, IHasProgress, IIngredientCompositionSource
     {

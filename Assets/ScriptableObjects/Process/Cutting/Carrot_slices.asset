@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6aca8970d67f0cf419b9d2c13f290311, type: 3}
   m_Name: Carrot_slices
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Cooking.ActionCookingProcessRecipeSo
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Cooking.ActionCookingProcessRecipeSo
   type: 0
   inputs:
   - {fileID: 11400000, guid: 8e5487695a86e1549b60f44d1931b2f8, type: 2}

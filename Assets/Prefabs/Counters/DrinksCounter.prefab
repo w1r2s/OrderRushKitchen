@@ -103,7 +103,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b15cc5368a61304babba073e2af040b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SelectedCounterVisual
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.SelectedCounterVisual
   baseCounter: {fileID: 7890682849692856221}
   visualGameObjectArray:
   - {fileID: 6523237228658667004}
@@ -364,7 +364,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 908f552f1d8a072409e6da4f7f0fb394, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Counters.DrinkCounter
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.DrinkCounter
   holdPoint: {fileID: 4247814668245881309}
   drinkOptions:
   - {fileID: 11400000, guid: d3291d947aea760449af985ab0628afa, type: 2}

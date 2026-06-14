@@ -150,7 +150,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0df8de362fb55604dbe00a455668cedc, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Managers.Installer.ProjectInstaller
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Installers.ProjectInstaller
   levelDefinitionListSo: {fileID: 11400000, guid: 143e3858423b9014d9fd855041d8e810, type: 2}
   musicTrackLibrary: {fileID: 11400000, guid: 051295c6841d73e4da9e5158322472f0, type: 2}
 --- !u!1 &1435644111983928258
@@ -436,7 +436,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfbb76a05a260264a8e0a1c8a1e30ee8, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Navigation.LoadingScreenUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Navigation.LoadingScreenUI
   panel: {fileID: 8428995171857182629}
 --- !u!1 &7889642257663078134
 GameObject:
@@ -579,7 +579,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d5f1f70f3a325b418a0aeb128c781c7, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Audio.MusicPlayer
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Audio.MusicPlayer
 --- !u!1 &8428995171857182629
 GameObject:
   m_ObjectHideFlags: 0

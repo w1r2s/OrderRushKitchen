@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using Zenject;
 
-namespace Assets.Scripts.Order
+namespace OrderRushKitchen.Order
 {
     public class OrdersPanelUIController : IInitializable, IDisposable, ITickable
     {

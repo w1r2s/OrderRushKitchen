@@ -1,7 +1,9 @@
-﻿using Assets.Scripts.ScriptableObjects;
+using OrderRushKitchen.KitchenObjects;
+using OrderRushKitchen.Level;
+using OrderRushKitchen.Menu;
 using System;
 
-namespace Assets.Scripts.Serving
+namespace OrderRushKitchen.Serving
 {
     public class PlateStateChangedEventArgs : EventArgs
     {

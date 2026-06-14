@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f2c70ff6adefb54baea9ece20cd6fee, type: 3}
   m_Name: _LevelDefinitionSoList
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.ScriptableObjects.LevelDefinitionListSo
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Level.LevelDefinitionListSo
   levels:
   - {fileID: 11400000, guid: 944ca43c72693c940bc98e70166114ae, type: 2}
   - {fileID: 11400000, guid: b68496b0baeefa74a8481bf7dea78684, type: 2}

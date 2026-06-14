@@ -43,7 +43,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aea351275d8d5b445a7e94821fd5da3c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Serving.PlateContentVisual
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Serving.PlateContentVisual
   plate: {fileID: 2943442294953514494}
   contentRoot: {fileID: 3839385222455541616}
   initialShiftY: 0
@@ -228,7 +228,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e351d15047962784ab0c0e5bff64e797, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LookAtCamera
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Presentation.LookAtCamera
   mode: 2
 --- !u!114 &6131756182209474482
 MonoBehaviour:
@@ -241,7 +241,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d0336e2a0db360a44b6a4bf7c08cf61c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Composition.IngredientsIconsUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Composition.IngredientsIconsUI
   compositionSourceBehaviour: {fileID: 2943442294953514494}
   iconTemplate: {fileID: 863679862435703294}
 --- !u!1 &1499642681079237932
@@ -293,7 +293,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6555d3855a7e87c44808e8d7e02ecee3, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Composition.IngredientIconUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Composition.IngredientIconUI
   image: {fileID: 1577090952549713645}
 --- !u!1 &1526981131840195326
 GameObject:
@@ -488,7 +488,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9f34fa6591214d94e9a243b44bd1843e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Serving.PlateKitchenObjectAudio
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Serving.PlateKitchenObjectAudio
   plate: {fileID: 2943442294953514494}
 --- !u!1 &8196373358719144314
 GameObject:
@@ -540,7 +540,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 52fe8664d2c8d23478de347abb932ad9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Serving.PlateKitchenObject
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Serving.PlateKitchenObject
   kitchenObjectSo: {fileID: 11400000, guid: c895acd8f7603964fb19ba1c9022980e, type: 2}
   availableIngredients:
   - {fileID: 11400000, guid: c1044462546a19f4482c23f64b8fb5f3, type: 2}

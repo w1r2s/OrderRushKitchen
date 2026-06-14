@@ -1,6 +1,7 @@
-﻿using System;
+using OrderRushKitchen.KitchenObjects;
+using System;
 
-namespace Assets.Scripts.Selection
+namespace OrderRushKitchen.Selection
 {
     public class ItemSelectionIngredientSelectedEventArgs : EventArgs
     {

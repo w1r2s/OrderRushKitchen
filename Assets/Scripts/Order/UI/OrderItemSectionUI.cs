@@ -1,7 +1,7 @@
-using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine;
 
-namespace Assets.Scripts.Order
+namespace OrderRushKitchen.Order
 {
     public class OrderItemSectionUI : MonoBehaviour
     {

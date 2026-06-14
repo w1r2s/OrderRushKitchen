@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+using OrderRushKitchen.KitchenObjects;
+using UnityEngine;
 using Zenject;
 
-namespace Assets.Scripts.Serving
+namespace OrderRushKitchen.Serving
 {
     public class PlateAssemblyService
     {

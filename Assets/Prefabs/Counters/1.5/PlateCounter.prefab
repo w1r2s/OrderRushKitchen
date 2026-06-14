@@ -175,7 +175,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1665ea982310f8b4a849670e3a598130, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlatesCounterVisual
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.PlatesCounterVisual
   CounterTopPoint: {fileID: 769743015316530469}
   PlateVisualPrefab: {fileID: 8283440110159730178, guid: 9b5bf664e3a89024bb0f5c98fdf44ad7, type: 3}
   platesCounter: {fileID: 4646271620707558908}
@@ -263,7 +263,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b15cc5368a61304babba073e2af040b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SelectedCounterVisual
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.SelectedCounterVisual
   baseCounter: {fileID: 4646271620707558908}
   visualGameObjectArray:
   - {fileID: 1724856844291331293}
@@ -364,7 +364,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff547743e1fc1ee4e9e3d32e922e725b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlatesCounter
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.PlatesCounter
   holdPoint: {fileID: 769743015316530469}
   plateKitchenObjectSo: {fileID: 11400000, guid: c895acd8f7603964fb19ba1c9022980e, type: 2}
 --- !u!4 &9100856428375386463 stripped

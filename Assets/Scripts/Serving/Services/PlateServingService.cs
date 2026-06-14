@@ -1,6 +1,6 @@
-﻿using Assets.Scripts.Order;
+using OrderRushKitchen.Order;
 
-namespace Assets.Scripts.Serving
+namespace OrderRushKitchen.Serving
 {
     public class PlateServingService
     {

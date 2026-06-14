@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3bc335063666c18468e10ed0e1afadf8, type: 3}
   m_Name: _MenuItemDefinitions
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.ScriptableObjects.MenuItemDefinitionListSo
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Menu.MenuItemDefinitionListSo
   items:
   - {fileID: 11400000, guid: b00af9b9377fd0643b97a33905fa5fd3, type: 2}
   - {fileID: 11400000, guid: a56c5d1c509b24f46ba9621b3dea643d, type: 2}

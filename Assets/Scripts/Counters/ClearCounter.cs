@@ -1,70 +1,75 @@
-using Assets.Scripts.Serving;
+using OrderRushKitchen.PlayerControl;
+using OrderRushKitchen.Serving;
 using System;
 using Zenject;
 
-public class ClearCounter : BaseCounter
+namespace OrderRushKitchen.Counters
 {
-    public event EventHandler OnInvalidAction;
 
-    private PlateAssemblyService _plateAssemblyService;
-    private PlateServingService _plateServingService;
-
-    [Inject]
-    private void Construct(PlateAssemblyService plateAssemblyService, PlateServingService plateServingService)
+    public class ClearCounter : BaseCounter
     {
-        _plateAssemblyService = plateAssemblyService;
-        _plateServingService = plateServingService;
-    }
+        public event EventHandler OnInvalidAction;
 
-    public override void Interact(Player player)
-    {
-        // На стойке пусто -> кладём предмет игрока
-        if (!HasObject)
+        private PlateAssemblyService _plateAssemblyService;
+        private PlateServingService _plateServingService;
+
+        [Inject]
+        private void Construct(PlateAssemblyService plateAssemblyService, PlateServingService plateServingService)
         {
-            if (!player.HasObject)
+            _plateAssemblyService = plateAssemblyService;
+            _plateServingService = plateServingService;
+        }
+
+        public override void Interact(Player player)
+        {
+            // пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ -> пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+            if (!HasObject)
+            {
+                if (!player.HasObject)
+                    return;
+
+                TryPlaceObjectFromPlayer(player);
                 return;
+            }
 
-            TryPlaceObjectFromPlayer(player);
-            return;
+            // пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ -> пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+            if (!player.HasObject)
+            {
+                TryTransferObjectTo(player);
+                return;
+            }
+
+            if (player.TryGetObjectAs<PlateKitchenObject>(out var playerPlate))
+            {
+                if (!_plateAssemblyService.TryAddIngredientFrom(playerPlate, this))
+                {
+                    OnInvalidAction?.Invoke(this, EventArgs.Empty);
+                }
+                return;
+            }
+
+            if (TryGetObjectAs<PlateKitchenObject>(out var counterPlate))
+            {
+                if (!_plateAssemblyService.TryAddIngredientFrom(counterPlate, player))
+                {
+                    OnInvalidAction?.Invoke(this, EventArgs.Empty);
+                }
+            }
+
         }
 
-        // На стойке есть предмет, у игрока пусто -> забираем предмет со стойки
-        if (!player.HasObject)
+        public override bool TryInteractAlternate(Player player)
         {
-            TryTransferObjectTo(player);
-            return;
-        }
+            if (!TryGetObjectAs<PlateKitchenObject>(out var plate))
+                return false;
 
-        if (player.TryGetObjectAs<PlateKitchenObject>(out var playerPlate))
-        {
-            if (!_plateAssemblyService.TryAddIngredientFrom(playerPlate, this))
+            if (plate.State == PlateState.Assembly &&
+                !_plateServingService.TryServe(plate))
             {
                 OnInvalidAction?.Invoke(this, EventArgs.Empty);
             }
-            return;
+
+            return true;
         }
-
-        if (TryGetObjectAs<PlateKitchenObject>(out var counterPlate))
-        {
-            if (!_plateAssemblyService.TryAddIngredientFrom(counterPlate, player))
-            {
-                OnInvalidAction?.Invoke(this, EventArgs.Empty);
-            }
-        }
-
-    }
-
-    public override bool TryInteractAlternate(Player player)
-    {
-        if (!TryGetObjectAs<PlateKitchenObject>(out var plate))
-            return false;
-
-        if (plate.State == PlateState.Assembly &&
-            !_plateServingService.TryServe(plate))
-        {
-            OnInvalidAction?.Invoke(this, EventArgs.Empty);
-        }
-
-        return true;
     }
 }

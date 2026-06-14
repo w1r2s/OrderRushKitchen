@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using UnityEngine;
 
-namespace Assets.Scripts.Audio
+namespace OrderRushKitchen.Audio
 {
     public class PlayerPrefsAudioSettingsStorage : IAudioSettingsStorage
     {

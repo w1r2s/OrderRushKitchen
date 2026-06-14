@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using Zenject;
 
-namespace Assets.Scripts.Audio
+namespace OrderRushKitchen.Audio
 {
     public class MusicVolumeController : IInitializable, IDisposable
     {

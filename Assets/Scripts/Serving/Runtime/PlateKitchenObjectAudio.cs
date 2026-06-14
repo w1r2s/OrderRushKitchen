@@ -1,9 +1,9 @@
-﻿using Assets.Scripts.Audio;
+using OrderRushKitchen.Audio;
 using System;
 using UnityEngine;
 using Zenject;
 
-namespace Assets.Scripts.Serving
+namespace OrderRushKitchen.Serving
 {
     public class PlateKitchenObjectAudio : MonoBehaviour
     {

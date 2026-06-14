@@ -1,10 +1,12 @@
-using Assets.Scripts.Composition;
-using Assets.Scripts.ScriptableObjects;
-using System;
+using OrderRushKitchen.Composition;
+using OrderRushKitchen.KitchenObjects;
+using OrderRushKitchen.Level;
+using OrderRushKitchen.Menu;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-namespace Assets.Scripts.Serving
+namespace OrderRushKitchen.Serving
 {
     public class PlateKitchenObject : KitchenObject, ISubmittableMenuItemSource, IIngredientCompositionSource
     {

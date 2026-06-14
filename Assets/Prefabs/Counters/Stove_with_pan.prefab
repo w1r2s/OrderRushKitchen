@@ -45,7 +45,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b15cc5368a61304babba073e2af040b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SelectedCounterVisual
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.SelectedCounterVisual
   baseCounter: {fileID: 3132049952250342489}
   visualGameObjectArray:
   - {fileID: 827521199377882784}
@@ -192,7 +192,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7e82516251be9642b12fdf996e0a897, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StoveCounterAudio
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.StoveCounterAudio
   stoveCounter: {fileID: 3132049952250342489}
   loopPlayer: {fileID: 3894520223505330566}
   burnWarningProgress: 0.5
@@ -208,7 +208,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 75c4560653b1165489a00c4b6b25c73d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Audio.GameplayAudioLoopPlayer
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Audio.GameplayAudioLoopPlayer
   loopType: 0
   audioSource: {fileID: 8512076110865528853}
   volumeMultiplier: 1
@@ -394,7 +394,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cee4c564bf0239242a0582307e9e2ade, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StoveCounter
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.StoveCounter
   holdPoint: {fileID: 7574814722519741679}
 --- !u!4 &7574814722519741679 stripped
 Transform:

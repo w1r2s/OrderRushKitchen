@@ -1,4 +1,6 @@
-﻿namespace Assets.Scripts.Interaction
+using OrderRushKitchen.PlayerControl;
+
+namespace OrderRushKitchen.Interaction
 {
     public interface IPlayerInteractable
     {

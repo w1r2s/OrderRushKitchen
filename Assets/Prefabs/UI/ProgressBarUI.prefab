@@ -116,7 +116,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4749a0e47c384164e83ba11d05b96ea2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ProgressBarUi
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.ProgressBarUI
   barImage: {fileID: 517133017885610777}
   hasProgressGameObject: {fileID: 0}
 --- !u!114 &7772897028460603764
@@ -130,7 +130,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e351d15047962784ab0c0e5bff64e797, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LookAtCamera
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Presentation.LookAtCamera
   mode: 2
 --- !u!1 &8041908216326048033
 GameObject:

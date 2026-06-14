@@ -142,7 +142,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 75c4560653b1165489a00c4b6b25c73d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Audio.GameplayAudioLoopPlayer
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Audio.GameplayAudioLoopPlayer
   loopType: 1
   audioSource: {fileID: 483015127760358848}
   volumeMultiplier: 1
@@ -157,7 +157,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca3537c1e574fc241bbdc30f7e80f0ad, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Counters.PotCounterAudio
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.PotCounterAudio
   potCounter: {fileID: 3417911106379570969}
   loopPlayer: {fileID: 2759741567897007909}
 --- !u!1 &5769447979513379531
@@ -205,7 +205,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b15cc5368a61304babba073e2af040b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SelectedCounterVisual
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.SelectedCounterVisual
   baseCounter: {fileID: 3417911106379570969}
   visualGameObjectArray:
   - {fileID: 4896262035260052251}
@@ -378,7 +378,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ee4406d8349790e448f46f6109c6ce40, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Counters.PotCounter
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.PotCounter
   holdPoint: {fileID: 6918524360100313739}
 --- !u!4 &6918524360100313739 stripped
 Transform:

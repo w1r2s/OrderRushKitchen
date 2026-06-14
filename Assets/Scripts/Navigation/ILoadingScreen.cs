@@ -1,4 +1,4 @@
-﻿namespace Assets.Scripts.Navigation
+namespace OrderRushKitchen.Navigation
 {
     public interface ILoadingScreen
     {

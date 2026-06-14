@@ -44,7 +44,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e600bd1ade52898499fc47a6092b3d0b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Serving.ServedMenuItemKitchenObject
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Serving.ServedMenuItemKitchenObject
   kitchenObjectSo: {fileID: 11400000, guid: a0a3c525c6c594344bd522768eb121da, type: 2}
   contentRoot: {fileID: 4004301147011839455}
 --- !u!1001 &830493731239440584

@@ -1,51 +1,56 @@
-using Assets.Scripts.Order;
-using Assets.Scripts.Serving;
+using OrderRushKitchen.Order;
+using OrderRushKitchen.PlayerControl;
+using OrderRushKitchen.Serving;
 using System;
 using UnityEngine;
 using Zenject;
 
-public class DeliveryCounter : BaseCounter
+namespace OrderRushKitchen.Counters
 {
-    public event EventHandler OnDeliverySuccess;
-    public event EventHandler OnDeliveryFail;
 
-    private IOrderSubmissionService _submissionService;
-
-    [Inject]
-    public void Construct(IOrderSubmissionService submissionService)
+    public class DeliveryCounter : BaseCounter
     {
-        _submissionService = submissionService;
-    }
-    public override void Interact(Player player)
-    {
-        if (!player.HasObject)
-            return;
+        public event EventHandler OnDeliverySuccess;
+        public event EventHandler OnDeliveryFail;
 
-        var obj = player.GetObject();
+        private IOrderSubmissionService _submissionService;
 
-        if (obj is not ISubmittableMenuItemSource source)
+        [Inject]
+        public void Construct(IOrderSubmissionService submissionService)
         {
-            OnDeliveryFail?.Invoke(this, EventArgs.Empty);
-            return;
+            _submissionService = submissionService;
         }
-
-        if (!source.TryGetMenuItemForSubmit(out var menuItem) || menuItem == null)
+        public override void Interact(Player player)
         {
-            OnDeliveryFail?.Invoke(this, EventArgs.Empty);
-            return;
-        }
+            if (!player.HasObject)
+                return;
 
-        if (!_submissionService.TrySubmit(menuItem, out var submitFailReason))
-        {
-            OnDeliveryFail?.Invoke(this, EventArgs.Empty);
-            return;
-        }
+            var obj = player.GetObject();
 
-        if (!player.TryRemoveAndDestroyObject())
-        {
-            Debug.LogError($"{name}: submitted object could not be removed from player");
-        }
+            if (obj is not ISubmittableMenuItemSource source)
+            {
+                OnDeliveryFail?.Invoke(this, EventArgs.Empty);
+                return;
+            }
 
-        OnDeliverySuccess?.Invoke(this, EventArgs.Empty);
+            if (!source.TryGetMenuItemForSubmit(out var menuItem) || menuItem == null)
+            {
+                OnDeliveryFail?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
+            if (!_submissionService.TrySubmit(menuItem, out var submitFailReason))
+            {
+                OnDeliveryFail?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
+            if (!player.TryRemoveAndDestroyObject())
+            {
+                Debug.LogError($"{name}: submitted object could not be removed from player");
+            }
+
+            OnDeliverySuccess?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

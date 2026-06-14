@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f8aba6941c1dd0e4483b3c5fc9a1fd68, type: 3}
   m_Name: Drink R
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.ScriptableObjects.MenuItemDefinitionSo
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Menu.MenuItemDefinitionSo
   key: Red
   displayName: Red
   category: 1
