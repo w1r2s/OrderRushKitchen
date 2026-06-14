@@ -1,9 +1,7 @@
-using OrderRushKitchen.KitchenObjects;
-using OrderRushKitchen.Level;
 using OrderRushKitchen.Menu;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 
 namespace OrderRushKitchen.Order
 {
@@ -95,32 +93,58 @@ namespace OrderRushKitchen.Order
             }
         }
 
-        public bool TryFulfillOrderItem(MenuItemDefinitionSo menuItem)
+        public bool TryFulfillOrderItem(MenuItemDefinitionSo menuItem, out ActiveOrder fulfilledOrder, out OrderItem fulfilledItem)
         {
+            fulfilledOrder = null;
+            fulfilledItem = null;
+
             if (menuItem == null)
                 return false;
 
-            foreach (var order in _orders)
+            foreach (ActiveOrder order in _orders)
             {
-                if (!order.IsActive)
+                if (!TryFulfillOrderItemForOrder(order, menuItem, out fulfilledItem))
                     continue;
 
-                if (order.TryFulfill(menuItem))
-                {
-                    if (order.IsCompleted)
-                    {
-                        OnOrderCompleted?.Invoke(this, new OrderServiceEventArgs(order));
-                    }
-                    else
-                    {
-                        OnOrderUpdated?.Invoke(this, new OrderServiceEventArgs(order));
-                    }
-                    return true;
-                }
+                fulfilledOrder = order;
+                return true;
             }
 
             return false;
         }
+
+        public bool TryFulfillOrderItemForOrder(ActiveOrder targetOrder, MenuItemDefinitionSo menuItem, out OrderItem fulfilledItem)
+        {
+            fulfilledItem = null;
+
+            if (targetOrder == null || menuItem == null || !_orders.Contains(targetOrder) || !targetOrder.TryFulfill(menuItem, out fulfilledItem))
+            {
+                return false;
+            }
+
+            if (targetOrder.IsCompleted)
+            {
+                OnOrderCompleted?.Invoke(this, new OrderServiceEventArgs(targetOrder));
+            }
+            else
+            {
+                OnOrderUpdated?.Invoke(this, new OrderServiceEventArgs(targetOrder));
+            }
+
+            return true;
+        }
+
+        public bool TryRevokeFulfilledItems(ActiveOrder order, IReadOnlyCollection<OrderItem> items)
+        {
+            if (order == null || items == null || !_orders.Contains(order) || !order.TryRevokeFulfilledItems(items))
+            {
+                return false;
+            }
+
+            OnOrderUpdated?.Invoke(this, new OrderServiceEventArgs(order));
+            return true;
+        }
+
         public void ClearAllOrders()
         {
             for (var i = _orders.Count - 1; i >= 0; i--)

@@ -6,5 +6,6 @@ namespace OrderRushKitchen.Order
         NoItemsDelivered = 1,
         NoActiveOrders = 2,
         NoMatchFound = 3,
+        TargetOrderUnavailable = 4,
     }
 }

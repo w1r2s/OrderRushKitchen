@@ -1,5 +1,3 @@
-using OrderRushKitchen.KitchenObjects;
-using OrderRushKitchen.Level;
 using OrderRushKitchen.Menu;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,33 +58,66 @@ namespace OrderRushKitchen.Order
                 return;
             }
         }
-        public bool TryFulfill(MenuItemDefinitionSo deliveredItem)
+
+        public bool CanFulfill(MenuItemDefinitionSo menuItem)
         {
-            if (_orderStatus != OrderStatus.Active)
+            if (!IsActive || menuItem == null)
                 return false;
 
-            if (deliveredItem == null)
+            return _orderItems.Any(item => item.CanBeFulfilledBy(menuItem));
+        }
+
+        public bool TryFulfill(MenuItemDefinitionSo deliveredItem, out OrderItem fulfilledItem)
+        {
+            fulfilledItem = null;
+
+            if (!CanFulfill(deliveredItem))
                 return false;
 
-            var found = false;
-            foreach (var item in _orderItems)
+            foreach (OrderItem item in _orderItems)
             {
-                if (item.IsCompleted)
-                    continue;
                 if (!item.CanBeFulfilledBy(deliveredItem))
                     continue;
-                item.MarkCompleted();
-                found = true;
+
+                if (!item.TryMarkCompleted())
+                    continue;
+
+                fulfilledItem = item;
                 break;
             }
 
-            if (!found)
+            if (fulfilledItem == null)
                 return false;
 
-            if (_orderItems.All(item => item.IsCompleted == true))
+            if (_orderItems.All(item => item.IsCompleted))
             {
                 _orderStatus = OrderStatus.Completed;
             }
+
+            return true;
+        }
+
+        public bool TryRevokeFulfilledItems(IReadOnlyCollection<OrderItem> items)
+        {
+            if (_orderStatus != OrderStatus.Active || items == null || items.Count == 0)
+                return false;
+
+            var uniqueItems = new HashSet<OrderItem>();
+
+            foreach (OrderItem item in items)
+            {
+                if (item == null || !uniqueItems.Add(item) || !_orderItems.Contains(item) || !item.IsCompleted)
+                {
+                    return false;
+                }
+            }
+
+            foreach (OrderItem item in uniqueItems)
+            {
+                if (!item.TryMarkIncomplete())
+                    return false;
+            }
+
             return true;
         }
     }

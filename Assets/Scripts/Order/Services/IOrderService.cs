@@ -1,8 +1,6 @@
-using OrderRushKitchen.KitchenObjects;
-using OrderRushKitchen.Level;
 using OrderRushKitchen.Menu;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
 namespace OrderRushKitchen.Order
 {
@@ -11,8 +9,9 @@ namespace OrderRushKitchen.Order
         void Tick(float deltaTime);
         ActiveOrder CreateOrder(IEnumerable<MenuItemDefinitionSo> items);
         IReadOnlyList<ActiveOrder> GetActiveOrders();
-        bool TryFulfillOrderItem(MenuItemDefinitionSo menuItem);
-
+        bool TryFulfillOrderItem(MenuItemDefinitionSo menuItem, out ActiveOrder fulfilledOrder, out OrderItem fulfilledItem);
+        bool TryFulfillOrderItemForOrder(ActiveOrder targetOrder, MenuItemDefinitionSo menuItem, out OrderItem fulfilledItem);
+        bool TryRevokeFulfilledItems(ActiveOrder order, IReadOnlyCollection<OrderItem> items);
         void ClearAllOrders();
 
         public event EventHandler<OrderServiceEventArgs> OnOrderCreated;

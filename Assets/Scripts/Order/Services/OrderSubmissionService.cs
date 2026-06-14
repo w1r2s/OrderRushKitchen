@@ -1,6 +1,5 @@
-using OrderRushKitchen.KitchenObjects;
-using OrderRushKitchen.Level;
 using OrderRushKitchen.Menu;
+using System.Linq;
 
 namespace OrderRushKitchen.Order
 {
@@ -12,26 +11,44 @@ namespace OrderRushKitchen.Order
             _orderService = orderService;
         }
 
-        public bool TrySubmit(MenuItemDefinitionSo menuItem, out OrderSubmissionFailureReason submissionResult)
+        public OrderSubmissionResult TrySubmit(MenuItemDefinitionSo menuItem)
         {
-            submissionResult = default;
             if (menuItem == null)
             {
-                submissionResult = OrderSubmissionFailureReason.NoItemsDelivered;
-                return false;
+                return OrderSubmissionResult.Failed(OrderSubmissionFailureReason.NoItemsDelivered);
             }
-            var activeOrders = _orderService.GetActiveOrders();
-            if (activeOrders.Count == 0)
+
+            if (_orderService.GetActiveOrders().Count == 0)
             {
-                submissionResult = OrderSubmissionFailureReason.NoActiveOrders;
-                return false;
+                return OrderSubmissionResult.Failed(OrderSubmissionFailureReason.NoActiveOrders);
             }
 
-            if (_orderService.TryFulfillOrderItem(menuItem))
-                return true;
+            if (!_orderService.TryFulfillOrderItem(menuItem, out ActiveOrder fulfilledOrder, out OrderItem fulfilledItem))
+            {
+                return OrderSubmissionResult.Failed(OrderSubmissionFailureReason.NoMatchFound);
+            }
 
-            submissionResult = OrderSubmissionFailureReason.NoMatchFound;
-            return false;
+            return OrderSubmissionResult.Succeeded(fulfilledOrder, fulfilledItem);
+        }
+
+        public OrderSubmissionResult TrySubmit(MenuItemDefinitionSo menuItem, ActiveOrder targetOrder)
+        {
+            if (menuItem == null)
+            {
+                return OrderSubmissionResult.Failed(OrderSubmissionFailureReason.NoItemsDelivered);
+            }
+
+            if (targetOrder == null || !_orderService.GetActiveOrders().Contains(targetOrder))
+            {
+                return OrderSubmissionResult.Failed(OrderSubmissionFailureReason.TargetOrderUnavailable);
+            }
+
+            if (!_orderService.TryFulfillOrderItemForOrder(targetOrder, menuItem, out OrderItem fulfilledItem))
+            {
+                return OrderSubmissionResult.Failed(OrderSubmissionFailureReason.NoMatchFound);
+            }
+
+            return OrderSubmissionResult.Succeeded(targetOrder, fulfilledItem);
         }
     }
 }

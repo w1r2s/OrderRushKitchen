@@ -1,5 +1,6 @@
 using OrderRushKitchen.Audio;
 using OrderRushKitchen.Cooking;
+using OrderRushKitchen.Counters;
 using OrderRushKitchen.Game;
 using OrderRushKitchen.Input;
 using OrderRushKitchen.KitchenObjects;
@@ -68,6 +69,7 @@ namespace OrderRushKitchen.Installers
             Container.Bind<IOrderFlowService>().To<OrderFlowService>().AsSingle();
             Container.Bind<IOrderGenerationService>().To<OrderGenerationService>().AsSingle();
             Container.Bind<IOrderSubmissionService>().To<OrderSubmissionService>().AsSingle();
+            Container.Bind<IOrderStagingReservationService>().To<OrderStagingReservationService>().AsSingle();
             Container.Bind<IMenuItemResolver>().To<MenuItemResolver>().AsSingle();
             Container.BindInterfacesTo<OrderRuntime>().AsSingle();
             Container.BindInterfacesTo<OrderAudioController>().AsSingle();

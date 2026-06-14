@@ -1,5 +1,3 @@
-using OrderRushKitchen.KitchenObjects;
-using OrderRushKitchen.Level;
 using OrderRushKitchen.Menu;
 
 namespace OrderRushKitchen.Order
@@ -31,9 +29,22 @@ namespace OrderRushKitchen.Order
 
             return true;
         }
-        public void MarkCompleted()
+        public bool TryMarkCompleted()
         {
+            if (IsCompleted)
+                return false;
+
             IsCompleted = true;
+            return true;
+        }
+
+        public bool TryMarkIncomplete()
+        {
+            if (!IsCompleted)
+                return false;
+
+            IsCompleted = false;
+            return true;
         }
     }
 }
