@@ -77,5 +77,10 @@ namespace OrderRushKitchen.Composition
                 Destroy(child.gameObject);
             }
         }
+
+        public void Hide()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

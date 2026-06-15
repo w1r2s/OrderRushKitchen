@@ -163,7 +163,7 @@ Transform:
   m_GameObject: {fileID: 2997666863184670819}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.05, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -198,7 +198,7 @@ Transform:
   m_GameObject: {fileID: 5677154182584367328}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.36, y: 1.05, z: -0.068}
+  m_LocalPosition: {x: 0.337, y: 1.05, z: 0.114}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -218,6 +218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.DeliveryStagingSlot
   holdPoint: {fileID: 15544392084531454}
+  stagedScale: 0.625
 --- !u!1 &7071701797067474488
 GameObject:
   m_ObjectHideFlags: 0
@@ -244,7 +245,7 @@ Transform:
   m_GameObject: {fileID: 7071701797067474488}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.399, y: 1.05, z: -0.039}
+  m_LocalPosition: {x: -0.337, y: 1.05, z: 0.114}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -264,6 +265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.DeliveryStagingSlot
   holdPoint: {fileID: 8033877330716714043}
+  stagedScale: 0.625
 --- !u!1 &7590056166710527472
 GameObject:
   m_ObjectHideFlags: 0
@@ -290,7 +292,7 @@ Transform:
   m_GameObject: {fileID: 7590056166710527472}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.36, y: 1.05, z: -0.068}
+  m_LocalPosition: {x: 0, y: 1.05, z: -0.121}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -310,6 +312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.DeliveryStagingSlot
   holdPoint: {fileID: 1834965855902775571}
+  stagedScale: 0.625
 --- !u!1001 &815825758105054792
 PrefabInstance:
   m_ObjectHideFlags: 0

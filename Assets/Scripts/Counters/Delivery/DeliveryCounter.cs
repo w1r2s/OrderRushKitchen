@@ -199,6 +199,11 @@ namespace OrderRushKitchen.Counters
                 Debug.LogError($"{name}: submitted item was fulfilled by an unexpected order.");
             }
 
+            if (!slot.TryApplyStagedPresentation())
+            {
+                Debug.LogWarning($"{name}: staged object presentation could not be applied.");
+            }
+
             _stagedDeliveries.Add(new StagedDelivery(slot, result.FulfilledItem));
         }
 
