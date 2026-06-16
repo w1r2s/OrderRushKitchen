@@ -18,29 +18,21 @@ namespace OrderRushKitchen.Counters
 
         [SerializeField] private List<DeliveryStagingSlot> stagingSlots = new();
 
-        private readonly List<StagedDelivery> _stagedDeliveries = new();
+        private readonly List<DeliveryStagingSlot> _stagedSlots = new();
 
-        private IOrderSubmissionService _submissionService;
         private IOrderService _orderService;
-        private IOrderStagingReservationService _reservationService;
         private IGameClock _gameClock;
+        private DeliveryCounterController _controller;
 
-        private ActiveOrder _boundOrder;
-        private OrderStagingReservation _reservation;
-        private ActiveOrder _pendingResolvedOrder;
-        private DeliveryCounterState _state;
-        private bool _submissionInProgress;
-
-        public ActiveOrder BoundOrder => _boundOrder;
-        public DeliveryCounterState State => _state;
+        public ActiveOrder BoundOrder => _controller?.BoundOrder;
+        public DeliveryCounterState State => _controller?.State ?? DeliveryCounterState.Unbound;
 
         [Inject]
         public void Construct(IOrderSubmissionService submissionService, IOrderService orderService, IOrderStagingReservationService reservationService, IGameClock gameClock)
         {
-            _submissionService = submissionService;
             _orderService = orderService;
-            _reservationService = reservationService;
             _gameClock = gameClock;
+            _controller = new DeliveryCounterController(submissionService, orderService, reservationService);
         }
 
         private void Start()
@@ -59,12 +51,12 @@ namespace OrderRushKitchen.Counters
                 _orderService.OnOrderRemoved -= OrderService_OnOrderRemoved;
             }
 
-            ReleaseReservation();
+            _controller?.Reset();
         }
 
         private void Update()
         {
-            if (_state != DeliveryCounterState.Resolving)
+            if (State != DeliveryCounterState.Resolving)
                 return;
 
             TickResolveStaging();
@@ -72,7 +64,7 @@ namespace OrderRushKitchen.Counters
 
         public override void Interact(Player player)
         {
-            if (player == null || _submissionInProgress || _state == DeliveryCounterState.Resolving || !player.HasObject)
+            if (player == null || _controller.IsSubmissionInProgress || State == DeliveryCounterState.Resolving || !player.HasObject)
             {
                 return;
             }
@@ -89,7 +81,7 @@ namespace OrderRushKitchen.Counters
                 return;
             }
 
-            if (!TryGetSubmissionReservation(menuItem, out OrderStagingReservation reservation, out bool isNewReservation))
+            if (!_controller.TryPrepareSubmission(menuItem, out OrderStagingReservation reservation, out bool isNewReservation))
             {
                 NotifyDeliveryFailed();
                 return;
@@ -97,32 +89,21 @@ namespace OrderRushKitchen.Counters
 
             if (!player.TryTransferObjectTo(slot))
             {
-                ReleaseNewReservation(reservation, isNewReservation);
+                _controller.ReleasePreparedReservation(reservation, isNewReservation);
                 NotifyDeliveryFailed();
                 return;
             }
 
-            _submissionInProgress = true;
-
-            OrderSubmissionResult result;
-
-            try
-            {
-                result = _submissionService.TrySubmit(menuItem, reservation.Order);
-            }
-            finally
-            {
-                _submissionInProgress = false;
-            }
+            OrderSubmissionResult result = _controller.SubmitPrepared(menuItem, reservation);
 
             if (!result.Success)
             {
                 RollbackTransfer(slot, player);
-                ReleaseNewReservation(reservation, isNewReservation);
+                _controller.ReleasePreparedReservation(reservation, isNewReservation);
 
-                if (result.FailureReason == OrderSubmissionFailureReason.TargetOrderUnavailable)
+                if (_controller.TryHandleFailedSubmission(result))
                 {
-                    BeginResolving(_boundOrder);
+                    BeginResolvePresentation();
                 }
 
                 NotifyDeliveryFailed();
@@ -130,20 +111,23 @@ namespace OrderRushKitchen.Counters
             }
 
             RegisterSuccessfulDelivery(slot, result, reservation);
-            ProcessPendingResolution();
 
             OnDeliverySuccess?.Invoke(this, EventArgs.Empty);
         }
 
         public override bool TryInteractAlternate(Player player)
         {
-            if (_state != DeliveryCounterState.Staging || _boundOrder == null || _stagedDeliveries.Count == 0)
+            if (State != DeliveryCounterState.Staging || BoundOrder == null || _stagedSlots.Count == 0)
                 return false;
 
-            if (!TryRollbackStagedDeliveries())
+            if (!_controller.TryRollbackStagedDeliveries())
                 return false;
 
-            BeginResolving(_boundOrder);
+            if (_controller.TryBeginResolvingCurrentOrder())
+            {
+                BeginResolvePresentation();
+            }
+
             return true;
         }
 
@@ -152,7 +136,7 @@ namespace OrderRushKitchen.Counters
             base.ResetForLevelTransition();
 
             CleanupStagingSlots();
-            ResetStagingState();
+            _controller.Reset();
         }
 
         private bool TryGetMenuItem(Player player, out MenuItemDefinitionSo menuItem)
@@ -185,34 +169,12 @@ namespace OrderRushKitchen.Counters
             return false;
         }
 
-        private bool TryGetSubmissionReservation(MenuItemDefinitionSo menuItem, out OrderStagingReservation reservation, out bool isNewReservation)
-        {
-            reservation = _reservation;
-            isNewReservation = false;
-
-            if (_state == DeliveryCounterState.Staging)
-                return reservation?.Order != null;
-
-            if (_state != DeliveryCounterState.Unbound)
-                return false;
-
-            if (!_reservationService.TryReserveFor(menuItem, out reservation))
-                return false;
-
-            isNewReservation = true;
-            return true;
-        }
-
         private void RegisterSuccessfulDelivery(DeliveryStagingSlot slot, OrderSubmissionResult result, OrderStagingReservation reservation)
         {
-            if (_state == DeliveryCounterState.Unbound)
-            {
-                _reservation = reservation;
-                _boundOrder = result.Order;
-                _state = DeliveryCounterState.Staging;
-            }
+            if (!_controller.RegisterSuccessfulSubmission(result, reservation, out bool submittedToUnexpectedOrder))
+                return;
 
-            if (!ReferenceEquals(_boundOrder, result.Order))
+            if (submittedToUnexpectedOrder)
             {
                 Debug.LogError($"{name}: submitted item was fulfilled by an unexpected order.");
             }
@@ -222,14 +184,11 @@ namespace OrderRushKitchen.Counters
                 Debug.LogWarning($"{name}: staged object presentation could not be applied.");
             }
 
-            _stagedDeliveries.Add(new StagedDelivery(slot, result.FulfilledItem));
-        }
+            _stagedSlots.Add(slot);
 
-        private void ReleaseNewReservation(OrderStagingReservation reservation, bool isNewReservation)
-        {
-            if (isNewReservation)
+            if (_controller.TryProcessPendingResolution())
             {
-                _reservationService.Release(reservation);
+                BeginResolvePresentation();
             }
         }
 
@@ -243,69 +202,26 @@ namespace OrderRushKitchen.Counters
 
         private void OrderService_OnOrderCompleted(object sender, OrderServiceEventArgs e)
         {
-            HandleOrderResolved(e?.Order);
+            if (_controller.HandleOrderResolved(e?.Order))
+            {
+                BeginResolvePresentation();
+            }
         }
 
         private void OrderService_OnOrderFailed(object sender, OrderServiceEventArgs e)
         {
-            HandleOrderResolved(e?.Order);
+            if (_controller.HandleOrderResolved(e?.Order))
+            {
+                BeginResolvePresentation();
+            }
         }
 
         private void OrderService_OnOrderRemoved(object sender, OrderServiceEventArgs e)
         {
-            ActiveOrder removedOrder = e?.Order;
-
-            if (removedOrder == null)
-                return;
-
-            if (ReferenceEquals(_pendingResolvedOrder, removedOrder))
+            if (_controller.HandleOrderRemoved(e?.Order))
             {
-                _pendingResolvedOrder = null;
+                CleanupStagingSlots();
             }
-
-            if (!ReferenceEquals(_boundOrder, removedOrder))
-                return;
-
-            if (_state == DeliveryCounterState.Resolving)
-                return;
-
-            CleanupStagingSlots();
-            ResetStagingState();
-        }
-
-        private void HandleOrderResolved(ActiveOrder order)
-        {
-            if (order == null)
-                return;
-
-            if (_submissionInProgress)
-            {
-                _pendingResolvedOrder = order;
-                return;
-            }
-
-            BeginResolving(order);
-        }
-
-        private void ProcessPendingResolution()
-        {
-            if (_pendingResolvedOrder == null)
-                return;
-
-            ActiveOrder resolvedOrder = _pendingResolvedOrder;
-            _pendingResolvedOrder = null;
-
-            BeginResolving(resolvedOrder);
-        }
-
-        private void BeginResolving(ActiveOrder order)
-        {
-            if (order == null || !ReferenceEquals(order, _boundOrder))
-                return;
-
-            _state = DeliveryCounterState.Resolving;
-
-            BeginResolvePresentation();
         }
 
         private void CleanupStagingSlots()
@@ -320,25 +236,7 @@ namespace OrderRushKitchen.Counters
                 slot.TryRemoveAndDestroyObject();
             }
 
-            _stagedDeliveries.Clear();
-        }
-
-        private void ResetStagingState()
-        {
-            ReleaseReservation();
-            _boundOrder = null;
-            _pendingResolvedOrder = null;
-            _submissionInProgress = false;
-            _state = DeliveryCounterState.Unbound;
-        }
-
-        private void ReleaseReservation()
-        {
-            if (_reservation == null)
-                return;
-
-            _reservationService?.Release(_reservation);
-            _reservation = null;
+            _stagedSlots.Clear();
         }
 
         private void NotifyDeliveryFailed()
@@ -348,9 +246,9 @@ namespace OrderRushKitchen.Counters
 
         private void BeginResolvePresentation()
         {
-            for (int i = 0; i < _stagedDeliveries.Count; i++)
+            for (int i = 0; i < _stagedSlots.Count; i++)
             {
-                DeliveryStagingSlot slot = _stagedDeliveries[i].Slot;
+                DeliveryStagingSlot slot = _stagedSlots[i];
 
                 if (slot == null)
                     continue;
@@ -364,9 +262,9 @@ namespace OrderRushKitchen.Counters
             bool allResolved = true;
             float deltaTime = _gameClock?.DeltaTime ?? Time.deltaTime;
 
-            for (int i = 0; i < _stagedDeliveries.Count; i++)
+            for (int i = 0; i < _stagedSlots.Count; i++)
             {
-                DeliveryStagingSlot slot = _stagedDeliveries[i].Slot;
+                DeliveryStagingSlot slot = _stagedSlots[i];
 
                 if (slot == null)
                     continue;
@@ -381,37 +279,7 @@ namespace OrderRushKitchen.Counters
                 return;
 
             CleanupStagingSlots();
-            ResetStagingState();
+            _controller.CompleteResolving();
         }
-
-        private bool TryRollbackStagedDeliveries()
-        {
-            var orderItems = new List<OrderItem>();
-
-            for (int i = 0; i < _stagedDeliveries.Count; i++)
-            {
-                OrderItem orderItem = _stagedDeliveries[i].OrderItem;
-
-                if (orderItem == null)
-                    return false;
-
-                orderItems.Add(orderItem);
-            }
-
-            return _orderService.TryRevokeFulfilledItems(_boundOrder, orderItems);
-        }
-
-        private sealed class StagedDelivery
-        {
-            public DeliveryStagingSlot Slot { get; }
-            public OrderItem OrderItem { get; }
-
-            public StagedDelivery(DeliveryStagingSlot slot, OrderItem orderItem)
-            {
-                Slot = slot;
-                OrderItem = orderItem;
-            }
-        }
-
     }
 }
