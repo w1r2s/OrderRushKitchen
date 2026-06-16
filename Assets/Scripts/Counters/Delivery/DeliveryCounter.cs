@@ -137,7 +137,14 @@ namespace OrderRushKitchen.Counters
 
         public override bool TryInteractAlternate(Player player)
         {
-            return false;
+            if (_state != DeliveryCounterState.Staging || _boundOrder == null || _stagedDeliveries.Count == 0)
+                return false;
+
+            if (!TryRollbackStagedDeliveries())
+                return false;
+
+            BeginResolving(_boundOrder);
+            return true;
         }
 
         public override void ResetForLevelTransition()
@@ -375,6 +382,23 @@ namespace OrderRushKitchen.Counters
 
             CleanupStagingSlots();
             ResetStagingState();
+        }
+
+        private bool TryRollbackStagedDeliveries()
+        {
+            var orderItems = new List<OrderItem>();
+
+            for (int i = 0; i < _stagedDeliveries.Count; i++)
+            {
+                OrderItem orderItem = _stagedDeliveries[i].OrderItem;
+
+                if (orderItem == null)
+                    return false;
+
+                orderItems.Add(orderItem);
+            }
+
+            return _orderService.TryRevokeFulfilledItems(_boundOrder, orderItems);
         }
 
         private sealed class StagedDelivery
