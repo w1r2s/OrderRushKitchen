@@ -1,3 +1,4 @@
+using OrderRushKitchen.Game;
 using OrderRushKitchen.KitchenObjects;
 using OrderRushKitchen.Menu;
 using OrderRushKitchen.Order;
@@ -22,6 +23,7 @@ namespace OrderRushKitchen.Counters
         private IOrderSubmissionService _submissionService;
         private IOrderService _orderService;
         private IOrderStagingReservationService _reservationService;
+        private IGameClock _gameClock;
 
         private ActiveOrder _boundOrder;
         private OrderStagingReservation _reservation;
@@ -33,11 +35,12 @@ namespace OrderRushKitchen.Counters
         public DeliveryCounterState State => _state;
 
         [Inject]
-        public void Construct(IOrderSubmissionService submissionService, IOrderService orderService, IOrderStagingReservationService reservationService)
+        public void Construct(IOrderSubmissionService submissionService, IOrderService orderService, IOrderStagingReservationService reservationService, IGameClock gameClock)
         {
             _submissionService = submissionService;
             _orderService = orderService;
             _reservationService = reservationService;
+            _gameClock = gameClock;
         }
 
         private void Start()
@@ -57,6 +60,14 @@ namespace OrderRushKitchen.Counters
             }
 
             ReleaseReservation();
+        }
+
+        private void Update()
+        {
+            if (_state != DeliveryCounterState.Resolving)
+                return;
+
+            TickResolveStaging();
         }
 
         public override void Interact(Player player)
@@ -248,6 +259,9 @@ namespace OrderRushKitchen.Counters
             if (!ReferenceEquals(_boundOrder, removedOrder))
                 return;
 
+            if (_state == DeliveryCounterState.Resolving)
+                return;
+
             CleanupStagingSlots();
             ResetStagingState();
         }
@@ -283,6 +297,8 @@ namespace OrderRushKitchen.Counters
                 return;
 
             _state = DeliveryCounterState.Resolving;
+
+            BeginResolvePresentation();
         }
 
         private void CleanupStagingSlots()
@@ -323,6 +339,44 @@ namespace OrderRushKitchen.Counters
             OnDeliveryFail?.Invoke(this, EventArgs.Empty);
         }
 
+        private void BeginResolvePresentation()
+        {
+            for (int i = 0; i < _stagedDeliveries.Count; i++)
+            {
+                DeliveryStagingSlot slot = _stagedDeliveries[i].Slot;
+
+                if (slot == null)
+                    continue;
+
+                slot.TryBeginResolvePresentation();
+            }
+        }
+
+        private void TickResolveStaging()
+        {
+            bool allResolved = true;
+            float deltaTime = _gameClock?.DeltaTime ?? Time.deltaTime;
+
+            for (int i = 0; i < _stagedDeliveries.Count; i++)
+            {
+                DeliveryStagingSlot slot = _stagedDeliveries[i].Slot;
+
+                if (slot == null)
+                    continue;
+
+                if (!slot.TickResolvePresentation(deltaTime))
+                {
+                    allResolved = false;
+                }
+            }
+
+            if (!allResolved)
+                return;
+
+            CleanupStagingSlots();
+            ResetStagingState();
+        }
+
         private sealed class StagedDelivery
         {
             public DeliveryStagingSlot Slot { get; }
@@ -334,5 +388,6 @@ namespace OrderRushKitchen.Counters
                 OrderItem = orderItem;
             }
         }
+
     }
 }
