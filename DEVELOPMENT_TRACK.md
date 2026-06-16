@@ -1,6 +1,6 @@
-﻿# Трек разработки KitchenChaosLearn
+﻿# Трек разработки Order Rush Kitchen
 
-Последнее обновление: 2026-05-18
+Последнее обновление: 2026-06-16
 
 ## Назначение
 Единый рабочий документ для отслеживания дальнейшей разработки.
@@ -225,23 +225,48 @@
 - M7
 - M8
 
-### M10. Очистка архитектуры под MVC
-Статус: `TODO`
+### M10. Unity architecture normalization
+Статус: `DONE`
 
 Цель:
-Уменьшить связность между доменной логикой, orchestration-слоем и Unity view-компонентами.
+Нормализовать архитектуру проекта под Unity: уменьшить связность между domain/use-case сервисами, scene adapters, UI view и platform/infrastructure слоями без догматичного "чистого MVC".
 
 Задачи:
-- [ ] Найти классы, где сейчас смешаны состояние, игровая логика и обновление представления.
-- [ ] Перенести runtime-состояние в модели и сервисы.
-- [ ] Оставить `MonoBehaviour`-классам роль view, точки входа взаимодействий и scene wiring.
-- [ ] Ввести presenters/controllers там, где UI сейчас сам управляет правилами игры.
-- [ ] Пересмотреть lifecycle-обновление сервисов и по возможности заменить `MonoBehaviour`-обёртки на `ITickable`/Zenject lifecycle.
-- [ ] Удалить устаревшую логику, оставшуюся от single-dish прототипа.
+- [x] Зафиксировать архитектурные правила M10: domain/use-case/view/presenter/infrastructure boundaries.
+- [x] Переработать game/order lifecycle через Zenject `ITickable`/`IInitializable` там, где `MonoBehaviour` сейчас является только tick/subscription adapter.
+- [x] Добавить единую pause policy для gameplay/modal/user/ad/level-complete состояний; modal windows должны останавливать gameplay timers/processes.
+- [x] Разделить input layer: gameplay input, rebinding, storage, platform-specific UI/control policy.
+- [x] Заменить static/legacy loading flow на injectable navigation/loading service, подготовленный к Addressables.
+- [x] Нормализовать audio/music managers: service boundaries, volume storage, scene audio adapter, future settings/mixer seam.
+- [x] Добавить основу сохранения прогресса пользователя: unlocked/current level, basic profile progress, storage abstraction.
+- [x] Разделить UI orchestration и view там, где UI владеет use-case логикой (`OptionsUI`, order UI, pause/game over/level complete flow).
+- [x] Провести counter/object interaction cleanup: общие операции holder transfer/destroy/progress/cooking state без лишней иерархии.
+- [x] Добавить level-transition reset для player position/state, чтобы переход уровня ощущался как чистый старт.
+- [x] Поддержать player-side alternate serve flow, если это вписывается в нормализованную interaction architecture.
+- [x] Провести Zenject inventory: bindings, lifetimes, install order, `NonLazy`, scene components, future SDK boundaries.
+- [x] Удалить или изолировать legacy после миграций: старые recipe базы, debug/probe leftovers, static/global остатки.
+- [x] Нормализовать иерархию кода и namespace: провести inventory, зафиксировать правила и структурировать файлы по доменным зонам.
+- [x] Выполнить финальный naming pass M10: привести namespaces, project identifiers и оставшиеся пользовательские/технические упоминания к итоговому названию `Order Rush Kitchen`.
+
+Отдельный gameplay backlog, не блокирующий M10:
+- [x] M10.15. Переработать `DeliveryCounter` в staging-модель: блюдо кладётся на delivery counter, связывается с заказом и удаляется при закрытии заказа успехом/провалом.
+  - [x] M10.15.1. Возвращать из submission конкретный принявший `ActiveOrder`.
+  - [x] M10.15.2. Расширить fulfillment receipt конкретным `OrderItem` и добавить безопасный batch rollback staged-позиций.
+  - [x] M10.15.3. Реализовать bound multi-slot `DeliveryCounter` со state flow `Unbound`/`Staging`/`Resolving`.
+  - [x] M10.15.4. Настроить staging presentation: устойчивое размещение до трёх блюд, единый staged-scale и скрытие вспомогательного ingredient UI.
+  - [x] M10.15.5. Добавить fade cleanup для completed/failed заказа и optional alt-clear для активного staged-заказа.
+    - [x] M10.15.5.1. Добавить fade cleanup staged-блюд после completed/failed заказа.
+    - [x] M10.15.5.2. Добавить alt-clear активной стойки с безопасным batch rollback и освобождением reservation.
+  - [x] M10.15.6. Настроить prefab и провести ручной regression-прогон.
+- [x] M10.16. Вынести delivery staging workflow из `DeliveryCounter` в plain controller/session.
+  - [x] M10.16.1. Разделить order/reservation/session state и Unity scene adapter.
+  - [x] M10.16.2. Подтвердить Unity compilation и ручной regression delivery staging.
 
 Критерий готовности:
-- Логику заказов и уровней можно читать отдельно от UI-компонентов.
-- Визуальные классы реагируют на состояние, а не владеют игровыми правилами.
+- Gameplay/use-case логику можно читать и тестировать отдельно от UI и scene objects.
+- `MonoBehaviour`-классы в основном играют роль scene adapters/view/input entry points.
+- Managers split подготовлен к Addressables, Firebase, AppLovin и возможному UniTask без протекания SDK-кода в gameplay/UI.
+- User progress сохраняется через абстракцию storage, а не напрямую из UI/gameplay классов.
 
 Зависимости:
 - M2
@@ -316,9 +341,8 @@
 Статус: `TODO`
 
 Фокус:
-- Подготовить commit закрытия M9, включая tracker, так как это переход между крупными этапами.
-- После commit создать ветку под M10 `MVC cleanup`.
-- Начать M10 с inventory архитектурных долгов: `GameManager`/services, input layer, UI orchestration, counters и остатки legacy API.
+- Подготовить итоговый commit закрытия M10.
+- После commit перейти к планированию M11: локализация UI, названий блюд/уровней и пользовательских текстов.
 ## Журнал решений
 - 2026-04-11: Текущая архитектура уже частично сервисная, но игровая доменная модель всё ещё построена вокруг старого single-dish цикла.
 - 2026-04-11: Новые фичи не стоит наращивать поверх старых предположений `DeliveryService`.
@@ -363,5 +387,54 @@
 - 2026-05-15: Закрыт основной M9 content/UI pass: финальные counter visuals интегрированы в `GameScene`, подогнаны scale/colliders/hold points, обновлены иконки ингредиентов/menu items, selection UI получил разные backgrounds/layout для ingredients/drinks, `OrdersTopBar` упрощён до компактных карточек с popup details по нажатию, добавлен world-space background за пределами кухни.
 - 2026-05-18: Закрыт UI presentation pass внутри M9: `GamePauseUI`, `OptionsUI`, `GameOverUI`, `GameStartCountdownUI`, `LevelProgressUI` и связанные modal/HUD элементы приведены к новому стилю с обновлёнными фонами, иконками, шрифтом и desktop/mobile layout.
 - 2026-05-18: Этап M9 завершён. Content integration, functional UI layout и presentation pass доведены до gameplay-ready состояния; оставшаяся косметическая полировка без gameplay/blocker рисков остаётся в M12.
+- 2026-05-18: M10 начат как Unity architecture normalization, а не чистый MVC. Принято решение переработать `Managers` кроме `Installer`, использовать Zenject lifecycle для service-level runtime loops, подготовить seams под Addressables/Firebase/AppLovin/UniTask и добавить сохранение пользовательского прогресса.
+- 2026-05-18: Закрыт подэтап M10.2: `GameManager` и `OrderManager` заменены на Zenject runtime adapters (`GameRuntime`, `OrderRuntime`) через `ITickable`/`IInitializable`; scene-level tick adapters удалены из `GameScene`.
+- 2026-05-19: Для pause policy принято решение объединить `GameOver` и `LevelComplete` в одну причину `LevelRunEnded`: pause service отвечает за остановку gameplay, а различие success/fail остаётся в level run result/UI flow.
+- 2026-05-19: M10.3 частично готов: `UserPause` и `ModalPause` переведены на `GamePauseService`/`IGameClock`; game/order timers, plates, stove/pot cooking, player movement/interactions и modal windows стали pause-aware. Осталось подключить `LevelRunEnded` для game over/level complete и удалить старый pause API из `GameService`.
+- 2026-05-19: Закрыт подэтап M10.3: добавлена единая pause policy через `GamePauseService`/`IGameClock`, покрыты `UserPause`, `Modal` и `LevelRunEnded`; старый pause API (`TogglePauseGame`, `OnGamePaused`, `OnGameUnpaused`, `Time.timeScale` в `GameService`) удалён.
+- 2026-05-20: Закрыт подэтап M10.4.1: `IInputService` разделён на `IGameplayInputService` и `IInputRebindingService`; `InputService` переведён на Zenject lifecycle, desktop rebinding больше не зависит от порядка bindings, добавлены cancel/guard для interactive rebinding и formatting `Escape -> Esc`.
+- 2026-05-22: Закрыт подэтап M10.4.2: `Player` input/selection cleanup выполнен; selection raycast теперь следует визуальному направлению персонажа, `interactionLayerMask` отделён от movement collision, `IPlayerInteractable` сознательно перенесён в будущий counter/object interaction cleanup.
+- 2026-05-22: Закрыт M10.4: input layer разделён на gameplay/rebinding/storage, player-side input usage нормализован; platform-specific UI оставлен через существующий `PlatformUiVisibility` как достаточный scene adapter до появления build-time/Addressables policy.
+- 2026-05-22: Для M10.5 зафиксирована navigation policy: переход между уровнями в текущей кухне выполняется через reset runtime-состояния и замену level config без перезагрузки сцены; `Retry`, `Start` и `Return to Menu` из UI выполняют scene-level navigation. Будущие разные кухни рассматриваются как location-level transition через scene loading, но без преждевременной реализации.
+- 2026-05-23: Закрыт M10.5: legacy static `LoadingManager`/`LoadingScene` заменены на app-level `ProjectContext`, `INavigationService`, `ISceneLoader`, async scene loading через UniTask и persistent `LoadingScreenUI`; `MainMenuUI`, `GamePauseUI` и `GameOverUI` переведены на injectable navigation.
+- 2026-05-28: В M10.6 закрыт gameplay SFX slice: audio settings/storage нормализованы, one-shot/global/loop playback разделены, counter/plate/order audio переведены на scene adapters, покрыты базовые gameplay events и `InvalidAction`.
+- 2026-05-28: Закрыт M10.6: audio/music layer нормализован; gameplay SFX и music lifecycle разделены на app-level settings/storage, reusable playback players, event/loop services, scene adapters и `MusicService`/`MusicTrackLibrarySo` с запуском треков через scene starters.
+- 2026-05-31: Закрыт M10.7: добавлен app-level `UserProgressService`/`IUserProgressStorage` поверх `PlayerPrefs`, сохранение `current/max unlocked level`, старт уровня из сохранённого прогресса и обновление прогресса при completion/переходе уровня.
+- 2026-05-31: Для M10.8 проведена UI inventory. Решено начать с MainMenu level selection как первого потребителя `UserProgressService`; далее идти через pause/gameover/levelcomplete orchestration, `OptionsUI`, Orders UI и modal policy cleanup без ввода тяжёлого UI framework.
+- 2026-06-02: Закрыт M10.8.1: `MainMenuScene` получила новый diorama/background UI, title/menu assets и `LevelSelectionUI`; выбор уровня строится от `LevelDatabase`/`IUserProgressService`, locked уровни некликабельны и отображаются через lock overlay, выбранный уровень сохраняется и запускает `GameScene`.
+- 2026-06-02: Закрыт M10.8.2: pause, game over и level complete UI переведены на intent-events; navigation/pause/options orchestration вынесена в отдельные controllers, а `OptionsUI.Show(Action)` заменён на простой open/close contract.
+- 2026-06-04: Закрыт M10.8.3: `OptionsUI` вынесен в reusable prefab для `GameScene` и `MainMenuScene`; view отделён от audio/input orchestration через `OptionsUIController`, rebinding вынесен в app-level `InputRebindingService`, а gameplay pause-закрытие оставлено в отдельном `GameOptionsPauseController`.
+- 2026-06-04: Закрыт M10.8.4: `OrdersPanelUI` отделён от `IOrderService`; lifecycle карточек и выбор заказа остались во view, а подписки на order events, tick-refresh и открытие `OrderDetailsUI` вынесены в `OrdersPanelUIController`.
+- 2026-06-04: Закрыт M10.8.5: `ItemSelectionUI` отделён от `IItemSelectionService`; selection view теперь отдаёт close/item-selected intents, `ItemSelectionButtonUI` больше не подтверждает выбор напрямую, а service orchestration вынесена в `ItemSelectionUIController` с сохранением modal pause policy через `IItemSelectionService`.
+- 2026-06-05: M10.8 закрыт. UI naming/folder pass (`M10.8.6`) сознательно отложен до будущей legacy/namespace cleanup, чтобы совместить переносы файлов и namespace с общей чисткой, а не создавать отдельный scene/prefab serialization churn.
+- 2026-06-11: Закрыт M10.9.1: введён `IPlayerInteractable`; `Player` обнаруживает, хранит и вызывает выбранную цель через interaction contract вместо прямой зависимости от `BaseCounter`, а `SelectedCounterVisual` намеренно оставлен counter-specific.
+- 2026-06-11: Закрыт M10.9.2: `ObjectHolder` получил безопасные transfer/destroy operations; простые interaction flows и level reset переведены на общий holder API с сохранением виртуального поведения `Player.SetObject` и counter-specific audio.
+- 2026-06-11: Закрыт M10.9.3: `PlateAssemblyService` получил общий add-and-consume flow, который изменяет состав тарелки до потребления scene object и сохраняет ingredient при отказе; `ClearCounter`, `CuttingCounter`, `StoveCounter` мигрированы на этот use-case.
+- 2026-06-11: Закрыт M10.9.4: process counters переведены на безопасные holder operations и явные state/progress reset flows без новой cooking hierarchy; `ObjectHolder` усилен атомарным transfer, `TrySetObject`, `TrySpawnAndSet` и защищённым receive-hook для player-specific side effects.
+- 2026-06-11: M10.9 закрыт после успешной Unity compilation и ручной проверки interaction, selection visual, transfer/destroy, plate assembly, cutting, frying/burning, pot cooking и level reset. Разделение `BaseCounter`/`ObjectHoldingCounter` и автоматические holder tests оставлены как отдельные будущие улучшения, не блокирующие текущий cleanup.
+- 2026-06-11: Закрыт M10.10: переход на следующий уровень теперь сбрасывает позицию, поворот, held object, walking и interaction selection игрока; runtime-состояние сцены очищается, а level run заново проходит waiting/countdown/gameplay flow без перезагрузки сцены.
+- 2026-06-12: Закрыт M10.11: правила сервировки тарелки вынесены в `PlateServingService`; alternate interaction получил явный handled-result, а игрок может сервировать удерживаемую тарелку через безопасный fallback после действия выбранной стойки.
+- 2026-06-12: Закрыт M10.12: проведён Zenject inventory; подтверждены корректные границы `ProjectContext`/scene scopes и отсутствие необходимости в execution order, удалены избыточные self/`NonLazy` bindings, а `GameInstaller` и `ProjectInstaller` сгруппированы по ответственности.
+- 2026-06-13: Завершена cleanup-часть M10.13: удалены подтверждённые legacy recipe/debug/probe ресурсы и старый контент, актуальные assets разложены по рабочим папкам с сохранением GUID; ручной gameplay-прогон и аудит ссылок на удалённые GUID не выявили потерь активного контента.
+- 2026-06-13: Закрыт M10.13 после полного ручного прогона: legacy/debug/static cleanup завершён, активные resources/prefabs сохранены, ссылки и основные gameplay/UI/navigation flows работают штатно. В M10 добавлен отдельный M10.14 для нормализации иерархии кода и namespace.
+- 2026-06-13: Проведён inventory M10.14: обнаружены global namespace, legacy-зоны `Managers`/общий `UI`/`ScriptableObjects`, технические namespace `Order.Runtime`/`Level.UI` и отсутствие собственного asmdef. Принято структурировать код доменными пакетами, сохранять `.meta`, завершать namespace на доменной зоне и не вводить asmdef до стабилизации зависимостей.
+- 2026-06-14: Зафиксировано итоговое название проекта `Order Rush Kitchen`. Для M10.14 выбран корневой namespace `OrderRushKitchen`; после структурирования кода выполнен финальный naming pass по оставшимся упоминаниям временного названия.
+- 2026-06-14: Реализация M10.14 завершена: production-код сгруппирован по доменным папкам, namespaces приведены к корню `OrderRushKitchen` без технических суффиксов, Unity project identifiers переименованы в `Order Rush Kitchen`; сохранность script GUID и отсутствие compile errors подтверждены, перед закрытием этапа требуется ручной regression-прогон.
+- 2026-06-14: Внутренняя структура крупных доменных пакетов уточнена техническими подпапками `Services`, `Storage`, `Controllers`, `Runtime` и `Visuals` без изменения доменных namespaces; editor tools подтверждены в отдельной editor assembly, дубли из корня проекта удалены.
+- 2026-06-14: M10.14 и M10 закрыты после успешной Unity compilation и полного ручного regression-прогона. Архитектурные границы, lifecycle, pause/input/navigation/audio/progress/UI orchestration, interaction/reset flows, legacy cleanup, структура файлов и namespace приведены в консистентное состояние; следующий шаг — итоговый commit M10 и переход к M11.
+- 2026-06-14: M10 повторно открыт для M10.15 по решению реализовать отложенный delivery staging до итогового commit. Принято оставить order-state mutation в `OrderService`, а хранение и lifecycle доставленных scene objects — в multi-slot `DeliveryCounter`.
+- 2026-06-14: Закрыт M10.15.1: submission result возвращает конкретный принявший `ActiveOrder`, сохраняет текущий first-match fulfillment и защищён от неконсистентных success/failure состояний.
+- 2026-06-14: Для полного M10.15 зафиксирована модель одной стойки, привязанной к одному заказу: первый staged item выбирает заказ, последующие принимаются только в него; completed/failed заказ переходит в fade cleanup. Alt-clear признан обоснованным только для активного заказа и требует receipt на конкретный `OrderItem` и атомарный batch rollback.
+- 2026-06-14: Закрыт M10.15.2: fulfillment receipt расширен конкретным `OrderItem`, добавлен targeted submission для привязанного заказа и атомарный batch rollback только для активного заказа с одним `OnOrderUpdated`.
+- 2026-06-14: В M10.15.3 добавлен scene-level `OrderStagingReservationService`: свободный delivery counter резервирует подходящий незарезервированный заказ до переноса блюда, а затем использует только targeted submission. Delivery-типы сгруппированы в `Counters/Delivery` без изменения namespace.
+- 2026-06-14: Закрыт M10.15.3 после ручной проверки: свободные стойки резервируют разные подходящие заказы, один заказ нельзя выполнить через несколько delivery counter, а последующие блюда принимаются только привязанной стойкой.
+- 2026-06-14: Staging presentation выделен в отдельный M10.15.4. Fade cleanup и alt-clear сдвинуты в M10.15.5.
+- 2026-06-15: Закрыт M10.15.4 после ручной проверки: три staging slot размещены треугольником, успешно сданные блюда получают единый presentation-scale `0.625`, а вспомогательный `IngredientsIconsUI` скрывается. Bounds-based fit и editor validation отброшены как избыточные для текущего контента.
+- 2026-06-16: Закрыт M10.15.5.1: completed/failed delivery order переводит привязанную стойку в `Resolving`, staged-блюда плавно уменьшаются через pause-aware `IGameClock`, а cleanup/reset выполняется после завершения анимации без преждевременного destroy из `OnOrderRemoved`.
+- 2026-06-16: Закрыт M10.15.5.2 и M10.15.5: alt-clear активной staged delivery стойки выполняет batch rollback fulfilled `OrderItem`, затем переиспользует общий `Resolving` fade cleanup; staged objects удаляются после анимации, а reservation освобождается через общий reset.
+- 2026-06-16: M10.15 закрыт после prefab/manual regression: bound multi-slot delivery staging, presentation-scale, hidden ingredient UI, fade cleanup, alt-clear rollback и повторное использование delivery counter работают в едином lifecycle.
+- 2026-06-16: Начат финальный архитектурный подэтап M10.16: `DeliveryCounter` разделён на Unity scene adapter и plain `DeliveryCounterController`; Unity compilation/manual regression delivery staging ещё требуют подтверждения перед закрытием M10.16.
+- 2026-06-16: M10.16 закрыт после Unity/manual regression: delivery staging workflow вынесен из `DeliveryCounter` в plain `DeliveryCounterController`, а counter оставлен scene adapter для interaction, slot transfer и presentation lifecycle.
+- 2026-06-16: M10 закрыт после финального архитектурного аудита и ручной проверки M10.16. Основные Unity architecture boundaries, lifecycle, pause/input/navigation/audio/progress/UI orchestration, interaction/reset, delivery staging, legacy cleanup, namespaces и project naming приведены в консистентное состояние.
 
 
