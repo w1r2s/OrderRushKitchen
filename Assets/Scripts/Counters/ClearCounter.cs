@@ -1,84 +1,75 @@
-using Assets.Scripts.Order;
-using Assets.Scripts.Serving;
+using OrderRushKitchen.PlayerControl;
+using OrderRushKitchen.Serving;
+using System;
 using Zenject;
 
-public class ClearCounter : BaseCounter
+namespace OrderRushKitchen.Counters
 {
-    private IMenuItemResolver _menuItemResolver;
-    private PlateAssemblyService _plateAssemblyService;
 
-    [Inject]
-    private void Construct(IMenuItemResolver menuItemResolver, PlateAssemblyService plateAssemblyService)
+    public class ClearCounter : BaseCounter
     {
-        _menuItemResolver = menuItemResolver;
-        _plateAssemblyService = plateAssemblyService;
-    }
-    public override void Interact(Player player)
-    {
-        // На стойке пусто -> кладём предмет игрока
-        if (!HasObject)
+        public event EventHandler OnInvalidAction;
+
+        private PlateAssemblyService _plateAssemblyService;
+        private PlateServingService _plateServingService;
+
+        [Inject]
+        private void Construct(PlateAssemblyService plateAssemblyService, PlateServingService plateServingService)
         {
+            _plateAssemblyService = plateAssemblyService;
+            _plateServingService = plateServingService;
+        }
+
+        public override void Interact(Player player)
+        {
+            // пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ -> пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+            if (!HasObject)
+            {
+                if (!player.HasObject)
+                    return;
+
+                TryPlaceObjectFromPlayer(player);
+                return;
+            }
+
+            // пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ -> пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             if (!player.HasObject)
-                return;
-
-            PlaceObjectFromPlayer(player);
-            return;
-        }
-
-        // На стойке есть предмет, у игрока пусто -> забираем предмет со стойки
-        if (!player.HasObject)
-        {
-            KitchenObject counterObject = RemoveObject();
-            player.SetObject(counterObject);
-            return;
-        }
-
-        // И у игрока, и у стойки есть предметы -> пробуем объединить с тарелкой
-        KitchenObject playerObjectInHand = player.GetObject();
-        KitchenObject counterObjectOnCounter = GetObject();
-
-        if (player.TryGetObjectAs<PlateKitchenObject>(out var playerPlate))
-        {
-            if (!_plateAssemblyService.TryAddIngredient(playerPlate, counterObjectOnCounter.KitchenObjectSo))
-                return;
-
-            KitchenObject removedObject = RemoveObject();
-            Destroy(removedObject.gameObject);
-            return;
-        }
-
-        if (TryGetObjectAs<PlateKitchenObject>(out var counterPlate))
-        {
-            if (!_plateAssemblyService.TryAddIngredient(counterPlate, playerObjectInHand.KitchenObjectSo))
-                return;
-
-            KitchenObject removedObject = player.RemoveObject();
-            Destroy(removedObject.gameObject);
-        }
-
-    }
-    public override void InteractAlternate(Player player)
-    {
-        if (!HasObject)
-            return;
-
-        if (TryGetObjectAs<PlateKitchenObject>(out var counterPlate))
-        {
-            if (counterPlate.State != PlateState.Assembly)
-                return;
-
-            var menuItem = _menuItemResolver.TryResolveMenuItem(counterPlate.Ingredients);
-            if (menuItem == null)
             {
-                // TODO(M5): replace with UI/audio feedback
-                // Debug.Log($"serve resolve failed");
+                TryTransferObjectTo(player);
                 return;
             }
-            if (!counterPlate.TryServe(menuItem))
+
+            if (player.TryGetObjectAs<PlateKitchenObject>(out var playerPlate))
             {
-                // TODO(M5): replace with UI/audio feedback
-                // Debug.Log($"serve failed.");
+                if (!_plateAssemblyService.TryAddIngredientFrom(playerPlate, this))
+                {
+                    OnInvalidAction?.Invoke(this, EventArgs.Empty);
+                }
+                return;
             }
+
+            if (TryGetObjectAs<PlateKitchenObject>(out var counterPlate))
+            {
+                if (!_plateAssemblyService.TryAddIngredientFrom(counterPlate, player))
+                {
+                    OnInvalidAction?.Invoke(this, EventArgs.Empty);
+                }
+            }
+
+        }
+
+        public override bool TryInteractAlternate(Player player)
+        {
+            if (!TryGetObjectAs<PlateKitchenObject>(out var plate))
+                return false;
+
+            if (plate.State == PlateState.Assembly &&
+                !_plateServingService.TryServe(plate))
+            {
+                OnInvalidAction?.Invoke(this, EventArgs.Empty);
+            }
+
+            return true;
         }
     }
 }

@@ -1,244 +1,266 @@
-using Assets.Scripts.Cooking;
-using Assets.Scripts.Serving;
+using OrderRushKitchen.Cooking;
+using OrderRushKitchen.Game;
+using OrderRushKitchen.KitchenObjects;
+using OrderRushKitchen.PlayerControl;
+using OrderRushKitchen.Serving;
 using System;
 using UnityEngine;
 using Zenject;
 
-public class StoveCounter : BaseCounter, IHasProgress
+namespace OrderRushKitchen.Counters
 {
-    private PlateAssemblyService _plateAssemblyService;
-    private CookingProcessRecipeResolver _recipesResolver;
 
-    private float fryingTimer;
-    private float burningTimer;
-    private TimedCookingProcessRecipeSo fryingRecipeSo;
-    private TimedCookingProcessRecipeSo burningRecipeSo;
-
-    private State state = State.Idle;
-
-    public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
-    public event EventHandler<OnStateChangedEventArgs> OnStateChanged;
-
-    public class OnStateChangedEventArgs : EventArgs
+    public class StoveCounter : BaseCounter, IHasProgress
     {
-        public State state;
-    }
+        private IGameClock _clock;
+        private PlateAssemblyService _plateAssemblyService;
+        private CookingProcessRecipeResolver _recipesResolver;
 
-    public enum State
-    {
-        Idle,
-        Frying,
-        Fried,
-        Burned
-    }
+        private float fryingTimer;
+        private float burningTimer;
+        private TimedCookingProcessRecipeSo fryingRecipeSo;
+        private TimedCookingProcessRecipeSo burningRecipeSo;
 
-    [Inject]
-    private void Construct(CookingProcessRecipeResolver recipesResolver, PlateAssemblyService plateAssemblyService)
-    {
-        _recipesResolver = recipesResolver;
-        _plateAssemblyService = plateAssemblyService;
-    }
+        private State state = State.Idle;
 
-    private void Update()
-    {
-        if (!HasObject)
-            return;
+        public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
+        public event EventHandler<OnStateChangedEventArgs> OnStateChanged;
+        public event EventHandler OnInvalidAction;
 
-        switch (state)
+        public class OnStateChangedEventArgs : EventArgs
         {
-            case State.Frying:
-                HandleFrying();
-                break;
-            case State.Fried:
-                HandleBurning();
-                break;
-        }
-    }
-
-    public override void Interact(Player player)
-    {
-        if (!HasObject)
-        {
-            TryPlaceFryableObject(player);
-            return;
+            public State state;
         }
 
-        if (!player.HasObject)
+        public enum State
         {
-            var obj = RemoveObject();
-            player.SetObject(obj);
+            Idle,
+            Frying,
+            Fried,
+            Burned
+        }
+
+        [Inject]
+        private void Construct(CookingProcessRecipeResolver recipesResolver, PlateAssemblyService plateAssemblyService, IGameClock clock)
+        {
+            _recipesResolver = recipesResolver;
+            _plateAssemblyService = plateAssemblyService;
+            _clock = clock;
+        }
+
+        private void Update()
+        {
+            if (!HasObject)
+                return;
+
+            switch (state)
+            {
+                case State.Frying:
+                    HandleFrying();
+                    break;
+                case State.Fried:
+                    HandleBurning();
+                    break;
+            }
+        }
+
+        public override void Interact(Player player)
+        {
+            if (!HasObject)
+            {
+                TryPlaceFryableObject(player);
+                return;
+            }
+
+            if (!player.HasObject)
+            {
+                if (TryTransferObjectTo(player))
+                {
+                    ResetCookingState();
+                }
+                return;
+            }
+
+            TryAddCounterObjectToPlate(player);
+        }
+
+        private void TryPlaceFryableObject(Player player)
+        {
+            if (!player.HasObject)
+                return;
+
+            var playerObject = player.GetObject();
+
+            if (!_recipesResolver.TryGetSingleInputRecipe<TimedCookingProcessRecipeSo>(CookingProcessType.Frying, playerObject.KitchenObjectSo, out var recipe))
+            {
+                OnInvalidAction?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
+            if (!TryPlaceObjectFromPlayer(player))
+                return;
+
+            fryingRecipeSo = recipe;
+            fryingTimer = 0f;
+
+            SetState(State.Frying);
+            EmitProgress(0f);
+        }
+
+        private void TryAddCounterObjectToPlate(Player player)
+        {
+            if (!player.TryGetObjectAs<PlateKitchenObject>(out var plate))
+                return;
+
+            if (!_plateAssemblyService.TryAddIngredientFrom(plate, this))
+            {
+                OnInvalidAction?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
             ResetCookingState();
-            return;
         }
 
-        TryAddCounterObjectToPlate(player);
-    }
-
-    private void TryPlaceFryableObject(Player player)
-    {
-        if (!player.HasObject)
-            return;
-
-        var playerObject = player.GetObject();
-
-        if (!_recipesResolver.TryGetSingleInputRecipe<TimedCookingProcessRecipeSo>(CookingProcessType.Frying, playerObject.KitchenObjectSo, out var recipe))
+        private void HandleFrying()
         {
-            return;
+            if (fryingRecipeSo == null || fryingRecipeSo.Duration <= 0f)
+            {
+                ResetCookingState();
+                return;
+            }
+
+            fryingTimer += _clock.DeltaTime;
+
+            if (fryingTimer >= fryingRecipeSo.Duration)
+            {
+                CompleteFrying();
+                return;
+            }
+
+            EmitProgress(fryingTimer / fryingRecipeSo.Duration);
         }
 
-        fryingRecipeSo = recipe;
-        fryingTimer = 0f;
-
-        PlaceObjectFromPlayer(player);
-
-        SetState(State.Frying);
-        EmitProgress(0f);
-    }
-
-    private void TryAddCounterObjectToPlate(Player player)
-    {
-        if (!player.TryGetObjectAs<PlateKitchenObject>(out var plate))
-            return;
-
-        var counterObject = GetObject();
-        if (counterObject == null)
-            return;
-
-        if (!_plateAssemblyService.TryAddIngredient(plate, counterObject.KitchenObjectSo))
-            return;
-
-        RemoveAndDestroyCurrentObject();
-        ResetCookingState();
-    }
-
-    private void HandleFrying()
-    {
-        if (fryingRecipeSo == null || fryingRecipeSo.Duration <= 0f)
+        private void CompleteFrying()
         {
+            var friedOutput = fryingRecipeSo.OutputKitchenObject;
+            if (friedOutput == null || friedOutput.prefab == null)
+            {
+                if (TryRemoveAndDestroyObject())
+                {
+                    ResetCookingState();
+                }
+                return;
+            }
+
+            if (!TryRemoveAndDestroyObject())
+                return;
+
+            if (!TrySpawnAndSet(friedOutput.prefab, out _))
+            {
+                ResetCookingState();
+                return;
+            }
+
+            fryingTimer = 0f;
+            burningTimer = 0f;
+
+            if (!_recipesResolver.TryGetSingleInputRecipe<TimedCookingProcessRecipeSo>(CookingProcessType.Burning, friedOutput, out var recipe))
+            {
+                ResetCookingState();
+                return;
+            }
+
+            burningRecipeSo = recipe;
+
+            SetState(State.Fried);
+            EmitProgress(0f);
+        }
+
+        private void HandleBurning()
+        {
+            if (burningRecipeSo == null || burningRecipeSo.Duration <= 0f)
+            {
+                ResetCookingState();
+                return;
+            }
+
+            burningTimer += _clock.DeltaTime;
+
+            if (burningTimer >= burningRecipeSo.Duration)
+            {
+                CompleteBurning();
+                return;
+            }
+
+            EmitProgress(burningTimer / burningRecipeSo.Duration);
+        }
+
+        private void CompleteBurning()
+        {
+            var burnedOutput = burningRecipeSo.OutputKitchenObject;
+            if (burnedOutput == null || burnedOutput.prefab == null)
+            {
+                if (TryRemoveAndDestroyObject())
+                {
+                    ResetCookingState();
+                }
+                return;
+            }
+
+            if (!TryRemoveAndDestroyObject())
+                return;
+
+            if (!TrySpawnAndSet(burnedOutput.prefab, out _))
+            {
+                ResetCookingState();
+                return;
+            }
+
+            SetState(State.Burned);
+            EmitProgress(0f);
+        }
+
+        public bool IsFried()
+        {
+            return state == State.Fried;
+        }
+
+        public override void ResetForLevelTransition()
+        {
+            base.ResetForLevelTransition();
             ResetCookingState();
-            return;
+        }
+        private void ResetCookingState()
+        {
+            fryingTimer = 0f;
+            burningTimer = 0f;
+            fryingRecipeSo = null;
+            burningRecipeSo = null;
+
+            SetState(State.Idle);
+            EmitProgress(0f);
         }
 
-        fryingTimer += Time.deltaTime;
-
-        if (fryingTimer >= fryingRecipeSo.Duration)
+        private void SetState(State newState)
         {
-            CompleteFrying();
-            return;
+            if (state == newState)
+                return;
+
+            state = newState;
+
+            OnStateChanged?.Invoke(this, new OnStateChangedEventArgs
+            {
+                state = state
+            });
         }
 
-        EmitProgress(fryingTimer / fryingRecipeSo.Duration);
-    }
-
-    private void CompleteFrying()
-    {
-        var friedOutput = fryingRecipeSo.OutputKitchenObject;
-        if (friedOutput == null || friedOutput.prefab == null)
+        private void EmitProgress(float progressNormalized)
         {
-            RemoveAndDestroyCurrentObject();
-            ResetCookingState();
-            return;
-        }
-
-        RemoveAndDestroyCurrentObject();
-        SpawnAndSet(friedOutput.prefab);
-
-        fryingTimer = 0f;
-        burningTimer = 0f;
-
-        if (!_recipesResolver.TryGetSingleInputRecipe<TimedCookingProcessRecipeSo>(CookingProcessType.Burning, friedOutput, out var recipe))
-        {
-            ResetCookingState();
-            return;
-        }
-
-        burningRecipeSo = recipe;
-
-        SetState(State.Fried);
-        EmitProgress(0f);
-    }
-
-    private void HandleBurning()
-    {
-        if (burningRecipeSo == null || burningRecipeSo.Duration <= 0f)
-        {
-            ResetCookingState();
-            return;
-        }
-
-        burningTimer += Time.deltaTime;
-
-        if (burningTimer >= burningRecipeSo.Duration)
-        {
-            CompleteBurning();
-            return;
-        }
-
-        EmitProgress(burningTimer / burningRecipeSo.Duration);
-    }
-
-    private void CompleteBurning()
-    {
-        var burnedOutput = burningRecipeSo.OutputKitchenObject;
-        if (burnedOutput == null || burnedOutput.prefab == null)
-        {
-            RemoveAndDestroyCurrentObject();
-            ResetCookingState();
-            return;
-        }
-
-        RemoveAndDestroyCurrentObject();
-        SpawnAndSet(burnedOutput.prefab);
-
-        SetState(State.Burned);
-        EmitProgress(0f);
-    }
-
-    public bool IsFried()
-    {
-        return state == State.Fried;
-    }
-
-    public override void ResetForLevelTransition()
-    {
-        base.ResetForLevelTransition();
-        ResetCookingState();
-    }
-
-    private void RemoveAndDestroyCurrentObject()
-    {
-        var obj = RemoveObject();
-        if (obj != null)
-        {
-            Destroy(obj.gameObject);
+            OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
+            {
+                progressNormalized = Mathf.Clamp01(progressNormalized)
+            });
         }
     }
 
-    private void ResetCookingState()
-    {
-        fryingTimer = 0f;
-        burningTimer = 0f;
-        fryingRecipeSo = null;
-        burningRecipeSo = null;
-
-        SetState(State.Idle);
-        EmitProgress(0f);
-    }
-
-    private void SetState(State newState)
-    {
-        state = newState;
-        OnStateChanged?.Invoke(this, new OnStateChangedEventArgs
-        {
-            state = state
-        });
-    }
-
-    private void EmitProgress(float progressNormalized)
-    {
-        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
-        {
-            progressNormalized = Mathf.Clamp01(progressNormalized)
-        });
-    }
 }

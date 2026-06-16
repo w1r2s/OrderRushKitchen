@@ -1,31 +1,38 @@
-using Assets.Scripts.Selection;
-using System;
+using OrderRushKitchen.KitchenObjects;
+using OrderRushKitchen.PlayerControl;
+using OrderRushKitchen.Selection;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using Zenject;
 
-public class ContainerCounter : BaseCounter
+namespace OrderRushKitchen.Counters
 {
-    private IItemSelectionService _selectionService;
 
-    [SerializeField] List<KitchenObjectSo> ingredientOptions;
-
-    public event EventHandler OnPlayerGrabbedObject;
-
-    [Inject]
-    private void Construct(IItemSelectionService selectionService)
+    public class ContainerCounter : BaseCounter
     {
-        _selectionService = selectionService;
-    }
-    public override void Interact(Player player)
-    {
-        if (player.HasObject)
-            return;
-        if (_selectionService.IsOpen)
+        private IItemSelectionService _selectionService;
+
+        [SerializeField] List<KitchenObjectSo> ingredientOptions;
+
+        public event EventHandler OnPlayerGrabbedObject;
+
+        [Inject]
+        private void Construct(IItemSelectionService selectionService)
         {
-            _selectionService.CloseSelection();
-            return;
+            _selectionService = selectionService;
         }
-        _selectionService.OpenIngredientsSelection(player, ingredientOptions);
+        public override void Interact(Player player)
+        {
+            if (player.HasObject)
+                return;
+            if (_selectionService.IsOpen)
+            {
+                _selectionService.CloseSelection();
+                return;
+            }
+            _selectionService.OpenIngredientsSelection(player, ingredientOptions);
+        }
     }
+
 }

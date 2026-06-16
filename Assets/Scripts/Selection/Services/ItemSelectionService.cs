@@ -1,10 +1,12 @@
-﻿using Assets.Scripts.ScriptableObjects;
-using Assets.Scripts.Serving;
-using System;
+using OrderRushKitchen.KitchenObjects;
+using OrderRushKitchen.Level;
+using OrderRushKitchen.Menu;
+using OrderRushKitchen.Serving;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
-namespace Assets.Scripts.Selection
+namespace OrderRushKitchen.Selection
 {
     public class ItemSelectionService : IItemSelectionService
     {
@@ -85,7 +87,8 @@ namespace Assets.Scripts.Selection
                 return false;
 
 
-            CurrentTargetHolder.SpawnAndSet(kitchenObjectSo.prefab);
+            if (!CurrentTargetHolder.TrySpawnAndSet(kitchenObjectSo.prefab, out _))
+                return false;
 
             CloseSelection();
             return true;

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8aba6941c1dd0e4483b3c5fc9a1fd68, type: 3}
+  m_Name: Drink Y
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Menu.MenuItemDefinitionSo
+  key: Yellow
+  displayName: Yellow
+  category: 1
+  icon: {fileID: 21300000, guid: b9e390ca6100dc840bc199885010fa2a, type: 3}
+  servedVisualPrefab: {fileID: 7441510085692298709, guid: 35fb468dcf6cb9d4c83a6694b63b39ee, type: 3}
+  difficulty: 1
+  preparationTime: 20
+  baseSpawnWeight: 0.7
+  minLevel: 2
+  requiredIngredients: []

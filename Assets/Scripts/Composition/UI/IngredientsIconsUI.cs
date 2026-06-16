@@ -1,8 +1,9 @@
-using System;
+using OrderRushKitchen.KitchenObjects;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-namespace Assets.Scripts.Composition
+namespace OrderRushKitchen.Composition
 {
     public class IngredientsIconsUI : MonoBehaviour
     {
@@ -75,6 +76,11 @@ namespace Assets.Scripts.Composition
 
                 Destroy(child.gameObject);
             }
+        }
+
+        public void Hide()
+        {
+            gameObject.SetActive(false);
         }
     }
 }

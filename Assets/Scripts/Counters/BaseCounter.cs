@@ -1,23 +1,35 @@
-using Assets.Scripts.Managers.Sound;
+using OrderRushKitchen.Audio;
+using OrderRushKitchen.Interaction;
+using OrderRushKitchen.KitchenObjects;
+using OrderRushKitchen.PlayerControl;
 using Zenject;
 
-public abstract class BaseCounter : ObjectHolder
+namespace OrderRushKitchen.Counters
 {
-    private IAudioService _audioService;
 
-    [Inject]
-    protected void ConstructBase(IAudioService audioService)
+    public abstract class BaseCounter : ObjectHolder, IPlayerInteractable
     {
-        _audioService = audioService;
-    }
+        private IGameplayAudioEventService _audioService;
 
-    public abstract void Interact(Player player);
-    public virtual void InteractAlternate(Player player) { }
+        [Inject]
+        protected void ConstructBase(IGameplayAudioEventService audioService)
+        {
+            _audioService = audioService;
+        }
 
-    protected void PlaceObjectFromPlayer(Player player)
-    {
-        var kitchenObject = player.RemoveObject();
-        SetObject(kitchenObject);
-        _audioService.PlayDrop(transform.position);
+        public abstract void Interact(Player player);
+        public virtual bool TryInteractAlternate(Player player)
+        {
+            return false;
+        }
+
+        protected bool TryPlaceObjectFromPlayer(Player player)
+        {
+            if (!player.TryTransferObjectTo(this))
+                return false;
+
+            _audioService.Play(GameplayAudioEvent.DropGeneric, transform.position);
+            return true;
+        }
     }
 }

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
+using System;
 using UnityEngine;
-using Zenject;
 
-namespace Assets.Scripts.Order
+namespace OrderRushKitchen.Order
 {
     public class OrdersPanelUI : MonoBehaviour
     {
@@ -12,46 +12,15 @@ namespace Assets.Scripts.Order
             public OrderCardUI Card;
         }
 
-        private IOrderService _orderService;
-        private readonly Dictionary<string, CardBinding> _orders = new();
+        public event Action<ActiveOrder> OrderSelected;
 
         [SerializeField] private Transform ordersArea;
         [SerializeField] private OrderCardUI orderCardTemplate;
-        [SerializeField] private OrderDetailsUI orderDetailsPanel;
 
-        [Inject]
-        private void Construct(IOrderService orderService)
-        {
-            _orderService = orderService;
-        }
-
-        private void Start()
-        {
-            if (orderCardTemplate != null)
-            {
-                orderCardTemplate.gameObject.SetActive(false);
-            }
-
-            _orderService.OnOrderCreated += OrderService_OnOrderCreated;
-            _orderService.OnOrderUpdated += OrderService_Refresh;
-            _orderService.OnOrderFailed += OrderService_Refresh;
-            _orderService.OnOrderRemoved += OrderService_OnOrderRemoved;
-            _orderService.OnOrderCompleted += OrderService_Refresh;
-
-            Initialize();
-        }
+        private readonly Dictionary<string, CardBinding> _orders = new();
 
         private void OnDestroy()
         {
-            if (_orderService != null)
-            {
-                _orderService.OnOrderCreated -= OrderService_OnOrderCreated;
-                _orderService.OnOrderUpdated -= OrderService_Refresh;
-                _orderService.OnOrderFailed -= OrderService_Refresh;
-                _orderService.OnOrderRemoved -= OrderService_OnOrderRemoved;
-                _orderService.OnOrderCompleted -= OrderService_Refresh;
-            }
-
             foreach (var binding in _orders.Values)
             {
                 if (binding?.Card != null)
@@ -59,65 +28,13 @@ namespace Assets.Scripts.Order
             }
         }
 
-
-        private void Update()
+        public void Initialize()
         {
-            if (_orders.Count == 0)
-                return;
-
-            foreach (var pair in _orders)
-            {
-                var binding = pair.Value;
-                if (binding?.Order == null || binding.Card == null)
-                    continue;
-
-                binding.Card.Refresh(binding.Order);
-            }
+            if (orderCardTemplate != null)
+                orderCardTemplate.gameObject.SetActive(false);
         }
 
-        private void Initialize()
-        {
-            var activeOrders = _orderService.GetActiveOrders();
-            for (int i = 0; i < activeOrders.Count; i++)
-            {
-                UpsertCard(activeOrders[i]);
-            }
-        }
-
-        private void OrderService_OnOrderCreated(object sender, OrderServiceEventArgs e)
-        {
-            if (e?.Order == null)
-                return;
-
-            UpsertCard(e.Order);
-        }
-
-        private void OrderService_OnOrderRemoved(object sender, OrderServiceEventArgs e)
-        {
-            if (e?.Order == null)
-                return;
-
-            if (!_orders.TryGetValue(e.Order.Id, out var binding))
-                return;
-
-            if (binding.Card != null)
-            {
-                binding.Card.Clicked -= OrderCard_Clicked;
-                Destroy(binding.Card.gameObject);
-            }
-
-            _orders.Remove(e.Order.Id);
-        }
-
-        private void OrderService_Refresh(object sender, OrderServiceEventArgs e)
-        {
-            if (e?.Order == null)
-                return;
-
-            UpsertCard(e.Order);
-        }
-
-        private void UpsertCard(ActiveOrder order)
+        public void UpsertCard(ActiveOrder order)
         {
             if (order == null)
                 return;
@@ -129,11 +46,14 @@ namespace Assets.Scripts.Order
                 return;
             }
 
+            if (ordersArea == null || orderCardTemplate == null)
+                return;
+
             var newCard = Instantiate(orderCardTemplate, ordersArea, false);
             newCard.gameObject.SetActive(true);
             newCard.Bind(order);
-
             newCard.Clicked += OrderCard_Clicked;
+
             _orders[order.Id] = new CardBinding
             {
                 Order = order,
@@ -141,13 +61,57 @@ namespace Assets.Scripts.Order
             };
         }
 
-        private void OrderCard_Clicked(ActiveOrder order)
+        public void RemoveCard(string orderId)
         {
-            if (orderDetailsPanel == null)
+            if (string.IsNullOrEmpty(orderId))
                 return;
 
-            orderDetailsPanel.Show(order);
+            if (!_orders.TryGetValue(orderId, out var binding))
+                return;
+
+            if (binding.Card != null)
+            {
+                binding.Card.Clicked -= OrderCard_Clicked;
+                Destroy(binding.Card.gameObject);
+            }
+
+            _orders.Remove(orderId);
         }
 
+        public void RefreshCards()
+        {
+            if (_orders.Count == 0)
+                return;
+
+            foreach (var binding in _orders.Values)
+            {
+                if (binding?.Order == null || binding.Card == null)
+                    continue;
+
+                binding.Card.Refresh(binding.Order);
+            }
+        }
+
+        public void Clear()
+        {
+            foreach (var binding in _orders.Values)
+            {
+                if (binding?.Card == null)
+                    continue;
+
+                binding.Card.Clicked -= OrderCard_Clicked;
+                Destroy(binding.Card.gameObject);
+            }
+
+            _orders.Clear();
+        }
+
+        private void OrderCard_Clicked(ActiveOrder order)
+        {
+            if (order == null)
+                return;
+
+            OrderSelected?.Invoke(order);
+        }
     }
 }

@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Assets.Scripts.Level
+namespace OrderRushKitchen.Level
 {
     public sealed class LevelCompletionShownEventArgs : EventArgs
     {

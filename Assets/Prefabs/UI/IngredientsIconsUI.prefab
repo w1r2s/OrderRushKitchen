@@ -161,7 +161,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &3631656935458699268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,7 +197,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e351d15047962784ab0c0e5bff64e797, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LookAtCamera
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Presentation.LookAtCamera
   mode: 2
 --- !u!114 &5970501989872471161
 MonoBehaviour:
@@ -210,7 +210,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d0336e2a0db360a44b6a4bf7c08cf61c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Composition.IngredientsIconsUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Composition.IngredientsIconsUI
   compositionSourceBehaviour: {fileID: 0}
   iconTemplate: {fileID: 2622609105294340660}
 --- !u!1 &1907526847943378327
@@ -337,5 +337,5 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6555d3855a7e87c44808e8d7e02ecee3, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Composition.IngredientIconUI
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Composition.IngredientIconUI
   image: {fileID: 4977916671565141179}

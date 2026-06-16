@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Assets.Scripts.Order
+namespace OrderRushKitchen.Order
 {
     public class OrderServiceEventArgs : EventArgs
     {

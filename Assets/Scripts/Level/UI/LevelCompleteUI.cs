@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine;
 using Zenject;
 
-namespace Assets.Scripts.Level
+namespace OrderRushKitchen.Level
 {
     public class LevelCompleteUI : MonoBehaviour
     {

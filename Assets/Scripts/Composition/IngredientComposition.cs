@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+using OrderRushKitchen.KitchenObjects;
+using System.Collections.Generic;
 
-namespace Assets.Scripts.Composition
+namespace OrderRushKitchen.Composition
 {
     public static class IngredientComposition
     {

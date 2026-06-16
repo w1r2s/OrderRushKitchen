@@ -1,7 +1,8 @@
-using UnityEngine;
+using OrderRushKitchen.KitchenObjects;
 using UnityEngine.UI;
+using UnityEngine;
 
-namespace Assets.Scripts.Composition
+namespace OrderRushKitchen.Composition
 {
     public class IngredientIconUI : MonoBehaviour
     {

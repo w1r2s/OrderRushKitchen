@@ -1,26 +1,26 @@
-using Assets.Scripts.Managers.Sound;
+using OrderRushKitchen.Audio;
+using OrderRushKitchen.PlayerControl;
 using Zenject;
 
-public class TrashCounter : BaseCounter
+namespace OrderRushKitchen.Counters
 {
-    private IAudioService _audioService;
 
-    [Inject]
-    private void Construct(IAudioService audioService)
+    public class TrashCounter : BaseCounter
     {
-        _audioService = audioService;
-    }
-    public override void Interact(Player player)
-    {
-        if (!player.HasObject)
+        private IGameplayAudioEventService _audioService;
+
+        [Inject]
+        private void Construct(IGameplayAudioEventService audioService)
         {
-            return;
+            _audioService = audioService;
         }
+        public override void Interact(Player player)
+        {
+            if (!player.TryRemoveAndDestroyObject())
+                return;
 
-        var obj = player.RemoveObject();
-        Destroy(obj.gameObject);
-
-        _audioService.PlayTrash(transform.position);
-
+            _audioService.Play(GameplayAudioEvent.TrashItem, transform.position);
+        }
     }
+
 }

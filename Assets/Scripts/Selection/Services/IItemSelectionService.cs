@@ -1,8 +1,10 @@
-﻿using Assets.Scripts.ScriptableObjects;
-using System;
+using OrderRushKitchen.KitchenObjects;
+using OrderRushKitchen.Level;
+using OrderRushKitchen.Menu;
 using System.Collections.Generic;
+using System;
 
-namespace Assets.Scripts.Selection
+namespace OrderRushKitchen.Selection
 {
     public interface IItemSelectionService
     {

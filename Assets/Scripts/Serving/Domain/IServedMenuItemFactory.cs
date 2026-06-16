@@ -1,6 +1,8 @@
-﻿using Assets.Scripts.ScriptableObjects;
+using OrderRushKitchen.KitchenObjects;
+using OrderRushKitchen.Level;
+using OrderRushKitchen.Menu;
 
-namespace Assets.Scripts.Serving
+namespace OrderRushKitchen.Serving
 {
     public interface IServedMenuItemFactory
     {

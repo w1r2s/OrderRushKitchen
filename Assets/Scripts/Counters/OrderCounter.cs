@@ -1,9 +1,10 @@
-﻿using Assets.Scripts.Order;
+using OrderRushKitchen.Order;
+using OrderRushKitchen.PlayerControl;
 using System;
 using UnityEngine;
 using Zenject;
 
-namespace Assets.Scripts.Counters
+namespace OrderRushKitchen.Counters
 {
     public class OrderCounter : BaseCounter
     {

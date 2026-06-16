@@ -1,10 +1,13 @@
-﻿using Assets.Scripts.ScriptableObjects;
-using Assets.Scripts.Selection;
+using OrderRushKitchen.KitchenObjects;
+using OrderRushKitchen.Level;
+using OrderRushKitchen.Menu;
+using OrderRushKitchen.PlayerControl;
+using OrderRushKitchen.Selection;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-namespace Assets.Scripts.Counters
+namespace OrderRushKitchen.Counters
 {
     public class DrinkCounter : BaseCounter
     {

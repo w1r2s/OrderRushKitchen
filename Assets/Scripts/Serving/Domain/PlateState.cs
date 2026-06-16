@@ -1,4 +1,4 @@
-﻿namespace Assets.Scripts.Serving
+namespace OrderRushKitchen.Serving
 {
     public enum PlateState
     {

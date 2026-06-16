@@ -1,6 +1,6 @@
-﻿using Assets.Scripts.ScriptableObjects;
+using OrderRushKitchen.Menu;
 
-namespace Assets.Scripts.Order
+namespace OrderRushKitchen.Order
 {
     public class OrderItem
     {
@@ -29,9 +29,22 @@ namespace Assets.Scripts.Order
 
             return true;
         }
-        public void MarkCompleted()
+        public bool TryMarkCompleted()
         {
+            if (IsCompleted)
+                return false;
+
             IsCompleted = true;
+            return true;
+        }
+
+        public bool TryMarkIncomplete()
+        {
+            if (!IsCompleted)
+                return false;
+
+            IsCompleted = false;
+            return true;
         }
     }
 }

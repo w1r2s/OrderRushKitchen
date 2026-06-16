@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using TMPro;
 using UnityEngine;
 using Zenject;
 
-namespace Assets.Scripts.Level.UI
+namespace OrderRushKitchen.Level
 {
     public class LevelProgressUI : MonoBehaviour
     {

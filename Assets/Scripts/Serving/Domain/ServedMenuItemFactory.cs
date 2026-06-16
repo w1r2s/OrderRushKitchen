@@ -1,7 +1,9 @@
-﻿using Assets.Scripts.ScriptableObjects;
+using OrderRushKitchen.KitchenObjects;
+using OrderRushKitchen.Level;
+using OrderRushKitchen.Menu;
 using UnityEngine;
 
-namespace Assets.Scripts.Serving
+namespace OrderRushKitchen.Serving
 {
     public class ServedMenuItemFactory : IServedMenuItemFactory
     {
@@ -35,7 +37,12 @@ namespace Assets.Scripts.Serving
                 return false;
             }
 
-            holder.SetObject(servedItem);
+            if (!holder.TrySetObject(servedItem))
+            {
+                Object.Destroy(servedItem.gameObject);
+                return false;
+            }
+
             createdItem = servedItem;
             return true;
         }
