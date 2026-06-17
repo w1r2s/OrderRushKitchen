@@ -1,8 +1,7 @@
 using OrderRushKitchen.Audio;
 using OrderRushKitchen.Input;
-using OrderRushKitchen.KitchenObjects;
 using OrderRushKitchen.Level;
-using OrderRushKitchen.Menu;
+using OrderRushKitchen.Localization;
 using OrderRushKitchen.Navigation;
 using OrderRushKitchen.UserProgress;
 using UnityEngine;
@@ -47,6 +46,10 @@ namespace OrderRushKitchen.Installers
 
             // Level configuration
             Container.Bind<LevelDatabase>().AsSingle().WithArguments(levelDefinitionListSo.levels);
+
+            // Localization
+            Container.Bind<ILocalizationStorage>().To<PlayerPrefsLocalizationStorage>().AsSingle();
+            Container.BindInterfacesTo<LocalizationService>().AsSingle();
         }
     }
 }
