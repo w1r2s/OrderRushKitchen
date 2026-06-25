@@ -29,6 +29,7 @@ namespace OrderRushKitchen.Level
 
             OnCompletionShown?.Invoke(this, new LevelCompletionShownEventArgs(_progressionService.CurrentLevelIndex,
                 _progressionService.CompletedOrdersInLevel,
+                _progressionService.FailedOrdersInLevel,
                 _progressionService.OrdersToCompleteForCurrentLevel));
         }
 

@@ -1,8 +1,10 @@
 using OrderRushKitchen.Input;
 using System;
 using TMPro;
-using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.Localization.Components;
+using UnityEngine.Localization.SmartFormat.PersistentVariables;
+using UnityEngine.UI;
 
 namespace OrderRushKitchen.Settings
 {
@@ -13,6 +15,7 @@ namespace OrderRushKitchen.Settings
         public event EventHandler SfxVolumeRequested;
         public event EventHandler MusicVolumeRequested;
         public event EventHandler CloseRequested;
+        public event EventHandler LanguageChangeRequested;
         public event EventHandler<OptionsRebindRequestedEventArgs> RebindRequested;
 
         [Header("Panels")]
@@ -23,6 +26,7 @@ namespace OrderRushKitchen.Settings
         [SerializeField] private Button soundEffectsButton;
         [SerializeField] private Button musicButton;
         [SerializeField] private Button closeButton;
+        [SerializeField] private Button languageButton;
 
         [Header("Rebind buttons")]
         [SerializeField] private Button moveUpButton;
@@ -34,8 +38,8 @@ namespace OrderRushKitchen.Settings
         [SerializeField] private Button pauseButton;
 
         [Header("Common text")]
-        [SerializeField] private TextMeshProUGUI soundEffectText;
-        [SerializeField] private TextMeshProUGUI musicText;
+        [SerializeField] private LocalizeStringEvent soundEffectLocalizer;
+        [SerializeField] private LocalizeStringEvent musicLocalizer;
 
         [Header("Rebind text")]
         [SerializeField] private TextMeshProUGUI moveUpText;
@@ -51,11 +55,18 @@ namespace OrderRushKitchen.Settings
 
         public bool IsOpen => panelRoot.activeSelf;
 
+        private readonly IntVariable _sfxVolumeVariable = new();
+        private readonly IntVariable _musicVolumeVariable = new();
+
         private void Awake()
         {
+            soundEffectLocalizer.StringReference.Add("value", _sfxVolumeVariable);
+            musicLocalizer.StringReference.Add("value", _musicVolumeVariable);
+
             soundEffectsButton.onClick.AddListener(OnSoundEffectsClicked);
             musicButton.onClick.AddListener(OnMusicClicked);
             closeButton.onClick.AddListener(OnCloseClicked);
+            languageButton.onClick.AddListener(OnChangeLanguageClicked);
 
             moveUpButton.onClick.AddListener(OnMoveUpClicked);
             moveDownButton.onClick.AddListener(OnMoveDownClicked);
@@ -71,6 +82,7 @@ namespace OrderRushKitchen.Settings
             soundEffectsButton.onClick.RemoveListener(OnSoundEffectsClicked);
             musicButton.onClick.RemoveListener(OnMusicClicked);
             closeButton.onClick.RemoveListener(OnCloseClicked);
+            languageButton.onClick.RemoveListener(OnChangeLanguageClicked);
 
             moveUpButton.onClick.RemoveListener(OnMoveUpClicked);
             moveDownButton.onClick.RemoveListener(OnMoveDownClicked);
@@ -112,8 +124,11 @@ namespace OrderRushKitchen.Settings
 
         public void SetAudioVolumes(float sfxVolume, float musicVolume)
         {
-            soundEffectText.text = $"Sound Effects: {Mathf.Round(sfxVolume * 10f)}";
-            musicText.text = $"Music: {Mathf.Round(musicVolume * 10f)}";
+            _sfxVolumeVariable.Value = Mathf.RoundToInt(sfxVolume * 10f);
+            _musicVolumeVariable.Value = Mathf.RoundToInt(musicVolume * 10f);
+
+            soundEffectLocalizer.RefreshString();
+            musicLocalizer.RefreshString();
         }
 
         public void SetBindingText(InputKeyBinding binding, string text)
@@ -154,6 +169,11 @@ namespace OrderRushKitchen.Settings
         private void OnCloseClicked()
         {
             CloseRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnChangeLanguageClicked()
+        {
+            LanguageChangeRequested?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnMoveUpClicked() => RequestRebind(InputKeyBinding.Move_Up);

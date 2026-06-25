@@ -8,6 +8,8 @@ namespace OrderRushKitchen.Game
 
     public class GamePauseUI : MonoBehaviour
     {
+        [SerializeField] private Transform dimmer;
+        [SerializeField] private Transform panel;
         [SerializeField] private Button resumeButton;
         [SerializeField] private Button mainMenuButton;
         [SerializeField] private Button optionsButton;
@@ -71,7 +73,8 @@ namespace OrderRushKitchen.Game
 
         private void SetVisible(bool visible)
         {
-            gameObject.SetActive(visible);
+            dimmer.gameObject.SetActive(visible);
+            panel.gameObject.SetActive(visible);
         }
 
         private void RefreshVisibility()

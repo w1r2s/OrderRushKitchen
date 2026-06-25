@@ -13,6 +13,8 @@ namespace OrderRushKitchen.Level
         public int OrdersToCompleteForCurrentLevel => _currentLevelProvider.CurrentLevel.requiredCompletedOrders <= 0 ? 1 : _currentLevelProvider.CurrentLevel.requiredCompletedOrders;
         public bool IsLevelCompleted { get; private set; }
 
+        public int FailedOrdersInLevel { get; private set; }
+
         public LevelProgressionService(ICurrentLevelProvider levelProvider)
         {
             _currentLevelProvider = levelProvider;
@@ -40,10 +42,20 @@ namespace OrderRushKitchen.Level
                 return false;
 
             CompletedOrdersInLevel = 0;
+            FailedOrdersInLevel = 0;
             IsLevelCompleted = false;
             OnProgressChanged?.Invoke(this, EventArgs.Empty);
 
             return true;
+        }
+
+        public void RegisterOrderFailed()
+        {
+            if (IsLevelCompleted)
+                return;
+
+            FailedOrdersInLevel++;
+            OnProgressChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

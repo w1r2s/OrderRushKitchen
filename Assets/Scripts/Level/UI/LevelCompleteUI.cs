@@ -1,7 +1,9 @@
 using System;
 using TMPro;
-using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.Localization.Components;
+using UnityEngine.Localization.SmartFormat.PersistentVariables;
+using UnityEngine.UI;
 using Zenject;
 
 namespace OrderRushKitchen.Level
@@ -12,11 +14,13 @@ namespace OrderRushKitchen.Level
 
         [SerializeField] private GameObject panel;
         [SerializeField] private GameObject dimmer;
-        [SerializeField] private TextMeshProUGUI titleText;
-        [SerializeField] private TextMeshProUGUI statusText;
+        [SerializeField] private LocalizeStringEvent titleLocalizer;
+        [SerializeField] private TextMeshProUGUI ordersDeliveredValueText;
+        [SerializeField] private TextMeshProUGUI ordersFailedValueText;
         [SerializeField] private Button menuButton;
         [SerializeField] private Button nextButton;
 
+        private readonly IntVariable _levelVariable = new();
 
         [Inject]
         private void Construct(ILevelCompletionFlowService levelFlowService)
@@ -29,7 +33,7 @@ namespace OrderRushKitchen.Level
             if (_levelFlowService == null)
                 return;
 
-            if (panel == null || dimmer == null || nextButton == null || titleText == null || statusText == null)
+            if (panel == null || dimmer == null || nextButton == null || titleLocalizer == null || ordersDeliveredValueText == null || ordersFailedValueText == null)
                 return;
 
             _levelFlowService.OnCompletionShown += LevelFlowService_OnCompletionShown;
@@ -43,6 +47,11 @@ namespace OrderRushKitchen.Level
             Hide();
         }
 
+        private void Awake()
+        {
+            if (titleLocalizer != null)
+                titleLocalizer.StringReference.Add("level", _levelVariable);
+        }
         private void OnDestroy()
         {
             if (_levelFlowService != null)
@@ -60,8 +69,11 @@ namespace OrderRushKitchen.Level
 
         private void LevelFlowService_OnCompletionShown(object sender, LevelCompletionShownEventArgs e)
         {
-            titleText.text = $"Level {e.LevelIndex} completed";
-            statusText.text = $"Orders: {e.CompletedOrders} / {e.RequiredOrders}";
+            _levelVariable.Value = e.LevelIndex;
+            titleLocalizer.RefreshString();
+
+            ordersDeliveredValueText.text = e.CompletedOrders.ToString();
+            ordersFailedValueText.text = e.FailedOrders.ToString();
             Show();
         }
 
@@ -73,7 +85,7 @@ namespace OrderRushKitchen.Level
         private void Show()
         {
             dimmer.gameObject.SetActive(true);
-           panel.gameObject.SetActive(true);
+            panel.gameObject.SetActive(true);
         }
         private void Hide()
         {

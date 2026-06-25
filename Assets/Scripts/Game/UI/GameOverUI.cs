@@ -1,7 +1,8 @@
+using OrderRushKitchen.Level;
 using System;
 using TMPro;
-using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace OrderRushKitchen.Game
@@ -10,11 +11,14 @@ namespace OrderRushKitchen.Game
     public class GameOverUI : MonoBehaviour
     {
         private IGameService _gameService;
+        private ILevelProgressionService _levelProgressionService;
+
+        [Header("Panels")]
+        [SerializeField] private Transform dimmer;
+        [SerializeField] private Transform panel;
 
         [Header("Stats")]
-        [SerializeField] private TextMeshProUGUI ordersDeliveredText;
         [SerializeField] private TextMeshProUGUI ordersDeliveredValueText;
-        [SerializeField] private TextMeshProUGUI ordersFailedText;
         [SerializeField] private TextMeshProUGUI ordersFailedValueText;
 
         [Header("Actions")]
@@ -26,13 +30,17 @@ namespace OrderRushKitchen.Game
         public event EventHandler MainMenuRequested;
 
         [Inject]
-        private void Construct(IGameService gameService)
+        private void Construct(IGameService gameService, ILevelProgressionService levelProgressionService)
         {
             _gameService = gameService;
+            _levelProgressionService = levelProgressionService;
         }
 
         private void Start()
         {
+            if (_gameService == null || _levelProgressionService == null)
+                return;
+
             _gameService.OnGameStateChanged += GameService_OnGameStateChanged;
 
             if (retryButton != null)
@@ -86,35 +94,23 @@ namespace OrderRushKitchen.Game
 
         private void RefreshStats()
         {
-            if (ordersDeliveredText != null)
-            {
-                ordersDeliveredText.text = "ORDERS DELIVERED";
-            }
-
             if (ordersDeliveredValueText != null)
-            {
-                ordersDeliveredValueText.text = "--";
-            }
-
-            if (ordersFailedText != null)
-            {
-                ordersFailedText.text = "ORDERS FAILED";
-            }
+                ordersDeliveredValueText.text = _levelProgressionService.CompletedOrdersInLevel.ToString();
 
             if (ordersFailedValueText != null)
-            {
-                ordersFailedValueText.text = "--";
-            }
+                ordersFailedValueText.text = _levelProgressionService.FailedOrdersInLevel.ToString();
         }
 
         private void Show()
         {
-            gameObject.SetActive(true);
+            dimmer.gameObject.SetActive(true);
+            panel.gameObject.SetActive(true);
         }
 
         private void Hide()
         {
-            gameObject.SetActive(false);
+            dimmer.gameObject.SetActive(false);
+            panel.gameObject.SetActive(false);
         }
 
         private void Retry()

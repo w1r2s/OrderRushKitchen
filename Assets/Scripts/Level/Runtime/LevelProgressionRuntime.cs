@@ -24,14 +24,19 @@ namespace OrderRushKitchen.Level
         public void Initialize()
         {
             _orderService.OnOrderCompleted += OrderService_OnOrderCompleted;
+            _orderService.OnOrderFailed += OrderService_OnOrderFailed;
             _levelProgressionService.OnLevelCompleted += LevelProgressionService_OnLevelCompleted;
             _currentLevelProvider.OnCurrentLevelChanged += CurrentLevelProvider_OnCurrentLevelChanged;
         }
 
+
         public void Dispose()
         {
             if (_orderService != null)
+            {
                 _orderService.OnOrderCompleted -= OrderService_OnOrderCompleted;
+                _orderService.OnOrderFailed -= OrderService_OnOrderFailed;
+            }
 
             if (_levelProgressionService != null)
                 _levelProgressionService.OnLevelCompleted -= LevelProgressionService_OnLevelCompleted;
@@ -43,6 +48,11 @@ namespace OrderRushKitchen.Level
         private void OrderService_OnOrderCompleted(object sender, OrderServiceEventArgs e)
         {
             _levelProgressionService.RegisterOrderCompleted();
+        }
+
+        private void OrderService_OnOrderFailed(object sender, OrderServiceEventArgs e)
+        {
+            _levelProgressionService.RegisterOrderFailed();
         }
 
         private void LevelProgressionService_OnLevelCompleted(object sender, EventArgs e)

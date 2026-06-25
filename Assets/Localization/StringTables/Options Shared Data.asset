@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Options Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: Options
+  m_TableCollectionNameGuidString: d25a9de10d130534da41368e3ad832e9
+  m_Entries:
+  - m_Id: 308125097984
+    m_Key: options.audio.sfx
+    m_Metadata:
+      m_Items: []
+  - m_Id: 321744003072
+    m_Key: options.audio.music
+    m_Metadata:
+      m_Items: []
+  - m_Id: 333051846656
+    m_Key: options.language.current
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829137298743296
+    m_Key: options.rebind.prompt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829331444686848
+    m_Key: options.input.move_up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829391884607488
+    m_Key: options.input.move_down
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829418027704320
+    m_Key: options.input.move_left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829458519515136
+    m_Key: options.input.move_right
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829501678903296
+    m_Key: options.input.interact
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829538471337984
+    m_Key: options.input.interact_alt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829598978367488
+    m_Key: options.input.pause
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 1314977825937686746
+  references:
+    version: 2
+    RefIds:
+    - rid: 1314977825937686746
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1781719700276
