@@ -6,6 +6,8 @@ namespace OrderRushKitchen.Level
     {
         void RegisterOrderCompleted();
         bool TryAdvanceToNextLevel();
+        void RegisterOrderFailed();
+        int FailedOrdersInLevel { get; }
         int CurrentLevelIndex { get; }
         int CompletedOrdersInLevel { get; }
         int OrdersToCompleteForCurrentLevel { get; }

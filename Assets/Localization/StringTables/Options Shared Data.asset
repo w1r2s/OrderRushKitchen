@@ -27,6 +27,38 @@ MonoBehaviour:
     m_Key: options.language.current
     m_Metadata:
       m_Items: []
+  - m_Id: 1829137298743296
+    m_Key: options.rebind.prompt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829331444686848
+    m_Key: options.input.move_up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829391884607488
+    m_Key: options.input.move_down
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829418027704320
+    m_Key: options.input.move_left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829458519515136
+    m_Key: options.input.move_right
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829501678903296
+    m_Key: options.input.interact
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829538471337984
+    m_Key: options.input.interact_alt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829598978367488
+    m_Key: options.input.pause
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

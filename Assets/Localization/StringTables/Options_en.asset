@@ -16,20 +16,62 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: d25a9de10d130534da41368e3ad832e9, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 1314977938912837708
   m_TableData:
   - m_Id: 308125097984
     m_Localized: 'Sound Effects: {value}'
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 1314977938912837708
   - m_Id: 321744003072
     m_Localized: 'Music: {value}'
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 1314977938912837708
   - m_Id: 333051846656
-    m_Localized: 'Language: {language}'
+    m_Localized: 'Language: English'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829137298743296
+    m_Localized: PRESS A KEY TO REBIND
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829331444686848
+    m_Localized: Move Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829391884607488
+    m_Localized: Move Down
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829418027704320
+    m_Localized: Move Left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829458519515136
+    m_Localized: Move Right
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829501678903296
+    m_Localized: Interact
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829538471337984
+    m_Localized: Interact Alt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829598978367488
+    m_Localized: Pause
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 1314977938912837708
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 321744003072
+        - id: 308125097984

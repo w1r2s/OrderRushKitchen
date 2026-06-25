@@ -1,5 +1,6 @@
 using OrderRushKitchen.Audio;
 using OrderRushKitchen.Input;
+using OrderRushKitchen.Localization;
 using System;
 using Zenject;
 
@@ -10,14 +11,16 @@ namespace OrderRushKitchen.Settings
         private readonly OptionsUI _optionsUI;
         private readonly IAudioSettingsService _audioSettings;
         private readonly IInputRebindingService _inputRebindingService;
+        private readonly ILocalizationService _localizationService;
 
         private bool _isRebinding;
 
-        public OptionsUIController(OptionsUI optionsUI, IAudioSettingsService audioSettings, IInputRebindingService inputRebindingService)
+        public OptionsUIController(OptionsUI optionsUI, IAudioSettingsService audioSettings, IInputRebindingService inputRebindingService, ILocalizationService localizationService)
         {
             _optionsUI = optionsUI;
             _audioSettings = audioSettings;
             _inputRebindingService = inputRebindingService;
+            _localizationService = localizationService;
         }
 
         public void Initialize()
@@ -27,6 +30,7 @@ namespace OrderRushKitchen.Settings
             _optionsUI.MusicVolumeRequested += OptionsUI_MusicVolumeRequested;
             _optionsUI.CloseRequested += OptionsUI_CloseRequested;
             _optionsUI.RebindRequested += OptionsUI_RebindRequested;
+            _optionsUI.LanguageChangeRequested += OptionsUI_LanguageChangeRequested;
 
             _audioSettings.OnSettingsChanged += AudioSettings_OnSettingsChanged;
 
@@ -41,6 +45,7 @@ namespace OrderRushKitchen.Settings
             _optionsUI.MusicVolumeRequested -= OptionsUI_MusicVolumeRequested;
             _optionsUI.CloseRequested -= OptionsUI_CloseRequested;
             _optionsUI.RebindRequested -= OptionsUI_RebindRequested;
+            _optionsUI.LanguageChangeRequested -= OptionsUI_LanguageChangeRequested;
 
             _audioSettings.OnSettingsChanged -= AudioSettings_OnSettingsChanged;
         }
@@ -83,6 +88,11 @@ namespace OrderRushKitchen.Settings
                 if (completed)
                     RefreshBindingView(e.Binding);
             });
+        }
+
+        private void OptionsUI_LanguageChangeRequested(object sender, EventArgs e)
+        {
+            _localizationService.TrySelectNextLocale();
         }
 
         private void AudioSettings_OnSettingsChanged(object sender, EventArgs e)

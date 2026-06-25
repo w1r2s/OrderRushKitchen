@@ -10,9 +10,7 @@ namespace OrderRushKitchen.Level
         private ILevelProgressionService _progressionService;
         private ICurrentLevelProvider _currentLevelProvider;
 
-        [SerializeField] private TextMeshProUGUI levelText;
         [SerializeField] private TextMeshProUGUI levelNumberText;
-        [SerializeField] private TextMeshProUGUI statusText;
         [SerializeField] private TextMeshProUGUI ordersProgressText;
 
         [Inject]
@@ -29,7 +27,7 @@ namespace OrderRushKitchen.Level
             if (_progressionService == null || _currentLevelProvider == null)
                 return;
 
-            if (levelText == null || levelNumberText == null || statusText == null || ordersProgressText == null)
+            if (levelNumberText == null || ordersProgressText == null)
                 return;
 
             _progressionService.OnProgressChanged += ProgressionService_OnProgressChanged;
@@ -59,9 +57,7 @@ namespace OrderRushKitchen.Level
 
         private void Refresh()
         {
-            levelText.text = "LEVEL";
             levelNumberText.text = _progressionService.CurrentLevelIndex.ToString();
-            statusText.text = "ORDERS";
             ordersProgressText.text = $"{_progressionService.CompletedOrdersInLevel} / {_progressionService.OrdersToCompleteForCurrentLevel}";
         }
     }

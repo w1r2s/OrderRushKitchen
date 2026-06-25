@@ -12,6 +12,5 @@ namespace OrderRushKitchen.Localization
 
         bool TrySetLocale(string localeCode);
         bool TrySelectNextLocale();
-        string GetLocaleDisplayName(string localeCode);
     }
 }

@@ -15,20 +15,72 @@ MonoBehaviour:
   m_TableCollectionName: UI
   m_TableCollectionNameGuidString: a072e3495cd09444ea85eb6c8b5afecf
   m_Entries:
-  - m_Id: 308934598656
+  - m_Id: 1829870010097664
+    m_Key: ui.common.options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829891468156928
+    m_Key: ui.common.close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829923198066688
+    m_Key: ui.common.back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829952851795968
+    m_Key: ui.common.main_menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1829994673201152
     m_Key: ui.main_menu.play
     m_Metadata:
       m_Items: []
-  - m_Id: 323954401280
-    m_Key: ui.main_menu.options
-    m_Metadata:
-      m_Items: []
-  - m_Id: 337980153856
+  - m_Id: 1830027653013504
     m_Key: ui.main_menu.quit
     m_Metadata:
       m_Items: []
-  - m_Id: 353863983104
-    m_Key: ui.common.close
+  - m_Id: 1830062058889216
+    m_Key: ui.pause.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1830090953449472
+    m_Key: ui.pause.resume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1830192086507520
+    m_Key: ui.orders.details.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1830236906840064
+    m_Key: ui.game_over.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1830281592954880
+    m_Key: ui.common.orders_delivered
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1830326501367808
+    m_Key: ui.common.orders_failed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1830383862669312
+    m_Key: ui.game_over.continue_ad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1830482340732928
+    m_Key: ui.game_over.retry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1830508181839872
+    m_Key: ui.level_complete.next
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1839580050350080
+    m_Key: ui.hud.level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1839765216288768
+    m_Key: ui.hud.orders
     m_Metadata:
       m_Items: []
   m_Metadata:

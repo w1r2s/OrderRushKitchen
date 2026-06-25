@@ -19,10 +19,6 @@ MonoBehaviour:
     m_Key: format.level_complete.title
     m_Metadata:
       m_Items: []
-  - m_Id: 448269377536
-    m_Key: format.level_complete.orders
-    m_Metadata:
-      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

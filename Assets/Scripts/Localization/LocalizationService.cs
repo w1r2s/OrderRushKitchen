@@ -48,15 +48,6 @@ namespace OrderRushKitchen.Localization
             OnLocaleChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        public string GetLocaleDisplayName(string localeCode)
-        {
-            if (string.IsNullOrWhiteSpace(localeCode))
-                return string.Empty;
-
-            Locale locale = LocalizationSettings.AvailableLocales.GetLocale(localeCode.Trim());
-            return locale != null ? locale.LocaleName : localeCode;
-        }
-
         public bool TrySelectNextLocale()
         {
             IReadOnlyList<string> localeCodes = AvailableLocaleCodes;
