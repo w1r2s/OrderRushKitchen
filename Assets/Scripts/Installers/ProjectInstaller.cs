@@ -3,6 +3,7 @@ using OrderRushKitchen.Input;
 using OrderRushKitchen.Level;
 using OrderRushKitchen.Localization;
 using OrderRushKitchen.Navigation;
+using OrderRushKitchen.Sdk;
 using OrderRushKitchen.UserProgress;
 using UnityEngine;
 using Zenject;
@@ -16,6 +17,9 @@ namespace OrderRushKitchen.Installers
 
         [Header("Music")]
         [SerializeField] private MusicTrackLibrarySo musicTrackLibrary;
+
+        [Header("SDK")]
+        [SerializeField] private SdkSettings sdkSettings;
 
         public override void InstallBindings()
         {
@@ -50,6 +54,10 @@ namespace OrderRushKitchen.Installers
             // Localization
             Container.Bind<ILocalizationStorage>().To<PlayerPrefsLocalizationStorage>().AsSingle();
             Container.BindInterfacesTo<LocalizationService>().AsSingle();
+
+            // SDK
+            Container.BindInstance(sdkSettings);
+            Container.BindInterfacesTo<SdkInitializationService>().AsSingle();
         }
     }
 }

@@ -153,6 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Installers.ProjectInstaller
   levelDefinitionListSo: {fileID: 11400000, guid: 143e3858423b9014d9fd855041d8e810, type: 2}
   musicTrackLibrary: {fileID: 11400000, guid: 051295c6841d73e4da9e5158322472f0, type: 2}
+  sdkSettings: {fileID: 11400000, guid: 481918e8cc90e5d42b9fef1e790504a9, type: 2}
 --- !u!1 &1435644111983928258
 GameObject:
   m_ObjectHideFlags: 0
