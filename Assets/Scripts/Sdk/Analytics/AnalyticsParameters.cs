@@ -16,5 +16,10 @@
         public const string SubmissionFailures = "submission_failures";
         public const string ContinueUsed = "continue_used";
         public const string ResultReason = "result_reason";
+
+        public const string ActiveOrdersCount = "active_orders_count";
+        public const string OrderItemsCount = "order_items_count";
+        public const string CompletedItemsCount = "completed_items_count";
+        public const string FailureReason = "failure_reason";
     }
 }

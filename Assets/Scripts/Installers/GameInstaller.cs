@@ -73,6 +73,7 @@ namespace OrderRushKitchen.Installers
             Container.Bind<IMenuItemResolver>().To<MenuItemResolver>().AsSingle();
             Container.BindInterfacesTo<OrderRuntime>().AsSingle();
             Container.BindInterfacesTo<OrderAudioController>().AsSingle();
+            Container.BindInterfacesTo<OrderAnalyticsController>().AsSingle();
         }
 
         private void BindSelection()

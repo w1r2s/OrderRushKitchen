@@ -11,5 +11,8 @@
         public const string LevelFailed = "level_failed";
         public const string LevelRetried = "level_retried";
         public const string LevelReturnedToMenu = "level_returned_to_menu";
+
+        public const string OrderCompleted = "order_completed";
+        public const string OrderFailed = "order_failed";
     }
 }
