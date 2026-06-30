@@ -19,5 +19,7 @@
         public const string OrderAcceptFailed = "order_accept_failed";
         public const string OrderSubmissionSucceeded = "order_submission_succeeded";
         public const string OrderSubmissionFailed = "order_submission_failed";
+
+        public const string SceneLoadFailed = "scene_load_failed";
     }
 }

@@ -23,5 +23,9 @@
         public const string FailureReason = "failure_reason";
 
         public const string SubmissionResult = "submission_result";
+
+        public const string SourceScene = "source_scene";
+        public const string TargetScene = "target_scene";
+        public const string Reason = "reason";
     }
 }

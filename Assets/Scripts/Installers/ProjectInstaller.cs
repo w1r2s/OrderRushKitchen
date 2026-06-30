@@ -25,6 +25,7 @@ namespace OrderRushKitchen.Installers
         {
             // Navigation
             Container.Bind<ISceneLoader>().To<UnitySceneLoader>().AsSingle();
+            Container.Decorate<ISceneLoader>().With<SceneLoadAnalyticsDecorator>();
             Container.Bind<ILoadingScreen>().FromComponentInHierarchy().AsSingle();
             Container.Bind<INavigationService>().To<NavigationService>().AsSingle();
 
