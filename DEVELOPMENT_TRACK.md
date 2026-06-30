@@ -300,11 +300,32 @@
 - M6
 - M7
 
-### M12. Финальная полировка, баланс и presentation
+### M12. SDK integration
+Статус: `DONE`
+
+Цель:
+Интегрировать Firebase через инфраструктурный слой без протекания SDK-кода в gameplay/UI.
+
+Задачи:
+- [x] Добавить Firebase foundation: initialization, status/error handling и базовые infrastructure bindings.
+- [x] Ввести analytics boundary (`IAnalyticsService`) и покрыть ключевые gameplay/UI events без прямых SDK-вызовов из игровых классов.
+- [x] Ввести crash reporting boundary для Crashlytics/non-fatal unexpected states.
+- [x] Провести Android smoke test: cold start, смена сцен, Firebase init, отсутствие SDK errors в логах.
+
+Критерий готовности:
+- Firebase инициализируется через app/infrastructure слой.
+- Gameplay/UI зависят только от внутренних interfaces, а не от SDK API.
+- Analytics/Crashlytics работают как техническая telemetry/crash diagnostics без пользовательской/profile статистики.
+
+Зависимости:
+- M10
+- M11
+
+### M13. Финальная полировка, баланс и presentation
 Статус: `TODO`
 
 Цель:
-Довести presentation-слой, баланс и визуальные детали до целевого состояния после стабилизации gameplay, mobile и content integration.
+Довести presentation-слой, баланс и визуальные детали до целевого состояния после стабилизации gameplay, mobile, localization и SDK integration.
 
 Задачи:
 - [ ] Обновить визуал тарелки и предметов под финальный набор блюд и напитков.
@@ -325,6 +346,7 @@
 - M8
 - M9
 - M11
+- M12
 
 ## Рекомендуемый порядок выполнения
 1. M1. Переработка доменной модели
@@ -338,14 +360,16 @@
 9. M9. Content integration pass
 10. M10. Unity architecture normalization
 11. M11. Локализация
-12. M12. Финальная полировка, баланс и presentation
+12. M12. SDK integration
+13. M13. Финальная полировка, баланс и presentation
 
 ## Ближайший фокус
 Статус: `TODO`
 
 Фокус:
-- Подготовить итоговый commit M11.
-- После commit перейти к планированию M12: финальная полировка, баланс и presentation.
+- Подготовить итоговый commit M12 и переход к M13.
+- M13: финальная полировка, баланс, release hygiene и presentation.
+- Follow-up для M13/release hygiene: Android App Info warning в Localization, размер Android build (~400-412 MB), проверка package size через AAB/release build.
 
 ## Журнал решений
 - 2026-04-11: Текущая архитектура уже частично сервисная, но игровая доменная модель всё ещё построена вокруг старого single-dish цикла.
@@ -444,5 +468,17 @@
 - 2026-06-16: Закрыт M11.1: проведена инвентаризация пользовательских строк в активных UI flow, зафиксированы `en`/`ru`, исходный язык `en`, формат ключей, рекомендуемые таблицы строк и список технических строк вне локализации.
 - 2026-06-18: Закрыт M11.2: подключён Unity Localization, созданы локали `en`/`ru` и базовые string table collections; app-level `LocalizationService` поддерживает выбор, циклическое переключение, событие, сохранение и восстановление локали через `PlayerPrefs`.
 - 2026-06-25: M11 закрыт после ручной regression/layout-проверки: активные UI flow переведены на `en`/`ru`, динамические строки вынесены в format tables, язык переключается из `OptionsUI` через localization service и сохраняется между запусками.
+- 2026-06-25: Финальная полировка перенесена с M12 на M13. M12 выделен под Firebase/AppLovin SDK integration, чтобы SDK initialization, ads flow, pause/resume и mobile behavior стабилизировать до финального presentation/balance pass.
+- 2026-06-25: M12 начат на ветке `feature/M12-sdk-integration` после merge/commit M11 в `develop`. Утверждён детальный `M12_SDK_INTEGRATION_PLAN.md`; текущий подэтап — M12.1 Final SDK Plan And Project Setup.
+- 2026-06-26: Закрыт M12.1: финализирован Android package id `com.w1r2s.orderrushkitchen`, создан Firebase project/app, добавлен `google-services.json`, импортированы Firebase Analytics/Crashlytics SDK 13.13.0 и External Dependency Manager 1.2.187, Android Resolver Force Resolve прошёл с info-сообщениями. AppLovin credentials вынесены в external dependency до появления public website/store URL; следующий подэтап — M12.2 SDK Settings And Bootstrap Foundation.
+- 2026-06-28: Scope M12 уточнён: активный этап остаётся Firebase-only (`Core`, `Analytics`, `Crashlytics`). AppLovin/rewarded ads, fake ads, `IAdsService` и `Continue (AD)` не готовим, пока нет Google Play/store URL, public website/privacy page и AppLovin account/app/ad unit; если монетизация не будет разблокирована, игра может выйти без рекламы.
+- 2026-06-28: Закрыт Firebase foundation: добавлены `SdkSettings`, `ISdkInitializationService`, `SdkInitializationService`, ProjectContext binding и centralized Firebase dependency check. Ручная проверка подтвердила `[SDK] Firebase initialized.`, warning `Database URL not set` признан не блокирующим для Analytics/Crashlytics scope, disabled fallback через `sdkEnabled = false` работает и не ломает игру.
+- 2026-06-30: Закрыты M12.3 analytics/crash boundaries: добавлены `IAnalyticsService`, `ICrashReportingService`, debug/editor adapters, Firebase adapters, SDK health events `app_start`/`firebase_init_succeeded`/`firebase_init_failed`, Crashlytics custom key `sdk_state`; Editor manual run подтвердил debug telemetry без отправки в production Firebase/Crashlytics.
+- 2026-06-30: Закрыта M12.4a level run analytics: добавлены `level_started`, `level_completed`, `level_failed`, `level_retried`, `level_returned_to_menu` через `ILevelRunAnalyticsService`/`LevelRunAnalyticsController`; Editor manual run подтвердил debug events для level lifecycle и Game Over actions.
+- 2026-06-30: Закрыта M12.4b order flow analytics: добавлены `order_completed`, `order_failed`, `order_accept_succeeded`, `order_accept_failed`, `order_submission_succeeded`, `order_submission_failed`; accept/submission events подключены через Zenject decorators `Decorate<IOrderFlowService>()` и `Decorate<IOrderSubmissionService>()`; Editor manual run подтвердил success/failure debug events, включая `order_submission_failed`.
+- 2026-06-30: Закрыта M12.4c navigation failure analytics: добавлен decorator `SceneLoadAnalyticsDecorator` для `ISceneLoader`, событие `scene_load_failed` и Crashlytics non-fatal context; Editor manual run с временно повреждённым scene name подтвердил debug analytics/crash reporting, временное повреждение возвращено перед коммитом.
+- 2026-06-30: Android production-like smoke подтвердил запуск на устройстве, прохождение нескольких уровней, Firebase user/events в консоли Firebase и отсутствие gameplay-blocking SDK errors. Найдены follow-up items: зафиксировать landscape-only orientation; отдельно разобраться с non-blocking localization warning при запуске в `en`.
+- 2026-06-30: Android landscape-only orientation проверена на устройстве: приложение запускается и работает в горизонтальной ориентации. Non-development build остаётся крупным (~400-412 MB), size optimization переносится в отдельный follow-up после закрытия M12.
+- 2026-06-30: M12 закрыт: Firebase SDK integration стабилизирована через infrastructure boundaries, Analytics/Crashlytics проверены в Editor и на Android, прямые Firebase API не протекают в gameplay/UI, AppLovin/rewarded ads оставлены в conditional backlog. Addressables Android build state добавлен в `.gitignore` как generated artifact.
 
 
