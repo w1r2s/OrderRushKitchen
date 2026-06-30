@@ -21,5 +21,7 @@
         public const string OrderItemsCount = "order_items_count";
         public const string CompletedItemsCount = "completed_items_count";
         public const string FailureReason = "failure_reason";
+
+        public const string SubmissionResult = "submission_result";
     }
 }

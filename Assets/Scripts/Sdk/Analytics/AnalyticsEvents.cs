@@ -14,5 +14,10 @@
 
         public const string OrderCompleted = "order_completed";
         public const string OrderFailed = "order_failed";
+
+        public const string OrderAcceptSucceeded = "order_accept_succeeded";
+        public const string OrderAcceptFailed = "order_accept_failed";
+        public const string OrderSubmissionSucceeded = "order_submission_succeeded";
+        public const string OrderSubmissionFailed = "order_submission_failed";
     }
 }
