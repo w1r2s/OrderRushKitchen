@@ -58,6 +58,25 @@ namespace OrderRushKitchen.Installers
             // SDK
             Container.BindInstance(sdkSettings);
             Container.BindInterfacesTo<SdkInitializationService>().AsSingle();
+
+#if UNITY_EDITOR
+            Container.Bind<IAnalyticsService>().To<DebugAnalyticsService>().AsSingle();
+            Container.Bind<ICrashReportingService>().To<DebugCrashReportingService>().AsSingle();
+#else
+            if (sdkSettings != null && sdkSettings.environment == SdkEnvironment.Production)
+            {
+                Container.BindInterfacesTo<FirebaseAnalyticsService>().AsSingle();
+                Container.BindInterfacesTo<FirebaseCrashReportingService>().AsSingle();
+            }
+            else
+            {
+                Container.Bind<IAnalyticsService>().To<DebugAnalyticsService>().AsSingle();
+                Container.Bind<ICrashReportingService>().To<DebugCrashReportingService>().AsSingle();
+            }
+#endif
+
+            Container.BindInterfacesTo<SdkAnalyticsReporter>().AsSingle();
+            Container.BindInterfacesTo<SdkCrashReporter>().AsSingle();
         }
     }
 }
