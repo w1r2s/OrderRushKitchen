@@ -93,6 +93,7 @@ namespace OrderRushKitchen.Installers
             Container.Bind<LevelSceneResetService>().AsSingle();
             Container.BindInterfacesTo<LevelRunPauseController>().AsSingle();
             Container.BindInterfacesTo<LevelCompletionNavigationController>().AsSingle();
+            Container.BindInterfacesTo<LevelRunAnalyticsController>().AsSingle();
         }
 
         private void BindUI()
