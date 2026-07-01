@@ -62,3 +62,4 @@ Assets/MyAssets/**/*.png filter=lfs diff=lfs merge=lfs -text
 Assets/MyAssets/**/*.jpg filter=lfs diff=lfs merge=lfs -text
 Assets/MyAssets/**/*.jpeg filter=lfs diff=lfs merge=lfs -text
 Assets/MyAssets/**/*.fbx filter=lfs diff=lfs merge=lfs -text
+Packages/Firebase/*.tgz filter=lfs diff=lfs merge=lfs -text

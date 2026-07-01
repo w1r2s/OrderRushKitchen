@@ -1,6 +1,10 @@
 {
   "dependencies": {
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.5.10",
+    "com.google.external-dependency-manager": "file:Firebase/com.google.external-dependency-manager-1.2.186.tgz",
+    "com.google.firebase.analytics": "file:Firebase/com.google.firebase.analytics-13.13.0.tgz",
+    "com.google.firebase.app": "file:Firebase/com.google.firebase.app-13.13.0.tgz",
+    "com.google.firebase.crashlytics": "file:Firebase/com.google.firebase.crashlytics-13.13.0.tgz",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.ai.navigation": "2.0.11",
     "com.unity.cinemachine": "2.10.7",
