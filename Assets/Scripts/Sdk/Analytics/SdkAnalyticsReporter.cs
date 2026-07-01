@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using Zenject;
 
 namespace OrderRushKitchen.Sdk
@@ -40,7 +39,7 @@ namespace OrderRushKitchen.Sdk
         {
             if (state == SdkInitializationState.Ready)
             {
-                _analyticsService.LogEvent(AnalyticsEvents.FirebaseInitSucceeded, CreateBaseParameters());
+                _analyticsService.LogEvent(AnalyticsEvents.SdkInitSucceeded, CreateBaseParameters());
                 return;
             }
 
@@ -50,19 +49,18 @@ namespace OrderRushKitchen.Sdk
                 parameters[AnalyticsParameters.ErrorStage] = "dependency_check";
                 parameters[AnalyticsParameters.ErrorCode] = _sdkInitializationService.ErrorMessage;
 
-                _analyticsService.LogEvent(AnalyticsEvents.FirebaseInitFailed, parameters);
+                _analyticsService.LogEvent(AnalyticsEvents.SdkInitFailed, parameters);
             }
         }
 
         private Dictionary<string, object> CreateBaseParameters()
         {
-            string environment = _settings != null ? _settings.environment.ToString().ToLowerInvariant() : "unknown";
-
             return new Dictionary<string, object>
             {
-                [AnalyticsParameters.Environment] = environment,
-                [AnalyticsParameters.Platform] = Application.platform.ToString().ToLowerInvariant(),
-                [AnalyticsParameters.AppVersion] = Application.version
+                [AnalyticsParameters.Environment] = SdkRuntimeContext.GetEnvironmentName(_settings),
+                [AnalyticsParameters.Platform] = SdkRuntimeContext.GetPlatformName(),
+                [AnalyticsParameters.AppVersion] = SdkRuntimeContext.GetAppVersion(),
+                [AnalyticsParameters.BuildType] = SdkRuntimeContext.GetBuildType()
             };
         }
     }

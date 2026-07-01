@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using Zenject;
 
 namespace OrderRushKitchen.Sdk
@@ -45,9 +44,10 @@ namespace OrderRushKitchen.Sdk
 
             var context = new Dictionary<string, object>
             {
-                [CrashReportKeys.Environment] = _settings != null ? _settings.environment.ToString().ToLowerInvariant() : "unknown",
-                [CrashReportKeys.Platform] = Application.platform.ToString().ToLowerInvariant(),
-                [CrashReportKeys.AppVersion] = Application.version,
+                [CrashReportKeys.Environment] = SdkRuntimeContext.GetEnvironmentName(_settings),
+                [CrashReportKeys.Platform] = SdkRuntimeContext.GetPlatformName(),
+                [CrashReportKeys.AppVersion] = SdkRuntimeContext.GetAppVersion(),
+                [CrashReportKeys.BuildType] = SdkRuntimeContext.GetBuildType(),
                 [CrashReportKeys.SdkState] = state.ToString(),
                 [CrashReportKeys.ErrorStage] = "firebase_initialization"
             };

@@ -57,27 +57,101 @@ namespace OrderRushKitchen.Installers
             Container.BindInterfacesTo<LocalizationService>().AsSingle();
 
             // SDK
+            BindSdkServices();
+        }
+
+        private void BindSdkServices()
+        {
             Container.BindInstance(sdkSettings);
             Container.BindInterfacesTo<SdkInitializationService>().AsSingle();
 
-#if UNITY_EDITOR
-            Container.Bind<IAnalyticsService>().To<DebugAnalyticsService>().AsSingle();
-            Container.Bind<ICrashReportingService>().To<DebugCrashReportingService>().AsSingle();
-#else
-            if (sdkSettings != null && sdkSettings.environment == SdkEnvironment.Production)
-            {
-                Container.BindInterfacesTo<FirebaseAnalyticsService>().AsSingle();
-                Container.BindInterfacesTo<FirebaseCrashReportingService>().AsSingle();
-            }
-            else
-            {
-                Container.Bind<IAnalyticsService>().To<DebugAnalyticsService>().AsSingle();
-                Container.Bind<ICrashReportingService>().To<DebugCrashReportingService>().AsSingle();
-            }
-#endif
+            BindAnalyticsService();
+            BindCrashReportingService();
 
             Container.BindInterfacesTo<SdkAnalyticsReporter>().AsSingle();
             Container.BindInterfacesTo<SdkCrashReporter>().AsSingle();
+        }
+
+        private void BindAnalyticsService()
+        {
+            if (!IsAnalyticsEnabled())
+            {
+                Container.Bind<IAnalyticsService>().To<NoOpAnalyticsService>().AsSingle();
+                return;
+            }
+
+            bool useFirebase = IsFirebaseEnabled();
+
+            if (useFirebase)
+            {
+                Container.BindInterfacesTo<FirebaseAnalyticsService>().AsSingle();
+            }
+            else if (IsVerboseSdkLoggingEnabled())
+            {
+                Container.Bind<IAnalyticsService>().To<DebugAnalyticsService>().AsSingle();
+            }
+            else
+            {
+                Container.Bind<IAnalyticsService>().To<NoOpAnalyticsService>().AsSingle();
+            }
+
+            Container.Decorate<IAnalyticsService>().With<AnalyticsContextDecorator>();
+
+            if (useFirebase && IsVerboseSdkLoggingEnabled())
+            {
+                Container.Decorate<IAnalyticsService>().With<DebugAnalyticsDecorator>();
+            }
+        }
+
+        private void BindCrashReportingService()
+        {
+            if (!IsCrashReportingEnabled())
+            {
+                Container.Bind<ICrashReportingService>().To<NoOpCrashReportingService>().AsSingle();
+                return;
+            }
+
+            bool useFirebase = IsFirebaseEnabled();
+
+            if (useFirebase)
+            {
+                Container.BindInterfacesTo<FirebaseCrashReportingService>().AsSingle();
+            }
+            else if (IsVerboseSdkLoggingEnabled())
+            {
+                Container.Bind<ICrashReportingService>().To<DebugCrashReportingService>().AsSingle();
+            }
+            else
+            {
+                Container.Bind<ICrashReportingService>().To<NoOpCrashReportingService>().AsSingle();
+            }
+
+            Container.Decorate<ICrashReportingService>().With<CrashReportingContextDecorator>();
+
+            if (useFirebase && IsVerboseSdkLoggingEnabled())
+            {
+                Container.Decorate<ICrashReportingService>().With<DebugCrashReportingDecorator>();
+            }
+        }
+
+        private bool IsAnalyticsEnabled()
+        {
+            return sdkSettings != null && sdkSettings.sdkEnabled && sdkSettings.analyticsEnabled;
+        }
+
+        private bool IsCrashReportingEnabled()
+        {
+            return sdkSettings != null && sdkSettings.sdkEnabled && sdkSettings.crashlyticsEnabled;
+        }
+
+        private bool IsFirebaseEnabled()
+        {
+            return sdkSettings != null && sdkSettings.sdkEnabled && sdkSettings.firebaseEnabled;
+        }
+
+        private bool IsVerboseSdkLoggingEnabled()
+        {
+            return sdkSettings != null && sdkSettings.sdkEnabled && sdkSettings.verboseSdkLogging;
         }
     }
 }
