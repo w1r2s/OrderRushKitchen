@@ -66,13 +66,20 @@ namespace OrderRushKitchen.Installers
         private void BindOrders()
         {
             Container.Bind<IOrderService>().To<OrderService>().AsSingle();
+
             Container.Bind<IOrderFlowService>().To<OrderFlowService>().AsSingle();
+            Container.Decorate<IOrderFlowService>().With<OrderFlowAnalyticsService>();
+
             Container.Bind<IOrderGenerationService>().To<OrderGenerationService>().AsSingle();
+
             Container.Bind<IOrderSubmissionService>().To<OrderSubmissionService>().AsSingle();
+            Container.Decorate<IOrderSubmissionService>().With<OrderSubmissionAnalyticsService>();
+
             Container.Bind<IOrderStagingReservationService>().To<OrderStagingReservationService>().AsSingle();
             Container.Bind<IMenuItemResolver>().To<MenuItemResolver>().AsSingle();
             Container.BindInterfacesTo<OrderRuntime>().AsSingle();
             Container.BindInterfacesTo<OrderAudioController>().AsSingle();
+            Container.BindInterfacesTo<OrderAnalyticsController>().AsSingle();
         }
 
         private void BindSelection()
@@ -93,6 +100,7 @@ namespace OrderRushKitchen.Installers
             Container.Bind<LevelSceneResetService>().AsSingle();
             Container.BindInterfacesTo<LevelRunPauseController>().AsSingle();
             Container.BindInterfacesTo<LevelCompletionNavigationController>().AsSingle();
+            Container.BindInterfacesTo<LevelRunAnalyticsController>().AsSingle();
         }
 
         private void BindUI()
