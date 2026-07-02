@@ -15,22 +15,25 @@ namespace OrderRushKitchen.Audio
             _musicPlayer = musicPlayer;
         }
 
-  
-
         public void Initialize()
         {
-            _musicPlayer.SetVolume(_audioSettingsService.MusicVolume);
+            ApplyVolume();
             _audioSettingsService.OnSettingsChanged += AudioSettingsService_OnSettingsChanged;
         }
 
         private void AudioSettingsService_OnSettingsChanged(object sender, EventArgs e)
         {
-            _musicPlayer.SetVolume(_audioSettingsService.MusicVolume);
+            ApplyVolume();
         }
 
         public void Dispose()
         {
             _audioSettingsService.OnSettingsChanged -= AudioSettingsService_OnSettingsChanged;
+        }
+
+        private void ApplyVolume()
+        {
+            _musicPlayer.SetVolume(AudioVolumeMapper.ToMusicPlaybackVolume(_audioSettingsService.MusicVolume));
         }
     }
 }

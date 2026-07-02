@@ -43,7 +43,7 @@ namespace OrderRushKitchen.Audio
             if (clips == null || clips.Count == 0)
                 return false;
 
-            volume = Mathf.Clamp01(_audioSettingsService.SfxVolume * volumeMultiplier);
+            volume = Mathf.Clamp01(AudioVolumeMapper.ToSfxPlaybackVolume(_audioSettingsService.SfxVolume) * volumeMultiplier);
             clip = clips[Random.Range(0, clips.Count)];
 
             if (clip == null)
