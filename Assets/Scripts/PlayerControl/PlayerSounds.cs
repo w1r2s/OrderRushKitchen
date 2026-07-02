@@ -15,7 +15,7 @@ namespace OrderRushKitchen.PlayerControl
 
         private float footstepTimer;
         [SerializeField] private float footstepTimerMax = 0.3f;
-        [SerializeField] private float footstepVolumeMultiplier = 0.5f;
+        [SerializeField] private float footstepVolumeMultiplier = 0.625f;
 
         [Inject]
         private void Construct(IGameplayAudioEventService audioService, IGameClock gameClock)

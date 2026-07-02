@@ -50,7 +50,7 @@ namespace OrderRushKitchen.Audio
                 return;
             }
             audioSource.clip = clip;
-            audioSource.volume = Mathf.Clamp01(_audioSettings.SfxVolume * volumeMultiplier);
+            ApplyVolume();
 
             _audioSettings.OnSettingsChanged += AudioSettings_OnSettingsChanged;
             _pauseService.OnPauseChanged += PauseService_OnPauseChanged;
@@ -95,7 +95,7 @@ namespace OrderRushKitchen.Audio
         }
         private void ApplyVolume()
         {
-            audioSource.volume = Mathf.Clamp01(_audioSettings.SfxVolume * volumeMultiplier);
+            audioSource.volume = Mathf.Clamp01(AudioVolumeMapper.ToSfxPlaybackVolume(_audioSettings.SfxVolume) * volumeMultiplier);
         }
 
         private void AudioSettings_OnSettingsChanged(object sender, EventArgs e)

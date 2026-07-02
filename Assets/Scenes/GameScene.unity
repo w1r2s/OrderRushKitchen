@@ -1248,7 +1248,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.PlayerControl.PlayerSounds
   footstepTimerMax: 0.3
-  footstepVolumeMultiplier: 0.5
+  footstepVolumeMultiplier: 0.625
 --- !u!1001 &201904271
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1937,7 +1937,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8b77032960f29447b7f90ab99d12fea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Installers.GameInstaller
-  audioClipsSo: {fileID: 11400000, guid: 68dbf24e3206f67458f3bd68ef5b68ba, type: 2}
+  audioClipsSo: {fileID: 11400000, guid: b0900dbe6b7a8474185a8e86faa418db, type: 2}
   menuDefinitionListSo: {fileID: 11400000, guid: ebf0d52a252c69e4faa03fdf22d963f2, type: 2}
   processRecipes: {fileID: 11400000, guid: 1e37c03ed69e47e40b6d44b44f47d211, type: 2}
   servedMenuItemContainerSo: {fileID: 11400000, guid: a0a3c525c6c594344bd522768eb121da, type: 2}

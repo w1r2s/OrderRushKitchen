@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Audio.MusicTrackLibrarySo
   tracks:
   - TrackId: 0
-    Clip: {fileID: 8300000, guid: d089a9bc637fe3b4eb8d2b053afda7f3, type: 3}
+    Clip: {fileID: 8300000, guid: 3d3591abd171847478131ad035618590, type: 3}
   - TrackId: 1
-    Clip: {fileID: 8300000, guid: d089a9bc637fe3b4eb8d2b053afda7f3, type: 3}
+    Clip: {fileID: 8300000, guid: 3d3591abd171847478131ad035618590, type: 3}

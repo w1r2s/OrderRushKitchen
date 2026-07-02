@@ -15,36 +15,35 @@ MonoBehaviour:
   eventClips:
   - EventType: 0
     Clips:
-    - {fileID: 8300000, guid: 668de61a04ca5914aa745f8712c62720, type: 3}
-    - {fileID: 8300000, guid: 6728bf8b07482414e99ba965fdd022d8, type: 3}
-    - {fileID: 8300000, guid: 32d29abc86751884081d2005f9ff2676, type: 3}
+    - {fileID: 8300000, guid: 91755b49b6c2cf546af62211f83752fe, type: 3}
+    - {fileID: 8300000, guid: dc5a2653a3ae42545b09e49fd8637dfb, type: 3}
   - EventType: 1
     Clips:
-    - {fileID: 8300000, guid: 9c88983fa5906dc41944ec5a43b6b5c7, type: 3}
-    - {fileID: 8300000, guid: 331b82ab2c0e2b74d805124d11372c85, type: 3}
-    - {fileID: 8300000, guid: 961379cce253f794abff0d24df806b68, type: 3}
+    - {fileID: 8300000, guid: dde561c0e100f81469f65a74c310b179, type: 3}
+    - {fileID: 8300000, guid: 13e4798a87e322c45b24f0c0f43538b3, type: 3}
   - EventType: 2
     Clips:
-    - {fileID: 8300000, guid: 4b70ec0f0afb9ac4ea7dfea07aca4eb4, type: 3}
-    - {fileID: 8300000, guid: 6024ba1d53d005f48a96b3a9f6bacedd, type: 3}
+    - {fileID: 8300000, guid: e7460329233e99b4198d02e289743b87, type: 3}
+    - {fileID: 8300000, guid: 155025118c839c1428d5eafc3f2e2603, type: 3}
+    - {fileID: 8300000, guid: 42a3f7e831a0209419e7d72ff65151cc, type: 3}
   - EventType: 3
     Clips:
     - {fileID: 8300000, guid: 4b58040305c345b46824a79c9d38db60, type: 3}
   - EventType: 4
     Clips:
-    - {fileID: 8300000, guid: 078e15982fce2e147bf06c8a7682f28b, type: 3}
-    - {fileID: 8300000, guid: b2d2893ac04fbdb44a226f4b6ea0d271, type: 3}
-    - {fileID: 8300000, guid: cc97c340134faa948bcaf20fea6429c6, type: 3}
-    - {fileID: 8300000, guid: 64a04bb4fa4ed5d4eac6b0a31f91843a, type: 3}
+    - {fileID: 8300000, guid: 69b9ba7819a247048ac1df24d6889405, type: 3}
+    - {fileID: 8300000, guid: 638ec00ab35e51645a51fca5cb5d9d6b, type: 3}
+    - {fileID: 8300000, guid: 5f60f013edbd17f40a7a2791a6baf5ff, type: 3}
+    - {fileID: 8300000, guid: 2af09cd152b83904587eec3218696c3e, type: 3}
   - EventType: 5
     Clips:
-    - {fileID: 8300000, guid: e519f586b4ac0904e877dfab85ed729e, type: 3}
-    - {fileID: 8300000, guid: 9c6157275e190604d8136e7e497e941e, type: 3}
-    - {fileID: 8300000, guid: 99c666127ba3b974c99980d14efcf03c, type: 3}
+    - {fileID: 8300000, guid: 8fae0516f64adb24c961352a04b2ce30, type: 3}
+    - {fileID: 8300000, guid: e6f391d8ab957a342b7354aa9660f37a, type: 3}
+    - {fileID: 8300000, guid: fe4af68405438194190f11734fab8b72, type: 3}
   - EventType: 6
     Clips:
-    - {fileID: 8300000, guid: b90d8099bdbf09a40ab1163556d5b5f4, type: 3}
-    - {fileID: 8300000, guid: b59c98e0066c41f42b8100f5cb180f5b, type: 3}
+    - {fileID: 8300000, guid: 3edbecb175ced074f97d9e3a03a73d0a, type: 3}
+    - {fileID: 8300000, guid: bfbc8c35c5bc41e438464e08df057174, type: 3}
   - EventType: 7
     Clips:
     - {fileID: 8300000, guid: d114f4ce2846afd41b2cdd195959d999, type: 3}
@@ -60,14 +59,13 @@ MonoBehaviour:
     - {fileID: 8300000, guid: f4058a2b70b67484199c4df12ddce0da, type: 3}
   - EventType: 8
     Clips:
-    - {fileID: 8300000, guid: 9c88983fa5906dc41944ec5a43b6b5c7, type: 3}
-    - {fileID: 8300000, guid: 331b82ab2c0e2b74d805124d11372c85, type: 3}
-    - {fileID: 8300000, guid: 961379cce253f794abff0d24df806b68, type: 3}
+    - {fileID: 8300000, guid: dde561c0e100f81469f65a74c310b179, type: 3}
+    - {fileID: 8300000, guid: 13e4798a87e322c45b24f0c0f43538b3, type: 3}
   - EventType: 9
     Clips:
     - {fileID: 8300000, guid: 4b58040305c345b46824a79c9d38db60, type: 3}
   loopClips:
   - LoopType: 0
-    Clip: {fileID: 8300000, guid: 511c1cbfb8b48b64083aec78fe17115f, type: 3}
+    Clip: {fileID: 8300000, guid: a288dafc187101b41934d7d40a639c76, type: 3}
   - LoopType: 1
     Clip: {fileID: 8300000, guid: 683cb6f122c0e374c9797e4b576ab070, type: 3}
