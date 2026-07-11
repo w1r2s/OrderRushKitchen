@@ -1,5 +1,40 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!95 &5966565479060961828
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5316674374663306794}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 280040480f5f1504f97d6a96b76fb993, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage:
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3117627974205137776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5316674374663306794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30d5a949b0495eb40a8db1cf6df5bb81, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.StoveBurnFlashingUI
+  stoveCounter: {fileID: 3132049952250342489}
 --- !u!1 &5066157622490547390
 GameObject:
   m_ObjectHideFlags: 0
@@ -708,8 +743,19 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7428030372285841906, guid: 3e6f90a8668fa0e49b9f4fdc34765950, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5966565479060961828}
+    - targetCorrespondingSourceObject: {fileID: 7428030372285841906, guid: 3e6f90a8668fa0e49b9f4fdc34765950, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3117627974205137776}
   m_SourcePrefab: {fileID: 100100000, guid: 3e6f90a8668fa0e49b9f4fdc34765950, type: 3}
+--- !u!1 &5316674374663306794 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7428030372285841906, guid: 3e6f90a8668fa0e49b9f4fdc34765950, type: 3}
+  m_PrefabInstance: {fileID: 8282794030330365367}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &7480495467513713982 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1522898061360255113, guid: 3e6f90a8668fa0e49b9f4fdc34765950, type: 3}
