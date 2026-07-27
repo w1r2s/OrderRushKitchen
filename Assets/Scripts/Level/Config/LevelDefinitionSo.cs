@@ -13,19 +13,19 @@ namespace OrderRushKitchen.Level
         [Min(1)]
         public int requiredCompletedOrders = 5;
 
-        [Min(0f)]
+        [Range(0f,1f)]
         public float multiItemOrderChance = 0f;
 
-        [Range(1, 3)]
+        [Range(1, 2)]
         public int minItemsPerOrder = 1;
 
-        [Range(1, 3)]
+        [Range(1, 2)]
         public int maxItemsPerOrder = 1;
 
-        [Range(0.1f, 3f)]
-        public float satisfactionDrainMultiplier = 1f;
-
-        [Range(1, 4)]
+        [Range(1, 3)]
         public int maxActiveOrders = 2;
+
+        [Min(1f)]
+        public float levelDurationSeconds = 300f;
     }
 }
