@@ -38,10 +38,14 @@ namespace OrderRushKitchen.Game
         }
         public void ToggleUserPause()
         {
-            if (HasPause(GamePauseReason.UserPause))
-                RemovePause(GamePauseReason.UserPause);
-            else
+            if (!IsPaused)
+            {
                 AddPause(GamePauseReason.UserPause);
+                return;
+            }
+
+            if (HasPause(GamePauseReason.UserPause) && _reasonCounts.Count == 1)
+                RemovePause(GamePauseReason.UserPause);
         }
         public bool HasPause(GamePauseReason reason)
         {
