@@ -1,4 +1,5 @@
 using OrderRushKitchen.Audio;
+using OrderRushKitchen.Game;
 using OrderRushKitchen.Input;
 using OrderRushKitchen.Level;
 using OrderRushKitchen.Localization;
@@ -23,6 +24,8 @@ namespace OrderRushKitchen.Installers
 
         public override void InstallBindings()
         {
+            Container.BindInterfacesTo<ApplicationFrameRateInitializer>().AsSingle();
+
             // Navigation
             Container.Bind<ISceneLoader>().To<UnitySceneLoader>().AsSingle();
             Container.Decorate<ISceneLoader>().With<SceneLoadAnalyticsDecorator>();
