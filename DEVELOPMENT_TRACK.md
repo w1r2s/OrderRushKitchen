@@ -1,6 +1,6 @@
 ﻿# Трек разработки Order Rush Kitchen
 
-Последнее обновление: 2026-06-25
+Последнее обновление: 2026-07-28
 
 ## Назначение
 Единый рабочий документ для отслеживания дальнейшей разработки.
@@ -322,21 +322,25 @@
 - M11
 
 ### M13. Финальная полировка, баланс и presentation
-Статус: `TODO`
+Статус: `DONE`
 
 Цель:
 Довести presentation-слой, баланс и визуальные детали до целевого состояния после стабилизации gameplay, mobile, localization и SDK integration.
 
 Задачи:
-- [ ] Обновить визуал тарелки и предметов под финальный набор блюд и напитков.
-- [ ] Заменить временные UI-фоны, цвета-плейсхолдеры и декоративные элементы.
-- [ ] Поправить анимации игрока и взаимодействий.
-- [ ] Доработать UI после стабилизации геймплейного цикла и mobile layout.
-- [ ] Выполнить финальный баланс времени, заказов и сложности уровней.
-- [ ] Проверить, что финальный контент согласован с локализацией.
+- [x] M13.0. Начать M13 на отдельной ветке и зафиксировать release/polish breakdown.
+- [x] M13.1. Закрыть Android Localization App Info warning или явно зафиксировать его как accepted warning.
+- [x] M13.2. Провести Android package size audit: AAB/release build size, основные вкладчики, безопасные автоматизируемые оптимизации.
+- [x] M13.3. Проверить gameplay readability/content presentation: тарелки, предметы, напитки, staged delivery, scale/readability risks.
+- [x] M13.4. Доработать UI final polish: HUD, orders, selection UI, modal windows, main menu/level selection, mobile/desktop layout, EN/RU.
+- [x] M13.5. Провести interaction feel/animation pass без изменения gameplay architecture.
+- [x] M13.6. Выполнить финальный баланс времени, заказов и сложности уровней.
+- [x] M13.7. Провести release candidate smoke: Editor + Android, localization, Firebase init, known warnings.
 
 Критерий готовности:
 - Визуальная часть соответствует новым системам и целевому контенту проекта.
+- Android/release hygiene issues из M12 либо закрыты, либо явно приняты как non-blocking.
+- Финальные UI/content/balance изменения проверены в Editor и на Android, включая EN/RU и mobile layout.
 
 Зависимости:
 - M3
@@ -364,12 +368,12 @@
 13. M13. Финальная полировка, баланс и presentation
 
 ## Ближайший фокус
-Статус: `TODO`
+Статус: `DONE`
 
 Фокус:
-- Подготовить итоговый commit M12 и переход к M13.
-- M13: финальная полировка, баланс, release hygiene и presentation.
-- Follow-up для M13/release hygiene: Android App Info warning в Localization, размер Android build (~400-412 MB), проверка package size через AAB/release build.
+- M13 завершён на ветке `feature/M13-final-polish`.
+- Финальный balance, Android performance pass, release hygiene и device smoke пройдены.
+- Следующий шаг: подготовить итоговый commit M13 и переход к следующему этапу.
 
 ## Журнал решений
 - 2026-04-11: Текущая архитектура уже частично сервисная, но игровая доменная модель всё ещё построена вокруг старого single-dish цикла.
@@ -480,5 +484,21 @@
 - 2026-06-30: Android production-like smoke подтвердил запуск на устройстве, прохождение нескольких уровней, Firebase user/events в консоли Firebase и отсутствие gameplay-blocking SDK errors. Найдены follow-up items: зафиксировать landscape-only orientation; отдельно разобраться с non-blocking localization warning при запуске в `en`.
 - 2026-06-30: Android landscape-only orientation проверена на устройстве: приложение запускается и работает в горизонтальной ориентации. Non-development build остаётся крупным (~400-412 MB), size optimization переносится в отдельный follow-up после закрытия M12.
 - 2026-06-30: M12 закрыт: Firebase SDK integration стабилизирована через infrastructure boundaries, Analytics/Crashlytics проверены в Editor и на Android, прямые Firebase API не протекают в gameplay/UI, AppLovin/rewarded ads оставлены в conditional backlog. Addressables Android build state добавлен в `.gitignore` как generated artifact.
+- 2026-07-09: M13 начат на ветке `feature/M13-final-polish`. Принят автономный scope: закрывать release-hygiene и статически проверяемые polish-задачи, а визуальные, UX и balance решения оставлять как manual gates, если их нельзя достоверно проверить без пользователя/Unity-прогона.
+- 2026-07-11: M13.5 частично выполнен: player visual заменён на Humanoid Mixamo chef, настроены зацикленные in-place `Neutral Idle`/`Walking`, Animator Controller с переходами по `IsWalking` и scene adapter `PlayerAnimator`; ручная проверка подтвердила переключение Idle/Walking без root motion.
+- 2026-07-12: M13.5 продолжен: `CuttingCounter` получил отдельную анимацию ножа по событию `OnCut`; повторный ввод перезапускает удар без очереди, скорость и читаемость движения подтверждены ручной настройкой в Unity.
+- 2026-07-14: Завершён первый M13 cleanup-пакет: удалены неиспользуемые legacy prefab стойки из `Assets/Prefabs/Counters/1.5` и неподключённый `ContainerCounterVisual`; отсутствие активных GUID-ссылок и корректный импорт/compile подтверждены.
+- 2026-07-14: M13.5 продолжен: `StoveCounterVisual` переработан для управления `FryingParticles`; эффект работает непрерывно в `Frying`/`Fried`, прекращает emission в `Idle`/`Burned`, корректно очищается при старте и освобождает event-подписку. Настройки частиц и полный frying flow проверены вручную.
+- 2026-07-14: Второй cleanup inventory не выявил новых доказанно неиспользуемых runtime-компонентов или приватных членов: `ObjectHolder` и `BaseCounter` без прямых asset GUID-ссылок являются используемыми базовыми типами. Cleanup-pass завершён без нового удаления; фокус переведён на M13.1.
+- 2026-07-14: По результатам ручной оценки M13.3 gameplay readability/content presentation и M13.5 interaction feel/animation pass закрыты. В M13.4 остался один узкий slice: визуальная обратная связь pressed/held для мобильных action-кнопок.
+- 2026-07-14: Для M13.1 добавлены `Android App Info` metadata и отдельная `AppInfo` String Table Collection с `android_display_name = Order Rush Kitchen` для `en`/`ru`; осталось подтвердить Unity import и исчезновение warning в Android build.
+- 2026-07-14: Устранена старая EN-only ошибка `Failed to initialize localization, could not preload string tables`: все English tables и Addressables entries оказались валидны, а причиной было переключение с system `ru` на saved `en` во время initial preload. `LocalizationService` теперь применяет сохранённую локаль после `LocalizationSettings.InitializationOperation`; Play Mode с `en` подтверждён без ошибки, `ru` regression не затронут.
+- 2026-07-14: M13.1 закрыт успешным Android release build: `Android App Info has not been configured` больше не появляется. Build log отдельно выявил follow-up для release hygiene: сжатая launcher icon, неполные debug symbols при включённой Diagnostics Data, пустой Addressables `ProfileValueReference` в build layout и неиспользуемый `ContainerCounter.OnPlayerGrabbedObject`; размер внутреннего release APK составил около 273.5 MB, а textures заняли 258.4 MB (93.8% user assets), что зафиксировано как вход для M13.2.
+- 2026-07-14: M13.4 закрыт коммитом `301c888`: мобильные Interact/AltInteract получили визуальное pressed/held-состояние с восстановлением на release/disable; центрированный pivot обеспечивает равномерное уменьшение, ручная проверка обеих кнопок пройдена.
+- 2026-07-14: Для M13.2 зафиксирован Android baseline 273.49 MB: textures 258.4 MB (93.8%), meshes 10.0 MB (3.6%). Подготовлены Android 1024 overrides для 107 model textures, отключён лишний импорт animation/blend shapes/cameras/lights у 46 статических FBX и удалён неиспользуемый Zenject OptionalExtras без внешних GUID-ссылок. Blender audit: 48 FBX / 300,153 triangles; package-size blocker — textures, а не geometry. Осталась повторная release build и visual/device smoke.
+- 2026-07-14: M13.2 закрыт повторным Android release build: APK уменьшился с 273.49 до 130.18 MB (-143.31 MB / -52.4%), scene data — с 224.7 до 81.6 MB compressed. OptionalExtras и SampleGame warnings отсутствуют. Первая IL2CPP-попытка была отменена transient `TaskCanceledException`, повторная сборка успешно завершила Tundra/Gradle; оставшиеся icon/debug symbols/Addressables warnings перенесены в M13.7.
+- 2026-07-28: M13.6 закрыт после balance pass уровней 1–5: обновлены время, количество и параллельность заказов, шанс мультизаказов и защита от повторения одного блюда; ручная проверка подтвердила более устойчивую и разнообразную генерацию.
+- 2026-07-28: Android profiling на Redmi Note 13 Pro 4G подтвердил целевой 60 FPS после отключения mobile HDR/теней и предзагрузки cooking loops. HUD скрывается за блокирующими модалками, а ESC больше не открывает Pause поверх них.
+- 2026-07-28: M13.7 и M13 закрыты успешным release-like Android build и device smoke. Удалены unused-event и compressed-icon warnings, создан полный native symbols package; пустой Addressables remote profile id принят как non-blocking при отключённом remote catalog. Gameplay, UI, EN/RU, modal/pause и audio regressions не обнаружены.
 
 

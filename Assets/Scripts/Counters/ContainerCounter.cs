@@ -2,7 +2,6 @@ using OrderRushKitchen.KitchenObjects;
 using OrderRushKitchen.PlayerControl;
 using OrderRushKitchen.Selection;
 using System.Collections.Generic;
-using System;
 using UnityEngine;
 using Zenject;
 
@@ -14,8 +13,6 @@ namespace OrderRushKitchen.Counters
         private IItemSelectionService _selectionService;
 
         [SerializeField] List<KitchenObjectSo> ingredientOptions;
-
-        public event EventHandler OnPlayerGrabbedObject;
 
         [Inject]
         private void Construct(IItemSelectionService selectionService)

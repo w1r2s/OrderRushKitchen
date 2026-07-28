@@ -28,7 +28,7 @@ Order Rush Kitchen is a fast-paced kitchen management game where the player take
 
 ## Project Status
 
-The core gameplay loop is playable on Android. Current work is focused on adding animations, final polish, balancing, presentation.
+The core gameplay loop is playable on Android.
 
 ## Tech Stack
 
