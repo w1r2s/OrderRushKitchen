@@ -375,7 +375,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b14f4bd1fa568f84dbfd4d9963a2c298, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b14f4bd1fa568f84dbfd4d9963a2c298, type: 3}
       propertyPath: m_LocalRotation.y
@@ -383,7 +383,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b14f4bd1fa568f84dbfd4d9963a2c298, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b14f4bd1fa568f84dbfd4d9963a2c298, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -796,10 +796,57 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3151149439679843492, guid: a6299278a1054ef43b5b083d56a504e0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4599616513688718842}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2834358545972160010, guid: a6299278a1054ef43b5b083d56a504e0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6303847612350806881}
+    - targetCorrespondingSourceObject: {fileID: 2834358545972160010, guid: a6299278a1054ef43b5b083d56a504e0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8802945114558072264}
   m_SourcePrefab: {fileID: 100100000, guid: a6299278a1054ef43b5b083d56a504e0, type: 3}
 --- !u!4 &7261976796489416699 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3151149439679843492, guid: a6299278a1054ef43b5b083d56a504e0, type: 3}
   m_PrefabInstance: {fileID: 5727620862201869151}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7505586086038197589 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2834358545972160010, guid: a6299278a1054ef43b5b083d56a504e0, type: 3}
+  m_PrefabInstance: {fileID: 5727620862201869151}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &6303847612350806881
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7505586086038197589}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5c576e5c80253d74d970f5b92443ebca, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8802945114558072264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7505586086038197589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58eecfede22d77d44909a08ef35e8731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Counters.CuttingCounterVisual
+  animator: {fileID: 6303847612350806881}
+  cuttingCounter: {fileID: 3643216997267269632}

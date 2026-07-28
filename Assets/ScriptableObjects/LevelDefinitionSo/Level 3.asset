@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Level 3
   m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Level.LevelDefinitionSo
   levelNumber: 3
-  requiredCompletedOrders: 5
+  requiredCompletedOrders: 6
   multiItemOrderChance: 0.25
   minItemsPerOrder: 1
   maxItemsPerOrder: 2
-  satisfactionDrainMultiplier: 1
   maxActiveOrders: 3
+  levelDurationSeconds: 270

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using Zenject;
 
 namespace OrderRushKitchen.Localization
@@ -11,6 +12,10 @@ namespace OrderRushKitchen.Localization
         private const string DefaultLocaleCode = "en";
 
         private readonly ILocalizationStorage _storage;
+        private AsyncOperationHandle<LocalizationSettings> _initializationOperation;
+        private string _savedLocaleCode;
+        private bool _isWaitingForInitialization;
+        private bool _isSubscribedToLocaleChanges;
 
         public event EventHandler OnLocaleChanged;
         public string CurrentLocaleCode => LocalizationSettings.SelectedLocale?.Identifier.Code ?? DefaultLocaleCode;
@@ -25,19 +30,39 @@ namespace OrderRushKitchen.Localization
 
         public void Initialize()
         {
-            LocalizationSettings.SelectedLocaleChanged += HandleSelectedLocaleChanged;
+            _savedLocaleCode = _storage.LoadLocaleCode();
+            _initializationOperation = LocalizationSettings.InitializationOperation;
 
-            string savedLocaleCode = _storage.LoadLocaleCode();
-
-            if (TrySetLocale(savedLocaleCode))
+            if (_initializationOperation.IsDone)
+            {
+                HandleLocalizationInitialized(_initializationOperation);
                 return;
+            }
 
-            TrySetLocale(DefaultLocaleCode);
+            _isWaitingForInitialization = true;
+            _initializationOperation.Completed += HandleLocalizationInitialized;
         }
 
         public void Dispose()
         {
-            LocalizationSettings.SelectedLocaleChanged -= HandleSelectedLocaleChanged;
+            if (_isWaitingForInitialization && _initializationOperation.IsValid())
+                _initializationOperation.Completed -= HandleLocalizationInitialized;
+
+            if (_isSubscribedToLocaleChanges)
+                LocalizationSettings.SelectedLocaleChanged -= HandleSelectedLocaleChanged;
+        }
+
+        private void HandleLocalizationInitialized(AsyncOperationHandle<LocalizationSettings> operation)
+        {
+            _isWaitingForInitialization = false;
+
+            LocalizationSettings.SelectedLocaleChanged += HandleSelectedLocaleChanged;
+            _isSubscribedToLocaleChanges = true;
+
+            if (TrySetLocale(_savedLocaleCode))
+                return;
+
+            TrySetLocale(DefaultLocaleCode);
         }
 
         private void HandleSelectedLocaleChanged(Locale locale)
