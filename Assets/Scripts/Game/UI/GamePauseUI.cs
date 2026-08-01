@@ -13,12 +13,14 @@ namespace OrderRushKitchen.Game
         [SerializeField] private Button resumeButton;
         [SerializeField] private Button mainMenuButton;
         [SerializeField] private Button optionsButton;
+        [SerializeField] private Button howToPlayButton;
 
         private IGamePauseService _pauseService;
 
         public event EventHandler ResumeRequested;
         public event EventHandler MainMenuRequested;
         public event EventHandler OptionsRequested;
+        public event EventHandler HowToPlayRequested;
 
         private bool _isSuppressed;
 
@@ -37,6 +39,8 @@ namespace OrderRushKitchen.Game
             mainMenuButton.onClick.AddListener(ReturnToMenu);
 
             optionsButton.onClick.AddListener(OpenOptions);
+
+            howToPlayButton.onClick.AddListener(OpenHowToPlay);
 
             RefreshVisibility();
         }
@@ -58,6 +62,10 @@ namespace OrderRushKitchen.Game
             if (resumeButton != null)
             {
                 resumeButton.onClick.RemoveListener(Resume);
+            }
+            if (howToPlayButton != null)
+            {
+                howToPlayButton.onClick.RemoveListener(OpenHowToPlay);
             }
         }
         private void PauseService_OnPauseChanged(object sender, EventArgs e)
@@ -95,6 +103,11 @@ namespace OrderRushKitchen.Game
         private void ReturnToMenu()
         {
             MainMenuRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OpenHowToPlay()
+        {
+            HowToPlayRequested?.Invoke(this, EventArgs.Empty);
         }
     }
 }

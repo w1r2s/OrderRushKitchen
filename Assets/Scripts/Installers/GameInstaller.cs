@@ -114,9 +114,11 @@ namespace OrderRushKitchen.Installers
             Container.BindInterfacesTo<GameplayHudVisibilityController>().AsSingle();
             Container.Bind<GameOverUI>().FromComponentInHierarchy().AsSingle();
             Container.Bind<GamePauseUI>().FromComponentInHierarchy().AsSingle();
+            Container.Bind<HowToPlayUI>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesTo<ModalPauseController>().AsSingle();
             Container.BindInterfacesTo<GameOptionsPauseController>().AsSingle();
             Container.BindInterfacesTo<GamePauseActionsController>().AsSingle();
+            Container.BindInterfacesTo<HowToPlayController>().AsSingle();
             Container.BindInterfacesTo<GameOverNavigationController>().AsSingle();
         }
 
