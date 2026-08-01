@@ -4924,6 +4924,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1214430165990876896}
   - component: {fileID: 5773193362063987468}
+  - component: {fileID: 5930316684108599010}
   m_Layer: 5
   m_Name: OptionsUI
   m_TagString: Untagged
@@ -4988,6 +4989,28 @@ MonoBehaviour:
   altInteractText: {fileID: 2208810607391145115}
   pauseText: {fileID: 3215336061249360280}
   pressToRebindKeyTransform: {fileID: 4219080450208722994}
+--- !u!114 &5930316684108599010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7426963667049540996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d94d8db1425b7ba4fa935471054a7d0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Settings.OptionsPlatformLayout
+  mode: 0
+  panel: {fileID: 5978363310763121121}
+  layoutGroup: {fileID: 8524465202861134442}
+  mobilePanelSize: {x: 700, y: 700}
+  mobilePadding:
+    m_Left: 112
+    m_Right: 112
+    m_Top: 82
+    m_Bottom: 70
+  mobileSpacing: 24
 --- !u!1 &7574300557171944121
 GameObject:
   m_ObjectHideFlags: 0
