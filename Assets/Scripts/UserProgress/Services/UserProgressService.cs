@@ -8,6 +8,7 @@ namespace OrderRushKitchen.UserProgress
         public int CurrentLevel => _userProgressData.CurrentLevelNumber;
 
         public int UnlockedLevelNumber => _userProgressData.MaxUnlockedLevelNumber;
+        public bool HasSeenHowToPlay => _userProgressData.HasSeenHowToPlay;
 
         private UserProgressData _userProgressData;
 
@@ -41,7 +42,7 @@ namespace OrderRushKitchen.UserProgress
             if (level > UnlockedLevelNumber)
                 level = UnlockedLevelNumber;
 
-            _userProgressData = new UserProgressData(level, UnlockedLevelNumber);
+            _userProgressData = new UserProgressData(level, UnlockedLevelNumber, HasSeenHowToPlay);
             _userProgressStorage.Save(_userProgressData);
         }
 
@@ -53,7 +54,16 @@ namespace OrderRushKitchen.UserProgress
             if (levelNumber <= UnlockedLevelNumber)
                 return;
 
-            _userProgressData = new UserProgressData(CurrentLevel, levelNumber);
+            _userProgressData = new UserProgressData(CurrentLevel, levelNumber, HasSeenHowToPlay);
+            _userProgressStorage.Save(_userProgressData);
+        }
+
+        public void MarkHowToPlaySeen()
+        {
+            if (HasSeenHowToPlay)
+                return;
+
+            _userProgressData = new UserProgressData(CurrentLevel, UnlockedLevelNumber, true);
             _userProgressStorage.Save(_userProgressData);
         }
     }

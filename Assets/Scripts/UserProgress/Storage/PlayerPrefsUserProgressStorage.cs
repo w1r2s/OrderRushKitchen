@@ -7,10 +7,12 @@ namespace OrderRushKitchen.UserProgress
     {
         private const string CurrentLevelKey = "CurrentLevel";
         private const string UnlockedLevelKey = "UnlockedLevel";
+        private const string HowToPlaySeenKey = "HowToPlaySeen";
         public UserProgressData Load()
         {
             var currentLevel = PlayerPrefs.GetInt(CurrentLevelKey, 1);
             var unlockedLevel = PlayerPrefs.GetInt(UnlockedLevelKey, 1);
+            var hasSeenHowToPlay = PlayerPrefs.GetInt(HowToPlaySeenKey, 0) == 1;
 
             if (currentLevel <= 0)
             {
@@ -26,7 +28,7 @@ namespace OrderRushKitchen.UserProgress
                 currentLevel = unlockedLevel;
             }
 
-            return new UserProgressData(currentLevel, unlockedLevel);
+            return new UserProgressData(currentLevel, unlockedLevel, hasSeenHowToPlay);
         }
 
         public void Save(UserProgressData data)
@@ -36,6 +38,7 @@ namespace OrderRushKitchen.UserProgress
 
             PlayerPrefs.SetInt(CurrentLevelKey, data.CurrentLevelNumber);
             PlayerPrefs.SetInt(UnlockedLevelKey, data.MaxUnlockedLevelNumber);
+            PlayerPrefs.SetInt(HowToPlaySeenKey, data.HasSeenHowToPlay ? 1 : 0);
             PlayerPrefs.Save();
         }
     }
