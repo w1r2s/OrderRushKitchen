@@ -83,6 +83,62 @@ MonoBehaviour:
     m_Key: ui.hud.orders
     m_Metadata:
       m_Items: []
+  - m_Id: 16368960680222720
+    m_Key: ui.how_to_play.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16368960822829056
+    m_Key: ui.how_to_play.start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16368960822829057
+    m_Key: ui.pause.how_to_play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16368960822829058
+    m_Key: ui.how_to_play.controls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16368960822829059
+    m_Key: ui.how_to_play.desktop_hint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16368960822829060
+    m_Key: ui.how_to_play.mobile_hint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16368960822829061
+    m_Key: ui.how_to_play.move
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16368960822829062
+    m_Key: ui.how_to_play.interact
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16368960822829063
+    m_Key: ui.how_to_play.alternate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16368960822829064
+    m_Key: ui.how_to_play.loop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16368960822829065
+    m_Key: ui.how_to_play.step_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16368960822829066
+    m_Key: ui.how_to_play.step_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16368960822829067
+    m_Key: ui.how_to_play.step_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16368960822829068
+    m_Key: ui.how_to_play.step_4
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
