@@ -319,6 +319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a4b0b701037a7408eb6b0b6063ed22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OrderRushKitchen.Game.HowToPlayUI
+  mobilePanelScale: 1.3
   dimmer: {fileID: 3397309789810727345}
   panel: {fileID: 3934906284504160558}
   mobileControlsRoot: {fileID: 2708191877718131746}

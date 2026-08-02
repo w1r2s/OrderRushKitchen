@@ -12,6 +12,9 @@ namespace OrderRushKitchen.Game
         private const string StartButtonKey = "ui.how_to_play.start";
         private const string BackButtonKey = "ui.common.back";
 
+        [Header("Platform Layout")]
+        [SerializeField, Min(1f)] private float mobilePanelScale = 1.3f;
+
         [Header("Panels")]
         [SerializeField] private GameObject dimmer;
         [SerializeField] private GameObject panel;
@@ -36,8 +39,11 @@ namespace OrderRushKitchen.Game
 
         public bool IsOpen => panel.activeSelf;
 
+        private Vector3 _defaultPanelScale;
+
         private void Awake()
         {
+            _defaultPanelScale = panel.transform.localScale;
             actionButton.onClick.AddListener(OnActionClicked);
             SetVisible(false);
         }
@@ -53,6 +59,9 @@ namespace OrderRushKitchen.Game
             bool useMobileControls = Application.isMobilePlatform;
             mobileControlsRoot.SetActive(useMobileControls);
             desktopControlsRoot.SetActive(!useMobileControls);
+            panel.transform.localScale = useMobileControls
+                ? _defaultPanelScale * mobilePanelScale
+                : _defaultPanelScale;
 
             string actionKey = mode == HowToPlayOpenMode.Automatic
                 ? StartButtonKey
