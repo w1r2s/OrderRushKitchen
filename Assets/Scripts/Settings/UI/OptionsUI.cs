@@ -53,7 +53,7 @@ namespace OrderRushKitchen.Settings
         [Header("Rebind dimmer")]
         [SerializeField] private Transform pressToRebindKeyTransform;
 
-        public bool IsOpen => panelRoot.activeSelf;
+        public bool IsOpen => panelRoot != null && panelRoot.activeSelf;
 
         private readonly IntVariable _sfxVolumeVariable = new();
         private readonly IntVariable _musicVolumeVariable = new();
