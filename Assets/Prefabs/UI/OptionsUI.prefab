@@ -5004,13 +5004,26 @@ MonoBehaviour:
   mode: 0
   panel: {fileID: 5978363310763121121}
   layoutGroup: {fileID: 8524465202861134442}
-  mobilePanelSize: {x: 700, y: 700}
+  titleText: {fileID: 881475462857885206}
+  commonOptionsSection: {fileID: 2085961845189744641}
+  closeButton: {fileID: 3029072758064684572}
+  mobilePanelSize: {x: 900, y: 900}
+  mobilePanelPosition: {x: 0, y: 0}
   mobilePadding:
-    m_Left: 112
-    m_Right: 112
-    m_Top: 82
-    m_Bottom: 70
+    m_Left: 160
+    m_Right: 160
+    m_Top: 180
+    m_Bottom: 100
   mobileSpacing: 24
+  mobileTitleMinFontSize: 64
+  mobileTitleMaxFontSize: 68
+  mobileTitleSize: {x: 650, y: 96}
+  mobileTitleMargin: {x: 8, y: 0, z: 8, w: 0}
+  mobileButtonSize: {x: 420, y: 76}
+  mobileButtonSpacing: 24
+  mobileButtonMinFontSize: 30
+  mobileButtonMaxFontSize: 46
+  mobileButtonHorizontalPadding: 28
 --- !u!1 &7574300557171944121
 GameObject:
   m_ObjectHideFlags: 0
